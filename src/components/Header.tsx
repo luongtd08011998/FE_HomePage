@@ -76,18 +76,18 @@ export default function Header({ categories }: HeaderProps) {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-md border-b border-gray-100">
+    <header className="sticky top-0 z-50 bg-gradient-to-r from-blue-900 via-blue-700 to-cyan-600 shadow-md border-b border-blue-600/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* ===== HÀNG 1: Logo + Search ===== */}
-        <div className="flex items-center justify-between h-16 gap-6">
+        <div className="flex items-center justify-between h-20 gap-6">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 shrink-0">
             <img
               src="/logocty1.jpg"
               alt="Logo Công ty"
-              className="h-10 w-10 object-contain rounded-full ring-2 ring-blue-100"
+              className="h-[3.75rem] w-[3.75rem] object-contain rounded-full ring-2 ring-white/30"
             />
-            <span className="hidden sm:block text-base font-bold text-blue-800 whitespace-nowrap">
+            <span className="hidden sm:block text-xl font-extrabold text-white whitespace-nowrap tracking-wide drop-shadow-md">
               CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN
             </span>
           </Link>
@@ -99,7 +99,7 @@ export default function Header({ categories }: HeaderProps) {
           >
             <div className="relative flex-1" ref={wrapperRef}>
               <svg
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/60"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -117,7 +117,7 @@ export default function Header({ categories }: HeaderProps) {
                 onChange={(e) => setQuery(e.target.value)}
                 onFocus={() => suggestions.length > 0 && setOpen(true)}
                 placeholder="Tìm kiếm bài viết..."
-                className="w-full pl-9 pr-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition-all"
+                className="w-full pl-9 pr-3 py-2 text-sm bg-white/15 border border-white/30 text-white placeholder:text-white/60 rounded-full focus:outline-none focus:ring-2 focus:ring-white/50 focus:bg-white/25 transition-all"
               />
 
               {/* Suggestion dropdown */}
@@ -139,7 +139,7 @@ export default function Header({ categories }: HeaderProps) {
             </div>
             <button
               type="submit"
-              className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shrink-0"
+              className="px-4 py-2 text-sm font-medium bg-white text-blue-800 rounded-full hover:bg-blue-50 transition-colors shrink-0"
             >
               Tìm
             </button>
@@ -147,14 +147,14 @@ export default function Header({ categories }: HeaderProps) {
         </div>
 
         {/* ===== HÀNG 2: Nav ===== */}
-        <div className="border-t border-gray-100">
-          <nav className="flex flex-wrap items-center gap-1 text-sm font-medium py-1">
+        <div className="border-t border-white/20">
+          <nav className="flex flex-wrap items-center gap-1 text-sm font-semibold py-1">
             <Link
               href="/"
               className={`whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
                 pathname === "/"
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-600 hover:bg-blue-50 hover:text-blue-700"
+                  ? "bg-white/25 text-white"
+                  : "text-white hover:bg-white/20"
               }`}
             >
               Trang chủ
@@ -171,8 +171,8 @@ export default function Header({ categories }: HeaderProps) {
                     "/category/lien-he",
                     "/category/hoat-dong-su-kien",
                   ].includes(pathname)
-                    ? "bg-blue-600 text-white"
-                    : "text-gray-600 hover:bg-blue-50 hover:text-blue-700"
+                    ? "bg-white/25 text-white"
+                    : "text-white hover:bg-white/20"
                 }`}
               >
                 Giới thiệu
@@ -231,8 +231,8 @@ export default function Header({ categories }: HeaderProps) {
               href="/category/van-ban"
               className={`whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
                 pathname === "/category/van-ban"
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-600 hover:bg-blue-50 hover:text-blue-700"
+                  ? "bg-white/25 text-white"
+                  : "text-white hover:bg-white/20"
               }`}
             >
               Văn bản
@@ -241,8 +241,8 @@ export default function Header({ categories }: HeaderProps) {
               href="/category/tin-tuc"
               className={`whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
                 pathname === "/tin-tuc"
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-600 hover:bg-blue-50 hover:text-blue-700"
+                  ? "bg-white/25 text-white"
+                  : "text-white hover:bg-white/20"
               }`}
             >
               Tin tức

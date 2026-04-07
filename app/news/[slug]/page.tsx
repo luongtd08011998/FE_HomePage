@@ -77,9 +77,9 @@ export default async function ArticleDetailPage({ params }: Props) {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="lg:grid lg:grid-cols-3 lg:gap-10">
+      <div className="lg:grid lg:grid-cols-4 lg:gap-10">
         {/* Main content */}
-        <article className="lg:col-span-2">
+        <article className="lg:col-span-3">
           {/* Hero thumbnail */}
           <div className="relative w-full h-64 md:h-96 rounded-2xl overflow-hidden mb-6">
             <Image
