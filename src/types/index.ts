@@ -4,6 +4,16 @@ export interface Category {
   slug: string;
 }
 
+export interface CategoryNode {
+  id: number;
+  name: string;
+  slug: string;
+  parent: CategoryNode | null;
+  children: CategoryNode[];
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Tag {
   id: number;
   name: string;

@@ -2,7 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import NewsCard from "@/components/NewsCard";
 import BannerSlider from "@/components/BannerSlider";
-import { articleService } from "@/services/article";
+import { categoryService } from "@/services/category";
+import type { Article } from "@/types";
 
 function resolveThumb(thumbnail: string): string {
   if (!thumbnail) return "/placeholder.svg";
@@ -11,17 +12,13 @@ function resolveThumb(thumbnail: string): string {
 }
 
 export default async function HomePage() {
-  let tinTucArticles: Awaited<
-    ReturnType<typeof articleService.getAll>
-  >["result"] = [];
-  let vanBanArticles: Awaited<
-    ReturnType<typeof articleService.getAll>
-  >["result"] = [];
+  let tinTucArticles: Article[] = [];
+  let vanBanArticles: Article[] = [];
 
   try {
     const [tinTucResult, vanBanResult] = await Promise.all([
-      articleService.getAll({ page: 1, size: 6, category: "tin-tuc" }),
-      articleService.getAll({ page: 1, size: 6, category: "van-ban" }),
+      categoryService.getArticlesBySlug("tin-tuc", { page: 1, size: 3 }),
+      categoryService.getArticlesBySlug("van-ban", { page: 1, size: 3 }),
     ]);
     tinTucArticles = tinTucResult.result;
     vanBanArticles = vanBanResult.result;

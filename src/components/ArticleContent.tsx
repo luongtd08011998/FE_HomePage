@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import DOMPurify from "dompurify";
 
 interface ArticleContentProps {
   content: string;
@@ -11,13 +10,17 @@ export default function ArticleContent({ content }: ArticleContentProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (ref.current) {
-      const clean = DOMPurify.sanitize(content, {
-        FORBID_TAGS: ["script", "iframe"],
-        FORBID_ATTR: ["onerror", "onload", "onclick"],
-      });
-      ref.current.innerHTML = clean;
+    async function sanitize() {
+      const DOMPurify = (await import("dompurify")).default;
+      if (ref.current) {
+        const clean = DOMPurify.sanitize(content, {
+          FORBID_TAGS: ["script", "iframe"],
+          FORBID_ATTR: ["onerror", "onload", "onclick"],
+        });
+        ref.current.innerHTML = clean;
+      }
     }
+    sanitize();
   }, [content]);
 
   return (

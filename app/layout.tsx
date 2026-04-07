@@ -11,7 +11,7 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "TinTức - Đọc tin tức nhanh",
+  title: "Cấp nước Tóc Tiên",
   description: "Đọc tin tức nhanh, chính xác và cập nhật nhất",
 };
 

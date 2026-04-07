@@ -2,24 +2,77 @@
 
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useState } from "react";
-import type { Category } from "@/types";
+import { useState, useEffect, useRef } from "react";
+import { articleService } from "@/services/article";
+import type { Category, Article } from "@/types";
 
 interface HeaderProps {
   categories: Category[];
+}
+
+function useDebounce<T>(value: T, delay: number): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const t = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(t);
+  }, [value, delay]);
+  return debounced;
 }
 
 export default function Header({ categories }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [query, setQuery] = useState("");
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [suggestions, setSuggestions] = useState<Article[]>([]);
+  const [open, setOpen] = useState(false);
+  const debouncedQ = useDebounce(query, 300);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  // Fetch suggestions
+  useEffect(() => {
+    if (!debouncedQ.trim()) {
+      setSuggestions([]);
+      setOpen(false);
+      return;
+    }
+    articleService
+      .search({ keyword: debouncedQ.trim(), page: 1, size: 5 })
+      .then((res) => {
+        setSuggestions(res.result);
+        setOpen(res.result.length > 0);
+      })
+      .catch(() => {
+        setSuggestions([]);
+        setOpen(false);
+      });
+  }, [debouncedQ]);
+
+  // Close on outside click
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, []);
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
     if (query.trim()) {
+      setOpen(false);
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
     }
+  }
+
+  function pickSuggestion(slug: string) {
+    setOpen(false);
+    setQuery("");
+    router.push(`/news/${slug}`);
   }
 
   return (
@@ -35,7 +88,7 @@ export default function Header({ categories }: HeaderProps) {
               className="h-10 w-10 object-contain rounded-full ring-2 ring-blue-100"
             />
             <span className="hidden sm:block text-base font-bold text-blue-800 whitespace-nowrap">
-              Công ty TNHH Cấp nước Tóc Tiên
+              CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN
             </span>
           </Link>
 
@@ -44,7 +97,7 @@ export default function Header({ categories }: HeaderProps) {
             onSubmit={handleSearch}
             className="flex items-center gap-2 w-full max-w-sm"
           >
-            <div className="relative flex-1">
+            <div className="relative flex-1" ref={wrapperRef}>
               <svg
                 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
                 fill="none"
@@ -62,9 +115,27 @@ export default function Header({ categories }: HeaderProps) {
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
+                onFocus={() => suggestions.length > 0 && setOpen(true)}
                 placeholder="Tìm kiếm bài viết..."
                 className="w-full pl-9 pr-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 focus:bg-white transition-all"
               />
+
+              {/* Suggestion dropdown */}
+              {open && (
+                <ul className="absolute top-full left-0 mt-1 w-full bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden">
+                  {suggestions.map((article) => (
+                    <li key={article.id}>
+                      <button
+                        type="button"
+                        onMouseDown={() => pickSuggestion(article.slug)}
+                        className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors truncate block"
+                      >
+                        {article.title}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
             <button
               type="submit"
@@ -89,13 +160,13 @@ export default function Header({ categories }: HeaderProps) {
               Trang chủ
             </Link>
 
-            {/* Dropdown Giới thiệu */}
-            <div className="relative">
-              <button
-                onClick={() => setMenuOpen((v) => !v)}
-                onBlur={() => setTimeout(() => setMenuOpen(false), 150)}
+            {/* Dropdown Giới thiệu — hover shows dropdown, click navigates */}
+            <div className="relative group">
+              <Link
+                href="/category/gioi-thieu"
                 className={`flex items-center gap-1 whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
                   [
+                    "/category/gioi-thieu",
                     "/category/hinh-thanh-phat-trien",
                     "/category/lien-he",
                     "/category/hoat-dong-su-kien",
@@ -106,7 +177,7 @@ export default function Header({ categories }: HeaderProps) {
               >
                 Giới thiệu
                 <svg
-                  className={`w-3.5 h-3.5 transition-transform ${menuOpen ? "rotate-180" : ""}`}
+                  className="w-3.5 h-3.5 transition-transform group-hover:rotate-180"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -118,12 +189,12 @@ export default function Header({ categories }: HeaderProps) {
                     d="M19 9l-7 7-7-7"
                   />
                 </svg>
-              </button>
+              </Link>
 
-              {menuOpen && (
-                <div className="absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-1 z-50">
+              <div className="absolute top-full left-0 pt-1 w-56 z-50 hidden group-hover:block">
+                <div className="bg-white rounded-xl shadow-xl border border-gray-100 py-1">
                   <Link
-                    href="/category/hinh-thanh-phat-trien"
+                    href="/news/hinh-thanh-phat-trien"
                     className={`block px-4 py-2.5 text-sm transition-colors ${
                       pathname === "/category/hinh-thanh-phat-trien"
                         ? "text-blue-600 bg-blue-50 font-medium"
@@ -133,7 +204,7 @@ export default function Header({ categories }: HeaderProps) {
                     Hình thành phát triển
                   </Link>
                   <Link
-                    href="/category/lien-he"
+                    href="/news/thong-tin-lien-he"
                     className={`block px-4 py-2.5 text-sm transition-colors ${
                       pathname === "/category/lien-he"
                         ? "text-blue-600 bg-blue-50 font-medium"
@@ -143,7 +214,7 @@ export default function Header({ categories }: HeaderProps) {
                     Liên hệ
                   </Link>
                   <Link
-                    href="/category/hoat-dong-su-kien"
+                    href="/news/hoat-dong-su-kien-va-thu-nghiem"
                     className={`block px-4 py-2.5 text-sm transition-colors ${
                       pathname === "/category/hoat-dong-su-kien"
                         ? "text-blue-600 bg-blue-50 font-medium"
@@ -153,7 +224,7 @@ export default function Header({ categories }: HeaderProps) {
                     Hoạt động sự kiện
                   </Link>
                 </div>
-              )}
+              </div>
             </div>
 
             <Link
@@ -169,7 +240,7 @@ export default function Header({ categories }: HeaderProps) {
             <Link
               href="/category/tin-tuc"
               className={`whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
-                pathname === "/category/tin-tuc"
+                pathname === "/tin-tuc"
                   ? "bg-blue-600 text-white"
                   : "text-gray-600 hover:bg-blue-50 hover:text-blue-700"
               }`}

@@ -1,10 +1,12 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { Tag } from "antd";
 import ArticleContent from "@/components/ArticleContent";
 import NewsCard from "@/components/NewsCard";
 import { articleService } from "@/services/article";
+import { categoryService } from "@/services/category";
+import type { CategoryNode } from "@/types";
 
 function resolveThumb(thumbnail: string): string {
   if (!thumbnail) return "/placeholder.svg";
@@ -44,14 +46,31 @@ export default async function ArticleDetailPage({ params }: Props) {
   try {
     article = await articleService.getBySlug(slug);
   } catch {
+    // Article not found — check if slug matches a category and redirect
+    try {
+      const tree = await categoryService.getTree();
+      function findSlug(nodes: CategoryNode[]): boolean {
+        for (const n of nodes) {
+          if (n.slug === slug) return true;
+          if (n.children?.length && findSlug(n.children)) return true;
+        }
+        return false;
+      }
+      if (findSlug(tree)) redirect(`/category/${slug}`);
+    } catch {
+      // ignore
+    }
     notFound();
   }
 
   if (!article) notFound();
 
   try {
-    const result = await articleService.getAll({ page: 1, size: 4 });
-    related = result.result.filter((a) => a.id !== article!.id).slice(0, 3);
+    const result = await articleService.getRelated(article.id, {
+      page: 1,
+      size: 4,
+    });
+    related = result.result;
   } catch {
     // no related articles
   }

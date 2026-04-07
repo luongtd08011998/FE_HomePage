@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import NewsCard from "@/components/NewsCard";
-import { articleService } from "@/services/article";
 import { tagService } from "@/services/tag";
+import type { Article, PaginatedMeta } from "@/types";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -12,6 +12,12 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   try {
+    const isId = /^\d+$/.test(slug);
+    if (isId) {
+      const tags = await tagService.getAll();
+      const tag = tags.find((t) => t.id === Number(slug));
+      return { title: `#${tag?.name ?? slug} | TinTức` };
+    }
     const tags = await tagService.getAll();
     const tag = tags.find((t) => t.slug === slug);
     return { title: `#${tag?.name ?? slug} | TinTức` };
@@ -25,21 +31,33 @@ export default async function TagPage({ params, searchParams }: Props) {
   const { page: pageParam } = await searchParams;
   const page = Number(pageParam) || 1;
 
-  let articles: Awaited<ReturnType<typeof articleService.getAll>>["result"] =
-    [];
-  let meta = { page: 1, pageSize: 9, total: 0, pages: 1 };
+  let articles: Article[] = [];
+  let meta: PaginatedMeta = { page: 1, pageSize: 9, total: 0, pages: 1 };
   let tagName = `#${slug}`;
 
   try {
-    const [articlesResult, tagsResult] = await Promise.all([
-      articleService.getAll({ page, size: 9, tag: slug }),
-      tagService.getAll(),
-    ]);
+    const isId = /^\d+$/.test(slug);
+    let tagId: number;
+
+    if (isId) {
+      tagId = Number(slug);
+      const tags = await tagService.getAll();
+      const found = tags.find((t) => t.id === tagId);
+      if (found) tagName = `#${found.name}`;
+    } else {
+      const tagsResult = await tagService.getAll();
+      const found = tagsResult.find((t) => t.slug === slug);
+      if (!found) notFound();
+      tagName = `#${found.name}`;
+      tagId = found.id;
+    }
+
+    const articlesResult = await tagService.getArticles(tagId, {
+      page,
+      size: 9,
+    });
     articles = articlesResult.result;
     meta = articlesResult.meta;
-    const found = tagsResult.find((t) => t.slug === slug);
-    if (!found) notFound();
-    tagName = `#${found.name}`;
   } catch (err: unknown) {
     if ((err as { digest?: string })?.digest?.includes("NEXT_NOT_FOUND"))
       throw err;

@@ -1,10 +1,9 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { Pagination } from "antd";
 import NewsCard from "@/components/NewsCard";
 import CategoryFilter from "@/components/CategoryFilter";
-import { articleService } from "@/services/article";
 import { categoryService } from "@/services/category";
+import type { Article, Category, PaginatedMeta } from "@/types";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -14,9 +13,10 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   try {
-    const categories = await categoryService.getAll();
-    const cat = categories.find((c) => c.slug === slug);
-    return { title: `${cat?.name ?? "Chuyên mục"} | TinTức` };
+    const result = await categoryService.getArticlesBySlug(slug, { size: 1 });
+    // Get category name from first article if available
+    const catName = result.result[0]?.category?.name;
+    return { title: `${catName ?? "Chuyên mục"} | TinTức` };
   } catch {
     return { title: "Chuyên mục | TinTức" };
   }
@@ -27,23 +27,40 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const { page: pageParam } = await searchParams;
   const page = Number(pageParam) || 1;
 
-  let articles: Awaited<ReturnType<typeof articleService.getAll>>["result"] =
-    [];
-  let meta = { page: 1, pageSize: 9, total: 0, pages: 1 };
-  let categories: Awaited<ReturnType<typeof categoryService.getAll>> = [];
+  let articles: Article[] = [];
+  let meta: PaginatedMeta = { page: 1, pageSize: 9, total: 0, pages: 1 };
+  let categories: Category[] = [];
   let categoryName = slug;
 
   try {
-    const [articlesResult, categoriesResult] = await Promise.all([
-      articleService.getAll({ page, size: 9, category: slug }),
-      categoryService.getAll(),
+    const [articlesResult, tree] = await Promise.all([
+      categoryService.getArticlesBySlug(slug, { page, size: 9 }),
+      categoryService.getTree(),
     ]);
+
     articles = articlesResult.result;
     meta = articlesResult.meta;
-    categories = categoriesResult;
-    const found = categoriesResult.find((c) => c.slug === slug);
-    if (!found) notFound();
-    categoryName = found.name;
+
+    // Category name from first article or tree lookup
+    if (articles.length > 0) {
+      categoryName = articles[0].category.name;
+    } else {
+      // Try tree lookup when no articles
+      function findName(nodes: typeof tree): string | undefined {
+        for (const n of nodes) {
+          if (n.slug === slug) return n.name;
+          if (n.children?.length) {
+            const found = findName(n.children);
+            if (found) return found;
+          }
+        }
+      }
+      const name = findName(tree);
+      if (!name) notFound();
+      categoryName = name!;
+    }
+
+    categories = tree.map((n) => ({ id: n.id, name: n.name, slug: n.slug }));
   } catch (err: unknown) {
     if ((err as { digest?: string })?.digest?.includes("NEXT_NOT_FOUND"))
       throw err;

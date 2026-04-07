@@ -1,8 +1,8 @@
-import { redirect } from "next/navigation";
 import NewsCard from "@/components/NewsCard";
 import CategoryFilter from "@/components/CategoryFilter";
 import { articleService } from "@/services/article";
 import { categoryService } from "@/services/category";
+import type { Article, PaginatedMeta } from "@/types";
 
 interface NewsPageProps {
   searchParams: Promise<{ page?: string; category?: string }>;
@@ -17,27 +17,34 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
   const page = Number(params.page) || 1;
   const categorySlug = params.category;
 
-  let articles: Awaited<ReturnType<typeof articleService.getAll>>["result"] =
-    [];
-  let meta = { page: 1, pageSize: 9, total: 0, pages: 1 };
+  let articles: Article[] = [];
+  let meta: PaginatedMeta = { page: 1, pageSize: 9, total: 0, pages: 1 };
   let categories: Awaited<ReturnType<typeof categoryService.getAll>> = [];
-
-  try {
-    const articlesResult = await articleService.getAll({
-      page,
-      size: 9,
-      category: categorySlug,
-    });
-    articles = articlesResult.result;
-    meta = articlesResult.meta;
-  } catch (err) {
-    console.error("[NewsPage] articles error:", err);
-  }
 
   try {
     categories = await categoryService.getAll();
   } catch (err) {
     console.error("[NewsPage] categories error:", err);
+  }
+
+  try {
+    if (categorySlug) {
+      const articlesResult = await categoryService.getArticlesBySlug(
+        categorySlug,
+        {
+          page,
+          size: 9,
+        },
+      );
+      articles = articlesResult.result;
+      meta = articlesResult.meta;
+    } else {
+      const articlesResult = await articleService.getAll({ page, size: 9 });
+      articles = articlesResult.result;
+      meta = articlesResult.meta;
+    }
+  } catch (err) {
+    console.error("[NewsPage] articles error:", err);
   }
 
   function buildUrl(newPage: number) {

@@ -17,46 +17,59 @@ function useDebounce<T>(value: T, delay: number): T {
   return debounced;
 }
 
-async function fetchSearch(query: string): Promise<Article[]> {
-  if (!query.trim()) return [];
-  const result = await articleService.getAll({ search: query, size: 20 });
-  return result.result;
+async function fetchSearch(
+  query: string,
+  page: number,
+): Promise<{ articles: Article[]; total: number; pages: number }> {
+  if (!query.trim()) return { articles: [], total: 0, pages: 0 };
+  const result = await articleService.search({ keyword: query, page, size: 6 });
+  return {
+    articles: result.result,
+    total: result.meta.total,
+    pages: result.meta.pages,
+  };
 }
 
 export default function SearchContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialQ = searchParams.get("q") ?? "";
+  const initialPage = Number(searchParams.get("page") ?? "1");
   const [input, setInput] = useState(initialQ);
+  const [page, setPage] = useState(initialPage);
   const debouncedQ = useDebounce(input, 400);
 
+  // Sync input when URL changes (e.g. search from header)
   useEffect(() => {
-    const qs = debouncedQ.trim()
-      ? `?q=${encodeURIComponent(debouncedQ.trim())}`
-      : "";
-    router.replace(`/search${qs}`, { scroll: false });
-  }, [debouncedQ, router]);
+    setInput(searchParams.get("q") ?? "");
+    setPage(Number(searchParams.get("page") ?? "1"));
+  }, [searchParams]);
 
-  const { data: articles, isLoading } = useSWR(
-    debouncedQ.trim() ? ["search", debouncedQ] : null,
-    () => fetchSearch(debouncedQ),
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedQ]);
+
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (debouncedQ.trim()) params.set("q", debouncedQ.trim());
+    if (page > 1) params.set("page", String(page));
+    const qs = params.toString() ? `?${params.toString()}` : "";
+    router.replace(`/search${qs}`, { scroll: false });
+  }, [debouncedQ, page, router]);
+
+  const { data, isLoading, error } = useSWR(
+    debouncedQ.trim() ? ["search", debouncedQ, page] : null,
+    () => fetchSearch(debouncedQ, page),
     { keepPreviousData: true },
   );
+
+  const articles = data?.articles ?? [];
+  const totalPages = data?.pages ?? 0;
+  const total = data?.total ?? 0;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Tìm kiếm</h1>
-
-      <div className="mb-8">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Nhập từ khóa tìm kiếm..."
-          autoFocus
-          className="w-full max-w-xl px-4 py-2.5 text-base border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
 
       {isLoading && (
         <div className="flex justify-center py-16">
@@ -64,22 +77,50 @@ export default function SearchContent() {
         </div>
       )}
 
-      {!isLoading && debouncedQ.trim() && articles && articles.length === 0 && (
+      {error && (
+        <p className="text-red-500 text-center py-16">
+          Có lỗi khi tìm kiếm. Vui lòng thử lại.
+        </p>
+      )}
+
+      {!isLoading && !error && debouncedQ.trim() && articles.length === 0 && (
         <p className="text-gray-500 text-center py-16">
           Không tìm thấy kết quả cho &quot;{debouncedQ}&quot;.
         </p>
       )}
 
-      {articles && articles.length > 0 && (
+      {articles.length > 0 && (
         <>
           <p className="text-sm text-gray-500 mb-4">
-            {articles.length} kết quả cho &quot;{debouncedQ}&quot;
+            {total} kết quả cho &quot;{debouncedQ}&quot;
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {articles.map((article) => (
               <NewsCard key={article.id} article={article} />
             ))}
           </div>
+
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-2 mt-10">
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page <= 1}
+                className="px-4 py-2 text-sm rounded-lg border border-gray-200 disabled:opacity-40 hover:bg-gray-50 transition-colors"
+              >
+                ← Trước
+              </button>
+              <span className="text-sm text-gray-600">
+                Trang {page} / {totalPages}
+              </span>
+              <button
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={page >= totalPages}
+                className="px-4 py-2 text-sm rounded-lg border border-gray-200 disabled:opacity-40 hover:bg-gray-50 transition-colors"
+              >
+                Sau →
+              </button>
+            </div>
+          )}
         </>
       )}
     </div>
