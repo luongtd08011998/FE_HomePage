@@ -23,14 +23,14 @@ export default function Footer() {
           {/* CONTACT */}
           {/* CONTACT */}
           <div>
-            <h4 className="text-base font-bold uppercase text-white mb-5 tracking-wide">
+            <h4 className="text-lg font-extrabold uppercase text-white mb-5 tracking-wide">
               Thông tin liên hệ
             </h4>
 
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm text-gray-300 leading-relaxed">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-base text-gray-200 leading-relaxed font-medium">
               <li className="flex items-start gap-2">
                 <span>📍</span>
-                <span>Ấp 6,Xã Châu Pha, TP. Hồ Chí Minh, Việt Nam</span>
+                <span>Ấp 6, Xã Châu Pha, TP. Hồ Chí Minh, Việt Nam</span>
               </li>
               <li className="flex items-center gap-2">
                 <span>📞</span>
@@ -53,11 +53,11 @@ export default function Footer() {
 
           {/* MENU */}
           <div>
-            <h4 className="text-base font-bold uppercase text-white mb-5 tracking-wide">
+            <h4 className="text-lg font-extrabold uppercase text-white mb-5 tracking-wide">
               Menu
             </h4>
 
-            <ul className="grid grid-cols-2 gap-x-8 gap-y-3 text-sm text-gray-300">
+            <ul className="grid grid-cols-2 gap-x-8 gap-y-3 text-base text-gray-200 font-medium">
               <li>
                 <Link
                   href="/"
@@ -68,7 +68,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/gioi-thieu"
+                  href="/category/gioi-thieu"
                   className="hover:text-white transition duration-200"
                 >
                   Giới thiệu
@@ -76,15 +76,15 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/dich-vu"
+                  href="/category/van-ban"
                   className="hover:text-white transition duration-200"
                 >
-                  Dịch vụ
+                  Văn bản
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/tin-tuc"
+                  href="/category/tin-tuc"
                   className="hover:text-white transition duration-200"
                 >
                   Tin tức
@@ -92,7 +92,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/lien-he"
+                  href="/news/thong-tin-lien-he"
                   className="hover:text-white transition duration-200"
                 >
                   Liên hệ

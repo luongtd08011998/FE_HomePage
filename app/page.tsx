@@ -67,7 +67,10 @@ export default async function HomePage() {
         </div>
 
         {/* Tra cứu hóa đơn */}
-        <div className="flex flex-col items-center text-center p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <Link
+          href="/tra-cuu-hoa-don"
+          className="flex flex-col items-center text-center p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow cursor-pointer"
+        >
           <div className="mb-4 text-orange-500">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -91,7 +94,7 @@ export default async function HomePage() {
           <p className="text-gray-600 text-sm leading-relaxed">
             Quý khách hàng có thể tra cứu hóa đơn tiền nước tại đây.
           </p>
-        </div>
+        </Link>
 
         {/* Thanh toán trực tuyến */}
         <div className="flex flex-col items-center text-center p-8 bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
