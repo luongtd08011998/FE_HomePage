@@ -165,12 +165,7 @@ export default function Header({ categories }: HeaderProps) {
               <Link
                 href="/category/gioi-thieu"
                 className={`flex items-center gap-1 whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
-                  [
-                    "/category/gioi-thieu",
-                    "/category/hinh-thanh-phat-trien",
-                    "/category/lien-he",
-                    "/category/hoat-dong-su-kien",
-                  ].includes(pathname)
+                  ["/category/gioi-thieu"].includes(pathname)
                     ? "bg-white/25 text-white"
                     : "text-white hover:bg-white/20"
                 }`}
@@ -247,6 +242,46 @@ export default function Header({ categories }: HeaderProps) {
             >
               Tin tức
             </Link>
+            <div className="relative group">
+              <Link
+                href="/category/quan-he-khach-hang"
+                className={`flex items-center gap-1 whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
+                  ["/category/quan-he-khach-hang"].includes(pathname)
+                    ? "bg-white/25 text-white"
+                    : "text-white hover:bg-white/20"
+                }`}
+              >
+                Quan hệ khách hàng
+                <svg
+                  className="w-3.5 h-3.5 transition-transform group-hover:rotate-180"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </Link>
+
+              <div className="absolute top-full left-0 pt-1 w-56 z-50 hidden group-hover:block">
+                <div className="bg-white rounded-xl shadow-xl border border-gray-100 py-1">
+                  <Link
+                    href="/news/gia-nuoc-sinh-hoat"
+                    className={`block px-4 py-2.5 text-sm transition-colors ${
+                      pathname === "/category/hinh-thanh-phat-trien"
+                        ? "text-blue-600 bg-blue-50 font-medium"
+                        : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                    }`}
+                  >
+                    Bảng giá nước sinh hoạt
+                  </Link>
+                </div>
+              </div>
+            </div>
           </nav>
         </div>
       </div>

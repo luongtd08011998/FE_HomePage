@@ -61,8 +61,9 @@ export default async function HomePage() {
             Hỗ trợ trực tuyến
           </h3>
           <p className="text-gray-600 text-sm leading-relaxed">
-            Tư vấn trực tuyến. Hỗ trợ đăng ký lắp mới đồng hồ nước. Hỗ trợ đăng
-            ký sửa chữa và nâng dời. Tra cứu tiến độ thời gian giải quyết hồ sơ.
+            Cung cấp dịch vụ tư vấn trực tuyến cho khách hàng, hỗ trợ tiếp nhận
+            và đăng ký lắp đặt đồng hồ nước mới, đồng thời hỗ trợ đăng ký sửa
+            chữa, thay thế và di dời hệ thống nước.
           </p>
         </div>
 
@@ -89,7 +90,7 @@ export default async function HomePage() {
           </div>
           <p className="text-orange-500 font-semibold text-base mb-1">&nbsp;</p>
           <h3 className="text-blue-800 font-bold text-lg uppercase mb-3">
-            Tra cứu hóa đơn điện tử
+            Tra cứu hóa đơn tiền nước
           </h3>
           <p className="text-gray-600 text-sm leading-relaxed">
             Quý khách hàng có thể tra cứu hóa đơn tiền nước tại đây.
@@ -116,11 +117,11 @@ export default async function HomePage() {
           </div>
           <p className="text-orange-500 font-semibold text-base mb-1">&nbsp;</p>
           <h3 className="text-blue-800 font-bold text-lg uppercase mb-3">
-            Thanh toán trực tuyến
+            Thanh toán qua App Ngân Hàng
           </h3>
           <p className="text-gray-600 text-sm leading-relaxed">
-            Khách hàng có thể thanh toán tiền nước trực tuyến qua cổng thanh
-            toán điện tử VNPay trên Website chính thức của công ty.
+            Khách hàng có thể thanh toán tiền nước trực tuyến qua app Ngân
+            hàng.Trong phần Hóa đơn tiền nước chọn Công ty Nước Tóc Tiên.
           </p>
         </div>
       </div>
