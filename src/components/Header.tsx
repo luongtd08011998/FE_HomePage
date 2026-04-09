@@ -76,10 +76,68 @@ export default function Header({ categories }: HeaderProps) {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-gradient-to-r from-blue-900 via-blue-700 to-cyan-600 shadow-md border-b border-blue-600/50">
+    <header className="sticky top-0 z-50 relative border-b border-white/10 shadow-[0_14px_34px_-18px_rgba(2,132,199,0.75)]">
+      {/* Background only: overflow-hidden để blob không tràn, không cắt dropdown */}
+      <div aria-hidden className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Base gradient (brighter, closer to homepage hero) */}
+        <div className="absolute inset-0 bg-gradient-to-r from-sky-700 via-blue-600 to-sky-400" />
+
+        {/* Contrast layer so white text stays readable */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-slate-950/25 to-slate-950/20" />
+
+        {/* Soft animated glow blobs */}
+        <div className="absolute -top-24 -left-24 h-80 w-80 rounded-full bg-sky-200/40 blur-3xl animate-headerFloat" />
+        <div className="absolute -bottom-28 -right-28 h-96 w-96 rounded-full bg-blue-200/30 blur-3xl animate-headerFloat2" />
+
+        {/* Specular highlight / glass sheen */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/22 via-white/8 to-transparent" />
+
+        {/* Subtle grid for depth */}
+        <div className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(to_right,rgba(255,255,255,0.28)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.18)_1px,transparent_1px)] [background-size:40px_40px]" />
+      </div>
+
+      <style jsx>{`
+        @keyframes headerFloat {
+          0% {
+            transform: translate3d(0, 0, 0) scale(1);
+          }
+          50% {
+            transform: translate3d(80px, 18px, 0) scale(1.06);
+          }
+          100% {
+            transform: translate3d(0, 0, 0) scale(1);
+          }
+        }
+        @keyframes headerFloat2 {
+          0% {
+            transform: translate3d(0, 0, 0) scale(1);
+          }
+          50% {
+            transform: translate3d(-70px, -12px, 0) scale(1.05);
+          }
+          100% {
+            transform: translate3d(0, 0, 0) scale(1);
+          }
+        }
+        :global(.animate-headerFloat) {
+          animation: headerFloat 7.5s ease-in-out infinite;
+          will-change: transform;
+        }
+        :global(.animate-headerFloat2) {
+          animation: headerFloat2 9s ease-in-out infinite;
+          will-change: transform;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          :global(.animate-headerFloat),
+          :global(.animate-headerFloat2) {
+            animation: none;
+          }
+        }
+      `}</style>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* ===== HÀNG 1: Logo + Search ===== */}
-        <div className="flex items-center justify-between h-20 gap-6">
+        <div className="flex items-center justify-between h-20 gap-6 relative z-10">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 shrink-0">
             <img
@@ -87,8 +145,13 @@ export default function Header({ categories }: HeaderProps) {
               alt="Logo Công ty"
               className="h-[3.75rem] w-[3.75rem] object-contain rounded-full ring-2 ring-white/30"
             />
-            <span className="hidden sm:block text-xl font-extrabold text-white whitespace-nowrap tracking-wide drop-shadow-md">
-              CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN
+            <span className="hidden sm:block whitespace-nowrap">
+              <span className="block text-[0.8rem] uppercase tracking-[0.28em] text-white/70">
+                TẬP ĐOÀN HẢI CHÂU
+              </span>
+              <span className="block text-lg lg:text-xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-cyan-100 drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)]">
+                CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN
+              </span>
             </span>
           </Link>
 
@@ -147,17 +210,19 @@ export default function Header({ categories }: HeaderProps) {
         </div>
 
         {/* ===== HÀNG 2: Nav ===== */}
-        <div className="border-t border-white/20">
+        <div className="border-t border-white/20 relative z-10">
           <nav className="flex flex-wrap items-center gap-1 text-sm font-semibold py-1">
             <Link
               href="/"
               className={`whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
                 pathname === "/"
-                  ? "bg-white/25 text-white"
-                  : "text-white hover:bg-white/20"
+                  ? "bg-white/25"
+                  : "hover:bg-white/20"
               }`}
             >
-              Trang chủ
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-cyan-100 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)]">
+                Trang chủ
+              </span>
             </Link>
 
             {/* Dropdown Giới thiệu — hover shows dropdown, click navigates */}
@@ -166,13 +231,15 @@ export default function Header({ categories }: HeaderProps) {
                 href="/category/gioi-thieu"
                 className={`flex items-center gap-1 whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
                   ["/category/gioi-thieu"].includes(pathname)
-                    ? "bg-white/25 text-white"
-                    : "text-white hover:bg-white/20"
+                    ? "bg-white/25"
+                    : "hover:bg-white/20"
                 }`}
               >
-                Giới thiệu
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-cyan-100 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)]">
+                  Giới thiệu
+                </span>
                 <svg
-                  className="w-3.5 h-3.5 transition-transform group-hover:rotate-180"
+                  className="w-3.5 h-3.5 text-white/90 shrink-0 transition-transform group-hover:rotate-180"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -186,34 +253,34 @@ export default function Header({ categories }: HeaderProps) {
                 </svg>
               </Link>
 
-              <div className="absolute top-full left-0 pt-1 w-56 z-50 hidden group-hover:block">
+              <div className="absolute top-full left-0 z-[60] hidden w-56 pt-1 group-hover:block">
                 <div className="bg-white rounded-xl shadow-xl border border-gray-100 py-1">
                   <Link
                     href="/news/hinh-thanh-phat-trien"
-                    className={`block px-4 py-2.5 text-sm transition-colors ${
+                    className={`block px-4 py-2.5 text-sm tracking-tight transition-colors ${
                       pathname === "/category/hinh-thanh-phat-trien"
-                        ? "text-blue-600 bg-blue-50 font-medium"
-                        : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                        ? "text-blue-600 bg-blue-50 font-semibold"
+                        : "text-gray-800 hover:bg-blue-50 hover:text-blue-600 font-medium"
                     }`}
                   >
                     Hình thành phát triển
                   </Link>
                   <Link
                     href="/news/thong-tin-lien-he"
-                    className={`block px-4 py-2.5 text-sm transition-colors ${
+                    className={`block px-4 py-2.5 text-sm tracking-tight transition-colors ${
                       pathname === "/category/lien-he"
-                        ? "text-blue-600 bg-blue-50 font-medium"
-                        : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                        ? "text-blue-600 bg-blue-50 font-semibold"
+                        : "text-gray-800 hover:bg-blue-50 hover:text-blue-600 font-medium"
                     }`}
                   >
                     Liên hệ
                   </Link>
                   <Link
                     href="/news/hoat-dong-su-kien-va-thu-nghiem"
-                    className={`block px-4 py-2.5 text-sm transition-colors ${
+                    className={`block px-4 py-2.5 text-sm tracking-tight transition-colors ${
                       pathname === "/category/hoat-dong-su-kien"
-                        ? "text-blue-600 bg-blue-50 font-medium"
-                        : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                        ? "text-blue-600 bg-blue-50 font-semibold"
+                        : "text-gray-800 hover:bg-blue-50 hover:text-blue-600 font-medium"
                     }`}
                   >
                     Hoạt động sự kiện
@@ -226,34 +293,40 @@ export default function Header({ categories }: HeaderProps) {
               href="/category/van-ban"
               className={`whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
                 pathname === "/category/van-ban"
-                  ? "bg-white/25 text-white"
-                  : "text-white hover:bg-white/20"
+                  ? "bg-white/25"
+                  : "hover:bg-white/20"
               }`}
             >
-              Văn bản
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-cyan-100 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)]">
+                Văn bản
+              </span>
             </Link>
             <Link
               href="/category/tin-tuc"
               className={`whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
                 pathname === "/tin-tuc"
-                  ? "bg-white/25 text-white"
-                  : "text-white hover:bg-white/20"
+                  ? "bg-white/25"
+                  : "hover:bg-white/20"
               }`}
             >
-              Tin tức
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-cyan-100 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)]">
+                Tin tức
+              </span>
             </Link>
             <div className="relative group">
               <Link
                 href="/category/quan-he-khach-hang"
                 className={`flex items-center gap-1 whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
                   ["/category/quan-he-khach-hang"].includes(pathname)
-                    ? "bg-white/25 text-white"
-                    : "text-white hover:bg-white/20"
+                    ? "bg-white/25"
+                    : "hover:bg-white/20"
                 }`}
               >
-                Quan hệ khách hàng
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-cyan-100 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)]">
+                  Quan hệ khách hàng
+                </span>
                 <svg
-                  className="w-3.5 h-3.5 transition-transform group-hover:rotate-180"
+                  className="w-3.5 h-3.5 text-white/90 shrink-0 transition-transform group-hover:rotate-180"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -267,14 +340,14 @@ export default function Header({ categories }: HeaderProps) {
                 </svg>
               </Link>
 
-              <div className="absolute top-full left-0 pt-1 w-56 z-50 hidden group-hover:block">
+              <div className="absolute top-full left-0 z-[60] hidden w-56 pt-1 group-hover:block">
                 <div className="bg-white rounded-xl shadow-xl border border-gray-100 py-1">
                   <Link
                     href="/news/gia-nuoc-sinh-hoat"
-                    className={`block px-4 py-2.5 text-sm transition-colors ${
+                    className={`block px-4 py-2.5 text-sm tracking-tight transition-colors ${
                       pathname === "/category/hinh-thanh-phat-trien"
-                        ? "text-blue-600 bg-blue-50 font-medium"
-                        : "text-gray-700 hover:bg-blue-50 hover:text-blue-600"
+                        ? "text-blue-600 bg-blue-50 font-semibold"
+                        : "text-gray-800 hover:bg-blue-50 hover:text-blue-600 font-medium"
                     }`}
                   >
                     Bảng giá nước sinh hoạt
