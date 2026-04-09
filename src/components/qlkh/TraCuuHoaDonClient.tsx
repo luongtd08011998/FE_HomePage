@@ -13,6 +13,7 @@ import {
   Card,
   Empty,
   Input,
+  message,
   Modal,
   Pagination,
   Spin,
@@ -55,6 +56,15 @@ function formatNgayDb(d: string | null | undefined): string {
   const mo = d.slice(4, 6);
   const day = d.slice(6, 8);
   return `${day}/${mo}/${y}`;
+}
+
+/** Số khối tiêu thụ = chỉ số mới − chỉ số cũ (ví dụ 100 − 50 = 50). */
+function waterConsumptionM3(
+  oldVal: number | null | undefined,
+  newVal: number | null | undefined,
+): number | null {
+  if (oldVal == null || newVal == null) return null;
+  return newVal - oldVal;
 }
 
 function accountStatusLabel(isActive: number | null): string {
@@ -219,6 +229,8 @@ export default function TraCuuHoaDonClient() {
         title: "Kỳ thanh toán",
         dataIndex: "yearMonth",
         key: "yearMonth",
+        align: "left",
+        ellipsis: true,
         render: (ym: string | null) => (
           <span className="font-medium text-gray-900">
             {formatKyThanhToan(ym)}
@@ -226,77 +238,104 @@ export default function TraCuuHoaDonClient() {
         ),
       },
       {
-        title: "Chỉ số cũ",
-        dataIndex: "oldVal",
-        key: "oldVal",
-        align: "right",
-        render: (v: number | null) => v ?? "—",
-      },
-      {
-        title: "Chỉ số mới",
-        dataIndex: "newVal",
-        key: "newVal",
-        align: "right",
-        render: (v: number | null) => v ?? "—",
-      },
-      {
-        title: "Tiền nước",
-        dataIndex: "amount",
-        key: "amount",
-        align: "right",
-        render: (v: number | null) => formatVnd(v),
-      },
-      {
-        title: "BVMT",
-        dataIndex: "envFee",
-        key: "envFee",
-        align: "right",
-        render: (v: number | null) => formatVnd(v),
-      },
-      {
-        title: "Thuế",
-        dataIndex: "taxFee",
-        key: "taxFee",
-        align: "right",
-        render: (v: number | null) => formatVnd(v),
-      },
-      {
-        title: "Tổng cộng",
-        dataIndex: "totalAmount",
-        key: "totalAmount",
-        align: "right",
-        render: (v: number | null) => (
-          <span className="font-semibold text-blue-800">{formatVnd(v)}</span>
+        title: (
+          <span className="inline-block w-full text-right leading-snug">
+            Tiêu thụ
+            <span className="block text-xs font-normal text-gray-500">(m³)</span>
+          </span>
         ),
-      },
-      {
-        title: "Trạng thái",
-        dataIndex: "paymentStatusLabel",
-        key: "status",
-        render: (label: string | null, record) => {
-          const paid = record.paymentStatus === 2;
+        key: "waterM3",
+        align: "right",
+        width: 104,
+        render: (_: unknown, record) => {
+          const m3 = waterConsumptionM3(record.oldVal, record.newVal);
+          if (m3 == null) return "—";
           return (
-            <Tag color={paid ? "green" : "orange"}>
-              {label ?? "—"}
-            </Tag>
+            <span className="tabular-nums font-medium text-gray-900">{m3}</span>
           );
         },
       },
       {
-        title: "",
-        key: "action",
-        width: 100,
+        title: (
+          <span className="inline-block w-full text-right">Tổng cộng</span>
+        ),
+        dataIndex: "totalAmount",
+        key: "totalAmount",
+        align: "right",
+        width: 148,
+        render: (v: number | null) => (
+          <span className="font-semibold text-blue-800 tabular-nums">
+            {formatVnd(v)}
+          </span>
+        ),
+      },
+      {
+        title: (
+          <span className="inline-block w-full text-center">Trạng thái</span>
+        ),
+        dataIndex: "paymentStatusLabel",
+        key: "status",
+        align: "center",
+        width: 148,
+        render: (label: string | null, record) => {
+          const paid = record.paymentStatus === 2;
+          return (
+            <div className="flex justify-center">
+              <Tag color={paid ? "green" : "orange"} className="m-0">
+                {label ?? "—"}
+              </Tag>
+            </div>
+          );
+        },
+      },
+      {
+        title: (
+          <span className="inline-block w-full text-center">Chi tiết</span>
+        ),
+        key: "detail",
+        width: 88,
+        align: "center",
+        fixed: "right",
         render: (_, record) => (
-          <Button
-            type="link"
-            size="small"
-            onClick={(e) => {
-              e.stopPropagation();
-              openDetail(record);
-            }}
-          >
-            Chi tiết
-          </Button>
+          <div className="flex justify-center">
+            <Button
+              type="link"
+              size="small"
+              className="!px-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                openDetail(record);
+              }}
+            >
+              Chi tiết
+            </Button>
+          </div>
+        ),
+      },
+      {
+        title: (
+          <span className="inline-block w-full text-center">Tải về</span>
+        ),
+        key: "download",
+        width: 88,
+        align: "center",
+        fixed: "right",
+        render: () => (
+          <div className="flex justify-center">
+            <Button
+              type="link"
+              size="small"
+              className="!px-2"
+              onClick={(e) => {
+                e.stopPropagation();
+                message.info(
+                  "Chức năng tải về đang hoàn thiện. API sẽ được cập nhật sau.",
+                );
+              }}
+            >
+              Tải về
+            </Button>
+          </div>
         ),
       },
     ],
@@ -495,7 +534,9 @@ export default function TraCuuHoaDonClient() {
               columns={columns}
               dataSource={invoices}
               pagination={false}
-              scroll={{ x: 900 }}
+              tableLayout="fixed"
+              className="qlkh-invoice-table"
+              scroll={{ x: 820 }}
               size="middle"
               onRow={(record) => ({
                 onClick: () => openDetail(record),
