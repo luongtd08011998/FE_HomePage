@@ -229,7 +229,8 @@ export default function TraCuuHoaDonClient() {
         title: "Kỳ thanh toán",
         dataIndex: "yearMonth",
         key: "yearMonth",
-        align: "left",
+        width: 140,
+        align: "center",
         ellipsis: true,
         render: (ym: string | null) => (
           <span className="font-medium text-gray-900">
@@ -239,14 +240,14 @@ export default function TraCuuHoaDonClient() {
       },
       {
         title: (
-          <span className="inline-block w-full text-right leading-snug">
+          <span className="inline-block w-full text-center leading-snug">
             Tiêu thụ
-            <span className="block text-xs font-normal text-gray-500">(m³)</span>
+
           </span>
         ),
         key: "waterM3",
-        align: "right",
-        width: 104,
+        align: "center",
+        width: 90,
         render: (_: unknown, record) => {
           const m3 = waterConsumptionM3(record.oldVal, record.newVal);
           if (m3 == null) return "—";
@@ -257,12 +258,12 @@ export default function TraCuuHoaDonClient() {
       },
       {
         title: (
-          <span className="inline-block w-full text-right">Tổng cộng</span>
+          <span className="inline-block w-full text-center">Tổng cộng</span>
         ),
         dataIndex: "totalAmount",
         key: "totalAmount",
-        align: "right",
-        width: 148,
+        align: "center",
+        width: 140,
         render: (v: number | null) => (
           <span className="font-semibold text-blue-800 tabular-nums">
             {formatVnd(v)}
@@ -293,7 +294,7 @@ export default function TraCuuHoaDonClient() {
           <span className="inline-block w-full text-center">Chi tiết</span>
         ),
         key: "detail",
-        width: 88,
+        width: 90,
         align: "center",
         fixed: "right",
         render: (_, record) => (
@@ -317,7 +318,7 @@ export default function TraCuuHoaDonClient() {
           <span className="inline-block w-full text-center">Tải về</span>
         ),
         key: "download",
-        width: 88,
+        width: 90,
         align: "center",
         fixed: "right",
         render: () => (
@@ -534,9 +535,9 @@ export default function TraCuuHoaDonClient() {
               columns={columns}
               dataSource={invoices}
               pagination={false}
-              tableLayout="fixed"
+              tableLayout="auto"
               className="qlkh-invoice-table"
-              scroll={{ x: 820 }}
+              scroll={{ x: 700 }}
               size="middle"
               onRow={(record) => ({
                 onClick: () => openDetail(record),
