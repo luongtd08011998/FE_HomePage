@@ -64,7 +64,7 @@ function accountStatusLabel(isActive: number | null): string {
 
 function waterStatusLabel(isWaterCut: number | null): string {
   if (isWaterCut === null || isWaterCut === undefined) return "Không xác định";
-  return isWaterCut === 1 ? "Tạm ngừng cấp nước" : "Cấp nước bình thường";
+  return isWaterCut === 1 ? "Đang tạm ngừng cấp nước (cắt nước)" : "Đang được cấp nước";
 }
 
 function useDebounced<T>(value: T, delay: number): T {
@@ -327,7 +327,7 @@ export default function TraCuuHoaDonClient() {
             Tra cứu hóa đơn điện tử
           </h1>
           <p className="text-center text-gray-500 text-sm mb-8">
-            Đăng nhập bằng mã khách hàng (DigiCode) và số điện thoại đăng ký.
+            Đăng nhập bằng mã khách hàng và số điện thoại đăng ký.
           </p>
           <form onSubmit={handleLogin} className="space-y-5" noValidate>
             <div>
@@ -335,7 +335,7 @@ export default function TraCuuHoaDonClient() {
                 htmlFor="digiCode"
                 className="block text-sm font-medium text-gray-700 mb-1"
               >
-                Mã khách hàng (DigiCode)
+                Mã khách hàng
               </label>
               <Input
                 id="digiCode"
@@ -418,7 +418,7 @@ export default function TraCuuHoaDonClient() {
             {customer ? (
               <>
                 <div>
-                  <span className="text-gray-500">Mã khách hàng (DigiCode)</span>
+                  <span className="text-gray-500">Mã khách hàng</span>
                   <p className="font-semibold text-gray-900 mt-0.5">
                     {customer.digiCode}
                   </p>
@@ -441,10 +441,17 @@ export default function TraCuuHoaDonClient() {
                     {customer.address || "—"}
                   </p>
                 </div>
-                <div className="md:col-span-2 flex flex-wrap gap-2 items-center">
-                  <span className="text-gray-500 mr-2">Trạng thái:</span>
-                  <Tag color="blue">{accountStatusLabel(customer.isActive)}</Tag>
-                  <Tag color="cyan">{waterStatusLabel(customer.isWaterCut)}</Tag>
+                <div>
+                  <span className="text-gray-500">Tài khoản (hồ sơ)</span>
+                  <p className="mt-0.5">
+                    <Tag color="blue">{accountStatusLabel(customer.isActive)}</Tag>
+                  </p>
+                </div>
+                <div>
+                  <span className="text-gray-500">Trạng thái cấp nước</span>
+                  <p className="mt-0.5">
+                    <Tag color="cyan">{waterStatusLabel(customer.isWaterCut)}</Tag>
+                  </p>
                 </div>
               </>
             ) : (
