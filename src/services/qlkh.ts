@@ -90,3 +90,39 @@ export async function qlkhGetInvoice(id: number): Promise<QlkhInvoice> {
   );
   return data.data;
 }
+
+export interface QlkhSalesInvoice {
+  salesInvoiceId: number;
+  invoiceNum: number;
+  templateCode: string;
+  invoiceDate?: string | null;
+  digiCode: string;
+  customerName: string;
+  address: string;
+  invoiceTotal: number;
+  status: number;
+}
+
+export async function qlkhGetSalesInvoices(params: {
+  page: number;
+  size: number;
+}): Promise<PaginatedData<QlkhSalesInvoice>> {
+  const { data } = await qlkhApi.get<
+    ApiResponse<PaginatedData<QlkhSalesInvoice>>
+  >("/qlkh/sales-invoices", {
+    params: {
+      page: params.page,
+      size: params.size,
+    },
+  });
+  return data.data;
+}
+
+export async function qlkhGetSalesInvoice(
+  salesInvoiceId: number,
+): Promise<QlkhSalesInvoice> {
+  const { data } = await qlkhApi.get<ApiResponse<QlkhSalesInvoice>>(
+    `/qlkh/sales-invoices/${salesInvoiceId}`,
+  );
+  return data.data;
+}
