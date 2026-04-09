@@ -2,12 +2,20 @@
 
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { articleService } from "@/services/article";
+import { categoryService } from "@/services/category";
 import type { Category, Article } from "@/types";
 
 interface HeaderProps {
-  categories: Category[];
+  rootCategories: Category[];
+}
+
+type CategoryWithActive = Category & { active?: number };
+
+function isCategoryActive(c: CategoryWithActive): boolean {
+  const a = c.active;
+  return a === undefined || a === 1;
 }
 
 function useDebounce<T>(value: T, delay: number): T {
@@ -19,7 +27,7 @@ function useDebounce<T>(value: T, delay: number): T {
   return debounced;
 }
 
-export default function Header({ categories }: HeaderProps) {
+export default function Header({ rootCategories }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [query, setQuery] = useState("");
@@ -27,6 +35,50 @@ export default function Header({ categories }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const debouncedQ = useDebounce(query, 300);
   const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const roots = useMemo(
+    () =>
+      rootCategories.filter((c) => isCategoryActive(c as CategoryWithActive)),
+    [rootCategories],
+  );
+
+  const [childrenByRootId, setChildrenByRootId] = useState<
+    Record<number, Category[]>
+  >({});
+
+  useEffect(() => {
+    if (roots.length === 0) {
+      setChildrenByRootId({});
+      return;
+    }
+    let cancelled = false;
+    Promise.all(
+      roots.map((r) =>
+        categoryService
+          .getChildren(r.id)
+          .then((list) => ({
+            id: r.id,
+            list: list.filter((c) =>
+              isCategoryActive(c as CategoryWithActive),
+            ),
+          })),
+      ),
+    )
+      .then((pairs) => {
+        if (cancelled) return;
+        const next: Record<number, Category[]> = {};
+        for (const { id, list } of pairs) {
+          next[id] = list;
+        }
+        setChildrenByRootId(next);
+      })
+      .catch(() => {
+        if (!cancelled) setChildrenByRootId({});
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [roots]);
 
   // Fetch suggestions
   useEffect(() => {
@@ -225,136 +277,77 @@ export default function Header({ categories }: HeaderProps) {
               </span>
             </Link>
 
-            {/* Dropdown Giới thiệu — hover shows dropdown, click navigates */}
-            <div className="relative group">
-              <Link
-                href="/category/gioi-thieu"
-                className={`flex items-center gap-1 whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
-                  ["/category/gioi-thieu"].includes(pathname)
-                    ? "bg-white/25"
-                    : "hover:bg-white/20"
-                }`}
-              >
+            {roots.map((root) => {
+              const children = childrenByRootId[root.id] ?? [];
+              const rootActive =
+                pathname === `/category/${root.slug}` ||
+                children.some((c) => pathname === `/category/${c.slug}`);
+              const navLabel = (
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-cyan-100 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)]">
-                  Giới thiệu
+                  {root.name}
                 </span>
-                <svg
-                  className="w-3.5 h-3.5 text-white/90 shrink-0 transition-transform group-hover:rotate-180"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </Link>
+              );
 
-              <div className="absolute top-full left-0 z-[60] hidden w-56 pt-1 group-hover:block">
-                <div className="bg-white rounded-xl shadow-xl border border-gray-100 py-1">
+              if (children.length === 0) {
+                return (
                   <Link
-                    href="/news/hinh-thanh-phat-trien"
-                    className={`block px-4 py-2.5 text-sm tracking-tight transition-colors ${
-                      pathname === "/category/hinh-thanh-phat-trien"
-                        ? "text-blue-600 bg-blue-50 font-semibold"
-                        : "text-gray-800 hover:bg-blue-50 hover:text-blue-600 font-medium"
+                    key={root.id}
+                    href={`/category/${root.slug}`}
+                    className={`whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
+                      pathname === `/category/${root.slug}`
+                        ? "bg-white/25"
+                        : "hover:bg-white/20"
                     }`}
                   >
-                    Hình thành phát triển
+                    {navLabel}
                   </Link>
+                );
+              }
+
+              return (
+                <div key={root.id} className="relative group">
                   <Link
-                    href="/news/thong-tin-lien-he"
-                    className={`block px-4 py-2.5 text-sm tracking-tight transition-colors ${
-                      pathname === "/category/lien-he"
-                        ? "text-blue-600 bg-blue-50 font-semibold"
-                        : "text-gray-800 hover:bg-blue-50 hover:text-blue-600 font-medium"
+                    href={`/category/${root.slug}`}
+                    className={`flex items-center gap-1 whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
+                      rootActive ? "bg-white/25" : "hover:bg-white/20"
                     }`}
                   >
-                    Liên hệ
+                    {navLabel}
+                    <svg
+                      className="w-3.5 h-3.5 text-white/90 shrink-0 transition-transform group-hover:rotate-180"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
                   </Link>
-                  <Link
-                    href="/news/hoat-dong-su-kien-va-thu-nghiem"
-                    className={`block px-4 py-2.5 text-sm tracking-tight transition-colors ${
-                      pathname === "/category/hoat-dong-su-kien"
-                        ? "text-blue-600 bg-blue-50 font-semibold"
-                        : "text-gray-800 hover:bg-blue-50 hover:text-blue-600 font-medium"
-                    }`}
-                  >
-                    Hoạt động sự kiện
-                  </Link>
+
+                  <div className="absolute top-full left-0 z-[60] hidden w-56 pt-1 group-hover:block">
+                    <div className="bg-white rounded-xl shadow-xl border border-gray-100 py-1">
+                      {children.map((child) => (
+                        <Link
+                          key={child.id}
+                          href={`/category/${child.slug}`}
+                          className={`block px-4 py-2.5 text-sm tracking-tight transition-colors ${
+                            pathname === `/category/${child.slug}`
+                              ? "text-blue-600 bg-blue-50 font-semibold"
+                              : "text-gray-800 hover:bg-blue-50 hover:text-blue-600 font-medium"
+                          }`}
+                        >
+                          {child.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-
-            <Link
-              href="/category/van-ban"
-              className={`whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
-                pathname === "/category/van-ban"
-                  ? "bg-white/25"
-                  : "hover:bg-white/20"
-              }`}
-            >
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-cyan-100 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)]">
-                Văn bản
-              </span>
-            </Link>
-            <Link
-              href="/category/tin-tuc"
-              className={`whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
-                pathname === "/tin-tuc"
-                  ? "bg-white/25"
-                  : "hover:bg-white/20"
-              }`}
-            >
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-cyan-100 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)]">
-                Tin tức
-              </span>
-            </Link>
-            <div className="relative group">
-              <Link
-                href="/category/quan-he-khach-hang"
-                className={`flex items-center gap-1 whitespace-nowrap px-4 py-2 rounded-lg transition-colors ${
-                  ["/category/quan-he-khach-hang"].includes(pathname)
-                    ? "bg-white/25"
-                    : "hover:bg-white/20"
-                }`}
-              >
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-cyan-100 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)]">
-                  Quan hệ khách hàng
-                </span>
-                <svg
-                  className="w-3.5 h-3.5 text-white/90 shrink-0 transition-transform group-hover:rotate-180"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </Link>
-
-              <div className="absolute top-full left-0 z-[60] hidden w-56 pt-1 group-hover:block">
-                <div className="bg-white rounded-xl shadow-xl border border-gray-100 py-1">
-                  <Link
-                    href="/news/gia-nuoc-sinh-hoat"
-                    className={`block px-4 py-2.5 text-sm tracking-tight transition-colors ${
-                      pathname === "/category/hinh-thanh-phat-trien"
-                        ? "text-blue-600 bg-blue-50 font-semibold"
-                        : "text-gray-800 hover:bg-blue-50 hover:text-blue-600 font-medium"
-                    }`}
-                  >
-                    Bảng giá nước sinh hoạt
-                  </Link>
-                </div>
-              </div>
-            </div>
+              );
+            })}
           </nav>
         </div>
       </div>

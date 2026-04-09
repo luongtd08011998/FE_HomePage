@@ -51,4 +51,18 @@ export const categoryService = {
     );
     return data.data;
   },
+
+  /** Danh mục con trực tiếp — GET /categories/{id}/children */
+  async getChildren(id: number): Promise<Category[]> {
+    const { data } = await api.get<ApiResponse<Category[]>>(
+      `/categories/${id}/children`,
+    );
+    return data.data;
+  },
+
+  /** Danh mục gốc (parent: null) — GET /categories/roots */
+  async getRoots(): Promise<Category[]> {
+    const { data } = await api.get<ApiResponse<Category[]>>("/categories/roots");
+    return data.data;
+  },
 };
