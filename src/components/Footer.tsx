@@ -11,7 +11,10 @@ const sectionTitleClass =
 export default function Footer() {
   return (
     <footer className="relative mt-auto overflow-hidden border-t border-white/10 shadow-[0_-8px_28px_-12px_rgba(2,132,199,0.45)] text-white">
-      <div aria-hidden className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div
+        aria-hidden
+        className="absolute inset-0 overflow-hidden pointer-events-none"
+      >
         <div className="absolute inset-0 bg-gradient-to-r from-sky-700 via-blue-600 to-sky-400" />
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-slate-950/25 to-slate-950/20" />
         <div className="absolute -top-20 -right-16 h-72 w-72 rounded-full bg-sky-200/35 blur-3xl animate-footerFloat" />
@@ -60,9 +63,9 @@ export default function Footer() {
       `}</style>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-10 items-start">
           {/* LOGO + COMPANY */}
-          <div className="flex flex-col items-center text-center md:items-start md:text-left">
+          <div className="flex flex-col items-center text-center md:items-start md:text-left md:col-span-2">
             <img
               src="/logocty1.jpg"
               alt="Logo Công ty"
@@ -77,7 +80,7 @@ export default function Footer() {
           </div>
 
           {/* CONTACT */}
-          <div>
+          <div className="md:col-span-3">
             <h4 className={sectionTitleClass}>Thông tin liên hệ</h4>
 
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-sm sm:text-base leading-relaxed">
@@ -85,9 +88,7 @@ export default function Footer() {
                 <span className="shrink-0 opacity-90" aria-hidden>
                   📍
                 </span>
-                <span>
-                  Ấp 6, Xã Châu Pha, TP. Hồ Chí Minh, Việt Nam
-                </span>
+                <span>Ấp 6, Xã Châu Pha, TP. Hồ Chí Minh, Việt Nam</span>
               </li>
               <li className={`flex items-center gap-2 ${navLinkClass}`}>
                 <span className="shrink-0 opacity-90" aria-hidden>
@@ -117,7 +118,7 @@ export default function Footer() {
           </div>
 
           {/* MENU */}
-          <div>
+          <div className="md:col-span-1">
             <h4 className={sectionTitleClass}>Menu</h4>
 
             <ul className="grid grid-cols-2 gap-x-8 gap-y-3">
@@ -142,10 +143,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/news/thong-tin-lien-he"
-                  className={navLinkClass}
-                >
+                <Link href="/news/thong-tin-lien-he" className={navLinkClass}>
                   Liên hệ
                 </Link>
               </li>
