@@ -15,6 +15,9 @@ export const metadata: Metadata = {
   description: "Đọc tin tức nhanh, chính xác và cập nhật nhất",
 };
 
+/** Header gọi API danh mục — tránh menu đóng băng từ lúc build. */
+export const dynamic = "force-dynamic";
+
 export default function RootLayout({
   children,
 }: Readonly<{
