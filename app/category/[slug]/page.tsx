@@ -42,21 +42,26 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     articles = articlesResult.result;
     meta = articlesResult.meta;
 
-    // Category name from first article or tree lookup
-    if (articles.length > 0) {
-      categoryName = articles[0].category.name;
-    } else {
-      // Try tree lookup when no articles
-      function findName(nodes: typeof tree): string | undefined {
-        for (const n of nodes) {
-          if (n.slug === slug) return n.name;
-          if (n.children?.length) {
-            const found = findName(n.children);
-            if (found) return found;
-          }
+    function categoryTitleFromTree(nodes: typeof tree): string | undefined {
+      for (const n of nodes) {
+        if (n.slug === slug) return n.name;
+        if (n.children?.length) {
+          const found = categoryTitleFromTree(n.children);
+          if (found) return found;
         }
       }
-      const name = findName(tree);
+    }
+
+    // Category name: từ bài đầu (category có thể null) hoặc từ cây danh mục
+    if (articles.length > 0) {
+      const fromArticle = articles[0].category?.name;
+      if (fromArticle) categoryName = fromArticle;
+      else {
+        const name = categoryTitleFromTree(tree);
+        if (name) categoryName = name;
+      }
+    } else {
+      const name = categoryTitleFromTree(tree);
       if (!name) notFound();
       categoryName = name!;
     }

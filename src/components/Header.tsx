@@ -3,7 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useState, useEffect, useRef, useMemo } from "react";
+import {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useMemo,
+  useCallback,
+} from "react";
+import { createPortal } from "react-dom";
 import { articleService } from "@/services/article";
 import { categoryService } from "@/services/category";
 import type { Category, Article } from "@/types";
@@ -211,6 +219,27 @@ export default function Header({ rootCategories }: HeaderProps) {
   const [searchFocused, setSearchFocused] = useState(false);
   const debouncedQ = useDebounce(query, 300);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const suggestionsRef = useRef<HTMLUListElement>(null);
+  const [suggestBox, setSuggestBox] = useState<{
+    top: number;
+    left: number;
+    width: number;
+  } | null>(null);
+
+  /** Tọa độ viewport — dropdown render qua portal (tránh fixed bị neo bởi transform scale trên <form>). */
+  const updateSuggestBox = useCallback(() => {
+    const wrap = wrapperRef.current;
+    if (!wrap || !open || suggestions.length === 0) {
+      setSuggestBox(null);
+      return;
+    }
+    const r = wrap.getBoundingClientRect();
+    setSuggestBox({
+      top: r.bottom + 6,
+      left: r.left,
+      width: r.width,
+    });
+  }, [open, suggestions.length]);
 
   const roots = useMemo(
     () =>
@@ -270,14 +299,37 @@ export default function Header({ rootCategories }: HeaderProps) {
       });
   }, [debouncedQ]);
 
+  useLayoutEffect(() => {
+    updateSuggestBox();
+  }, [updateSuggestBox]);
+
+  useEffect(() => {
+    if (!open) {
+      setSuggestBox(null);
+      return;
+    }
+    updateSuggestBox();
+    const ro = new ResizeObserver(() => updateSuggestBox());
+    ro.observe(document.documentElement);
+    window.addEventListener("scroll", updateSuggestBox, true);
+    window.addEventListener("resize", updateSuggestBox);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("scroll", updateSuggestBox, true);
+      window.removeEventListener("resize", updateSuggestBox);
+    };
+  }, [open, updateSuggestBox]);
+
   useEffect(() => {
     function handleClick(e: MouseEvent) {
+      const t = e.target as Node;
       if (
-        wrapperRef.current &&
-        !wrapperRef.current.contains(e.target as Node)
+        wrapperRef.current?.contains(t) ||
+        suggestionsRef.current?.contains(t)
       ) {
-        setOpen(false);
+        return;
       }
+      setOpen(false);
     }
     document.addEventListener("mousedown", handleClick);
     return () => document.removeEventListener("mousedown", handleClick);
@@ -388,21 +440,34 @@ export default function Header({ rootCategories }: HeaderProps) {
                 >
                   Enter
                 </button>
-                {open && (
-                  <ul className="absolute top-full left-0 mt-1 w-full bg-white rounded-xl shadow-xl border border-gray-100 z-[70] overflow-hidden">
-                    {suggestions.map((article) => (
-                      <li key={article.id}>
-                        <button
-                          type="button"
-                          onMouseDown={() => pickSuggestion(article.slug)}
-                          className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors truncate block"
-                        >
-                          {article.title}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+                {open &&
+                  suggestBox &&
+                  typeof document !== "undefined" &&
+                  createPortal(
+                    <ul
+                      ref={suggestionsRef}
+                      className="fixed z-[110] overflow-y-auto rounded-xl border border-gray-100 bg-white shadow-xl"
+                      style={{
+                        top: suggestBox.top,
+                        left: suggestBox.left,
+                        width: suggestBox.width,
+                        maxHeight: `min(20rem, calc(100dvh - ${suggestBox.top}px - 0.75rem))`,
+                      }}
+                    >
+                      {suggestions.map((article) => (
+                        <li key={article.id}>
+                          <button
+                            type="button"
+                            onMouseDown={() => pickSuggestion(article.slug)}
+                            className="block w-full truncate px-4 py-2.5 text-left text-sm text-gray-700 transition-colors hover:bg-blue-50 hover:text-blue-700"
+                          >
+                            {article.title}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>,
+                    document.body,
+                  )}
               </div>
             </form>
 
@@ -433,7 +498,7 @@ export default function Header({ rootCategories }: HeaderProps) {
       </div>
       </header>
 
-      {/* Nav ngoài <header> — sticky mới bám đúng viewport (tránh bị khối header cha giới hạn) */}
+      {/* Nav ngoài <header> — sticky; z trên dropdown gợi ý (95) khi chồng lên nhau */}
       <div
         className={`sticky top-0 z-[100] w-full border-b border-white/10 relative transition-[box-shadow] duration-300 ${navShadow}`}
       >

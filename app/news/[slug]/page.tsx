@@ -93,9 +93,13 @@ export default async function ArticleDetailPage({ params }: Props) {
 
           {/* Meta */}
           <div className="flex flex-wrap gap-2 mb-4">
-            <Tag color="blue">{article.category.name}</Tag>
-            {article.tags.map((tag) => (
-              <Tag key={tag.id}>{tag.name}</Tag>
+            {article.category ? (
+              <Tag color="blue">{article.category.name}</Tag>
+            ) : (
+              <Tag>Chưa phân loại</Tag>
+            )}
+            {(article.tags ?? []).map((tag) => (
+              <Tag key={tag.id}>{tag?.name ?? "—"}</Tag>
             ))}
           </div>
 

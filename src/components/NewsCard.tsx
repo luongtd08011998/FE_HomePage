@@ -41,7 +41,11 @@ export default function NewsCard({ article }: NewsCardProps) {
         </div>
         <div className="p-4 pb-2">
           <div className="mb-2">
-            <Tag color="blue">{article.category.name}</Tag>
+            {article.category ? (
+              <Tag color="blue">{article.category.name}</Tag>
+            ) : (
+              <Tag>Chưa phân loại</Tag>
+            )}
           </div>
           <h3 className="font-semibold text-gray-900 text-base leading-snug line-clamp-2 group-hover:text-blue-600 transition-colors">
             {article.title}
@@ -56,15 +60,17 @@ export default function NewsCard({ article }: NewsCardProps) {
       <div className="px-4 pb-4 flex flex-col gap-2 mt-auto">
         {article.tags && article.tags.length > 0 && (
           <div className="flex flex-wrap gap-1">
-            {article.tags.map((tag) => (
-              <Link
-                key={tag.id}
-                href={`/tag/${tag.id}`}
-                className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"
-              >
-                #{tag.name}
-              </Link>
-            ))}
+            {article.tags.map((tag) =>
+              tag ? (
+                <Link
+                  key={tag.id}
+                  href={`/tag/${tag.id}`}
+                  className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"
+                >
+                  #{tag.name ?? "—"}
+                </Link>
+              ) : null,
+            )}
           </div>
         )}
         <p className="text-xs text-gray-400">

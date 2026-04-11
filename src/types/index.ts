@@ -45,9 +45,10 @@ export interface Article {
   type: number;
   views: number;
   active: number;
-  author: ArticleAuthor;
-  category: ArticleCategory;
-  tags: ArticleTag[];
+  /** API đôi khi trả null — luôn dùng optional chaining khi hiển thị. */
+  author: ArticleAuthor | null;
+  category: ArticleCategory | null;
+  tags: ArticleTag[] | null;
   createdAt: string;
   updatedAt: string;
 }

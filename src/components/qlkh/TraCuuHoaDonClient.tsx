@@ -645,7 +645,7 @@ export default function TraCuuHoaDonClient() {
                 <div>
                   <span className="text-gray-500">Tên khách hàng</span>
                   <p className="font-semibold text-gray-900 mt-0.5">
-                    {customer.name}
+                    {customer.name ?? "—"}
                   </p>
                 </div>
                 <div>
