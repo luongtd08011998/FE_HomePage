@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import NewsCard from "@/components/NewsCard";
+import { CARD_HOVER_CLASS } from "@/lib/cardHover";
 import { tagService } from "@/services/tag";
 import type { Article, PaginatedMeta } from "@/types";
 
@@ -84,7 +85,7 @@ export default async function TagPage({ params, searchParams }: Props) {
               {meta.page > 1 && (
                 <a
                   href={buildUrl(meta.page - 1)}
-                  className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className={`inline-block px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 ${CARD_HOVER_CLASS}`}
                 >
                   ← Trước
                 </a>
@@ -92,7 +93,7 @@ export default async function TagPage({ params, searchParams }: Props) {
               {meta.page < meta.pages && (
                 <a
                   href={buildUrl(meta.page + 1)}
-                  className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className={`inline-block px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 ${CARD_HOVER_CLASS}`}
                 >
                   Tiếp →
                 </a>

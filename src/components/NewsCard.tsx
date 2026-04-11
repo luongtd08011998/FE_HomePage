@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Tag } from "antd";
+import { CARD_HOVER_CLASS } from "@/lib/cardHover";
 import type { Article } from "@/types";
 
 interface NewsCardProps {
@@ -25,7 +26,9 @@ function resolveThumb(thumbnail: string): string {
 
 export default function NewsCard({ article }: NewsCardProps) {
   return (
-    <article className="group rounded-xl shadow hover:shadow-lg transition-shadow duration-200 overflow-hidden bg-white h-full flex flex-col">
+    <article
+      className={`group rounded-xl border border-gray-100 shadow-sm overflow-hidden bg-white h-full flex flex-col ${CARD_HOVER_CLASS}`}
+    >
       <Link href={`/news/${article.slug}`} className="block">
         <div className="relative aspect-video overflow-hidden">
           <Image

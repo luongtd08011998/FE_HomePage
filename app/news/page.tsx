@@ -1,5 +1,6 @@
 import NewsCard from "@/components/NewsCard";
 import CategoryFilter from "@/components/CategoryFilter";
+import { CARD_HOVER_CLASS } from "@/lib/cardHover";
 import { articleService } from "@/services/article";
 import { categoryService } from "@/services/category";
 import type { Article, PaginatedMeta } from "@/types";
@@ -105,7 +106,7 @@ function PaginationNav({
       {current > 1 && (
         <a
           href={buildUrl(current - 1)}
-          className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
+          className={`inline-block px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 ${CARD_HOVER_CLASS}`}
         >
           ← Trước
         </a>
@@ -113,7 +114,7 @@ function PaginationNav({
       {current < lastPage && (
         <a
           href={buildUrl(current + 1)}
-          className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
+          className={`inline-block px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 ${CARD_HOVER_CLASS}`}
         >
           Tiếp →
         </a>

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { CARD_HOVER_CLASS } from "@/lib/cardHover";
 
 interface Slide {
   href: string;
@@ -35,7 +36,9 @@ export default function HeroSlider({ slides }: HeroSliderProps) {
   if (slides.length === 0) return null;
 
   return (
-    <div className="relative w-full h-64 md:h-[420px] rounded-2xl overflow-hidden mb-10 shadow-md bg-gray-200">
+    <div
+      className={`relative w-full h-64 md:h-[420px] rounded-2xl overflow-hidden mb-10 shadow-md bg-gray-200 ${CARD_HOVER_CLASS}`}
+    >
       {slides.map((slide, idx) => (
         <Link
           key={idx}

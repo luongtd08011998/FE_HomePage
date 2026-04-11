@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import NewsCard from "@/components/NewsCard";
+import VanBanSidebar from "@/components/VanBanSidebar";
+import { CARD_HOVER_CLASS } from "@/lib/cardHover";
 import { categoryService } from "@/services/category";
 import type { Article } from "@/types";
 
@@ -8,53 +10,6 @@ function resolveThumb(thumbnail: string): string {
   if (!thumbnail) return "/placeholder.svg";
   if (thumbnail.startsWith("http")) return thumbnail;
   return `${process.env.NEXT_PUBLIC_MEDIA_URL || "http://localhost:8080"}${thumbnail}`;
-}
-
-function IconVanBanDoc({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.75}
-      className={className}
-      aria-hidden
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M19.5 8.25V18a2.25 2.25 0 01-2.25 2.25H6.75A2.25 2.25 0 014.5 18V6A2.25 2.25 0 016.75 3.75h7.5L19.5 8.25z"
-      />
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M14.25 3.75V8.25h5.25"
-      />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 12h9" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 15.75h9" />
-    </svg>
-  );
-}
-
-function IconMegaphone({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      className={className}
-      aria-hidden
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783m0 0a24.255 24.255 0 01-1.913-2.432m0 0a24.24 24.24 0 01-2.932-2.193m0 0a23.76 23.76 0 01-3.283-3.15m0 0a23.74 23.74 0 01-2.98-4.25m0 0a20.88 20.88 0 01-1.35-4.5"
-      />
-    </svg>
-  );
 }
 
 function IconRssFeed({ className }: { className?: string }) {
@@ -105,7 +60,7 @@ export default async function HomePage() {
   try {
     const [tinTucResult, vanBanResult, gioiThieuResult] = await Promise.all([
       categoryService.getArticlesBySlug("tin-tuc", { page: 1, size: 3 }),
-      categoryService.getArticlesBySlug("van-ban", { page: 1, size: 8 }),
+      categoryService.getArticlesBySlug("van-ban", { page: 1, size: 30 }),
       categoryService.getArticlesBySlug("gioi-thieu", { page: 1, size: 3 }),
     ]);
     tinTucArticles = tinTucResult.result;
@@ -116,193 +71,145 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="bg-gradient-to-b from-sky-50 via-white to-white">
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        {/* GRID */}
-        <div className="grid grid-cols-12 gap-6 items-stretch">
-          {/* LEFT */}
-          <div className="col-span-12 lg:col-span-8 h-full min-h-0 flex flex-col gap-4">
-            {/* HERO — flex-1 để cột trái cao bằng sidebar (lg) */}
-            <div className="relative rounded-xl overflow-hidden bg-gradient-to-r from-sky-200 to-blue-400 min-h-[320px] lg:flex-1 flex items-center justify-center ring-1 ring-sky-100 shadow-sm">
-              <div className="text-center px-6">
-                <div className="text-4xl md:text-5xl font-extrabold text-blue-900 tracking-tight">
-                  NƯỚC TÓC TIÊN
-                </div>
-                <p className="text-slate-700 mt-2">
-                  Ứng dụng chăm sóc khách hàng
-                </p>
-              </div>
-            </div>
-
-            {/* SERVICE CARDS */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 shrink-0">
-              {/* Hotline */}
-              <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-sm border border-sky-100 hover:shadow-md transition">
-                <div className="mb-3 text-blue-600">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-12 h-12"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={1.5}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .94h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"
-                    />
-                  </svg>
-                </div>
-                <p className="text-blue-700 font-semibold text-sm mb-1">
-                  Hotline{" "}
-                  <a href="tel:02543894894" className="font-extrabold hover:underline">
-                    0254 3 894 894
-                  </a>
-                </p>
-                <h3 className="text-slate-900 font-bold text-sm uppercase mb-2">
-                  Hỗ trợ trực tuyến
-                </h3>
-                <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">
-                  Tư vấn, tiếp nhận đăng ký lắp mới, sửa chữa, thay thế và di dời hệ
-                  thống nước.
-                </p>
-              </div>
-
-              {/* Tra cứu hóa đơn */}
-              <Link
-                href="/tra-cuu-hoa-don"
-                className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-sm border border-sky-100 hover:shadow-md transition"
+    <div className="flex min-h-0 flex-1 flex-col bg-gradient-to-b from-sky-50 via-white to-white">
+      <div className="mx-auto flex w-full min-h-0 max-w-7xl flex-1 flex-col px-4 py-1 sm:px-6 sm:py-2">
+        {/* Chiều cao = 100dvh − (header + nav + padding trang); offset lớn để khối không tràn khỏi màn hình. */}
+        <section
+          className="flex w-full shrink-0 flex-col overflow-x-hidden overscroll-y-auto min-h-0 overflow-y-auto h-[calc(100dvh-15rem)] max-h-[calc(100dvh-15rem)] sm:h-[calc(100dvh-13rem)] sm:max-h-[calc(100dvh-13rem)] lg:h-[calc(100dvh-11rem)] lg:max-h-[calc(100dvh-11rem)] lg:overflow-hidden"
+          aria-label="Khu vực nổi bật"
+        >
+          <div className="grid h-full min-h-0 grid-cols-12 items-stretch gap-2 sm:gap-3 lg:grid-rows-1">
+            {/* LEFT */}
+            <div className="col-span-12 flex min-h-0 flex-col gap-1.5 sm:gap-2 lg:col-span-8 lg:h-full lg:min-h-0">
+              {/* HERO */}
+              <div
+                className={`relative flex min-h-[4.5rem] shrink-0 flex-col items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-sky-200 to-blue-400 px-3 py-2.5 ring-1 ring-sky-100 shadow-sm sm:min-h-[5.25rem] lg:min-h-0 lg:flex-1 lg:basis-0 lg:py-3 ${CARD_HOVER_CLASS}`}
               >
-                <div className="mb-3 text-blue-600">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-12 h-12"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={1.5}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
+                <div className="text-center px-2 sm:px-3">
+                  <div className="text-xl font-extrabold tracking-tight text-blue-900 sm:text-2xl md:text-3xl">
+                    NƯỚC TÓC TIÊN
+                  </div>
+                  <p className="mt-0.5 text-xs text-slate-700 sm:text-sm">
+                    Ứng dụng chăm sóc khách hàng
+                  </p>
                 </div>
-                <p className="text-blue-700 font-semibold text-sm mb-1">&nbsp;</p>
-                <h3 className="text-slate-900 font-bold text-sm uppercase mb-2">
-                  Tra cứu hóa đơn
-                </h3>
-                <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">
-                  Tra cứu hóa đơn tiền nước nhanh chóng theo mã khách hàng.
-                </p>
-              </Link>
+              </div>
 
-              {/* Thanh toán */}
-              <div className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-sm border border-sky-100 hover:shadow-md transition">
-                <div className="mb-3 text-blue-600">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-12 h-12"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={1.5}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                    />
-                  </svg>
+              {/* SERVICE CARDS */}
+              <div className="grid shrink-0 grid-cols-1 gap-2 md:grid-cols-3 md:gap-2">
+                {/* Hotline */}
+                <div
+                  className={`flex flex-col items-center rounded-xl border border-sky-100 bg-white p-3 text-center shadow-sm sm:p-4 ${CARD_HOVER_CLASS}`}
+                >
+                  <div className="mb-1.5 text-blue-600">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-8 w-8 sm:h-9 sm:w-9"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .94h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-blue-700 font-semibold text-sm mb-1">
+                    Hotline{" "}
+                    <a
+                      href="tel:02543894894"
+                      className="font-extrabold hover:underline"
+                    >
+                      0254 3 894 894
+                    </a>
+                  </p>
+                  <h3 className="mb-1 text-sm font-bold uppercase text-slate-900">
+                    Hỗ trợ trực tuyến
+                  </h3>
+                  <p className="line-clamp-2 text-sm leading-relaxed text-slate-600">
+                    Tư vấn, tiếp nhận đăng ký lắp mới, sửa chữa, thay thế và di
+                    dời hệ thống nước.
+                  </p>
                 </div>
-                <p className="text-blue-700 font-semibold text-sm mb-1">&nbsp;</p>
-                <h3 className="text-slate-900 font-bold text-sm uppercase mb-2">
-                  Thanh toán
-                </h3>
-                <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">
-                  Thanh toán qua app ngân hàng. Vào mục hóa đơn và chọn đơn vị cấp nước.
-                </p>
-              </div>
-            </div>          
-          </div>
-          {/* RIGHT SIDEBAR */}
-          <div className="col-span-12 lg:col-span-4 h-full flex flex-col gap-4">
-            
-            {/* Văn bản — 8 bài mới nhất danh mục Văn bản */}
-            <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-sky-100 flex flex-col h-full min-h-0">
-              <div className="bg-blue-700 text-white px-4 py-2 font-semibold flex items-center gap-2">
-                <IconMegaphone className="w-5 h-5 shrink-0 opacity-95" />
-                Văn bản
-              </div>
 
-              <div className="divide-y overflow-auto">
-                {(vanBanArticles.length > 0
-                  ? vanBanArticles
-                  : [1, 2, 3, 4, 5, 6, 7, 8]
-                ).map(
-                  (item, idx) => {
-                    const article = typeof item === "number" ? null : item;
-                    const content = article ? (
-                      <Link
-                        href={`/news/${article.slug}`}
-                        className="block p-3 hover:bg-gray-50"
-                      >
-                        <div className="flex items-start gap-2">
-                          <span
-                            className="mt-0.5 text-blue-600 shrink-0"
-                            aria-hidden="true"
-                          >
-                            <IconVanBanDoc className="w-4 h-4" />
-                          </span>
-                          <p className="text-sm text-slate-800 line-clamp-2">
-                            {article.title}
-                          </p>
-                        </div>
-                        <p className="text-xs text-slate-400 mt-1">
-                          {new Date(article.createdAt).toLocaleDateString("vi-VN")}
-                        </p>
-                      </Link>
-                    ) : (
-                      <div className="p-3 hover:bg-gray-50">
-                        <div className="flex items-start gap-2">
-                          <span
-                            className="mt-0.5 text-blue-600 shrink-0"
-                            aria-hidden="true"
-                          >
-                            <IconVanBanDoc className="w-4 h-4" />
-                          </span>
-                          <p className="text-sm text-slate-800 line-clamp-2">
-                            Nội dung thông báo số {idx + 1}
-                          </p>
-                        </div>
-                        <p className="text-xs text-slate-400 mt-1">01/04/2026</p>
-                      </div>
-                    );
-                    return <div key={article ? article.id : idx}>{content}</div>;
-                  },
-                )}
-              </div>
-            </div>          
-          </div>
-        </div>
+                {/* Tra cứu hóa đơn */}
+                <Link
+                  href="/tra-cuu-hoa-don"
+                  className={`flex flex-col items-center rounded-xl border border-sky-100 bg-white p-3 text-center shadow-sm sm:p-4 ${CARD_HOVER_CLASS}`}
+                >
+                  <div className="mb-1.5 text-blue-600">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-8 w-8 sm:h-9 sm:w-9"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-blue-700 font-semibold text-sm mb-1">
+                    &nbsp;
+                  </p>
+                  <h3 className="mb-1 text-sm font-bold uppercase text-slate-900">
+                    Tra cứu hóa đơn
+                  </h3>
+                  <p className="line-clamp-2 text-sm leading-relaxed text-slate-600">
+                    Tra cứu hóa đơn tiền nước nhanh chóng theo mã khách hàng.
+                  </p>
+                </Link>
 
-        {/* FLOATING BUTTONS */}
-        <div className="fixed right-4 top-1/2 -translate-y-1/2 space-y-3">
-          {["Z", "YT", "R", "☎"].map((item, i) => (
-            <div
-              key={i}
-              className="w-12 h-12 bg-white shadow-md rounded-full flex items-center justify-center cursor-pointer hover:bg-blue-50 border border-sky-100 text-slate-700 font-semibold"
-            >
-              {item}
+                {/* Thanh toán */}
+                <div
+                  className={`flex flex-col items-center rounded-xl border border-sky-100 bg-white p-3 text-center shadow-sm sm:p-4 ${CARD_HOVER_CLASS}`}
+                >
+                  <div className="mb-1.5 text-blue-600">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-8 w-8 sm:h-9 sm:w-9"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                      />
+                    </svg>
+                  </div>
+                  <p className="text-blue-700 font-semibold text-sm mb-1">
+                    &nbsp;
+                  </p>
+                  <h3 className="mb-1 text-sm font-bold uppercase text-slate-900">
+                    Thanh toán
+                  </h3>
+                  <p className="line-clamp-2 text-sm leading-relaxed text-slate-600">
+                    Thanh toán qua app ngân hàng. Vào mục hóa đơn và chọn đơn vị
+                    cấp nước.
+                  </p>
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
+            {/* RIGHT SIDEBAR — số dòng theo chiều cao khung (VanBanSidebar) */}
+            <div className="col-span-12 flex min-h-0 flex-col gap-2 sm:gap-2.5 lg:col-span-4 lg:h-full lg:min-h-0">
+              <VanBanSidebar articles={vanBanArticles} />
+            </div>
+          </div>
+        </section>
 
-        {/* Tin tức (cũ) */}
-        <div className="mt-10">
-          <div className="flex items-center justify-between mb-6">
+        {/* Tin tức — bắt đầu sau khối nổi bật (màn đầu chỉ hero + dịch vụ + Văn bản) */}
+        <div className="mt-5 scroll-mt-4 border-t border-sky-100/70 pt-5 sm:mt-6 sm:pt-6">
+          <div className="mb-4 flex items-center justify-between sm:mb-5">
             <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
               <IconRssFeed className="w-6 h-6 text-blue-600 shrink-0" />
               Tin tức
@@ -321,13 +228,15 @@ export default async function HomePage() {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 text-center py-10">Chưa có bài viết nào.</p>
+            <p className="text-gray-500 text-center py-10">
+              Chưa có bài viết nào.
+            </p>
           )}
         </div>
 
         {/* Giới thiệu */}
-        <div className="mt-10">
-          <div className="flex items-center justify-between mb-6">
+        <div className="mt-8 sm:mt-10">
+          <div className="mb-4 flex items-center justify-between sm:mb-5">
             <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
               <IconInformationCircle className="w-6 h-6 text-blue-600 shrink-0" />
               Giới thiệu
@@ -346,7 +255,9 @@ export default async function HomePage() {
               ))}
             </div>
           ) : (
-            <p className="text-gray-500 text-center py-10">Chưa có bài viết nào.</p>
+            <p className="text-gray-500 text-center py-10">
+              Chưa có bài viết nào.
+            </p>
           )}
         </div>
       </div>

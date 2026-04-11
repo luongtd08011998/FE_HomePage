@@ -150,12 +150,6 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-
-        <div className="border-t border-white/15 mt-8 pt-5 text-center">
-          <p className="text-sm tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white/80 via-sky-100/90 to-cyan-100/80">
-            © 2026 Công ty TNHH Cấp nước Tóc Tiên
-          </p>
-        </div>
       </div>
     </footer>
   );

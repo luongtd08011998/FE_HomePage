@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import NewsCard from "@/components/NewsCard";
 import CategoryFilter from "@/components/CategoryFilter";
+import { CARD_HOVER_CLASS } from "@/lib/cardHover";
 import { categoryService } from "@/services/category";
 import type { Article, Category, PaginatedMeta } from "@/types";
 
@@ -95,7 +96,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
               {meta.page > 1 && (
                 <a
                   href={buildUrl(meta.page - 1)}
-                  className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className={`inline-block px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 ${CARD_HOVER_CLASS}`}
                 >
                   ← Trước
                 </a>
@@ -103,7 +104,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
               {meta.page < meta.pages && (
                 <a
                   href={buildUrl(meta.page + 1)}
-                  className="px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50"
+                  className={`inline-block px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 ${CARD_HOVER_CLASS}`}
                 >
                   Tiếp →
                 </a>

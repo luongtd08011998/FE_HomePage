@@ -4,6 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import useSWR from "swr";
 import NewsCard from "@/components/NewsCard";
+import { CARD_HOVER_CLASS } from "@/lib/cardHover";
 import { articleService } from "@/services/article";
 import type { Article } from "@/types";
 import { Spin } from "antd";
@@ -105,7 +106,7 @@ export default function SearchContent() {
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page <= 1}
-                className="px-4 py-2 text-sm rounded-lg border border-gray-200 disabled:opacity-40 hover:bg-gray-50 transition-colors"
+                className={`px-4 py-2 text-sm rounded-lg border border-gray-200 disabled:pointer-events-none disabled:opacity-40 hover:bg-gray-50 transition-colors ${CARD_HOVER_CLASS}`}
               >
                 ← Trước
               </button>
@@ -115,7 +116,7 @@ export default function SearchContent() {
               <button
                 onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={page >= totalPages}
-                className="px-4 py-2 text-sm rounded-lg border border-gray-200 disabled:opacity-40 hover:bg-gray-50 transition-colors"
+                className={`px-4 py-2 text-sm rounded-lg border border-gray-200 disabled:pointer-events-none disabled:opacity-40 hover:bg-gray-50 transition-colors ${CARD_HOVER_CLASS}`}
               >
                 Sau →
               </button>

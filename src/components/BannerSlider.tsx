@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import { CARD_HOVER_CLASS } from "@/lib/cardHover";
 
 const IMAGES = ["/1.jpg", "/2.jpg", "/3.jpg", "/4.jpg", "/5.jpg"];
 
@@ -22,7 +23,9 @@ export default function BannerSlider() {
   }, [next]);
 
   return (
-    <div className="relative w-full h-64 md:h-[420px] rounded-2xl overflow-hidden mb-10 shadow-md bg-gray-200">
+    <div
+      className={`relative w-full h-64 md:h-[420px] rounded-2xl overflow-hidden mb-10 shadow-md bg-gray-200 ${CARD_HOVER_CLASS}`}
+    >
       {IMAGES.map((src, idx) => (
         <div
           key={idx}
