@@ -234,6 +234,10 @@ export default function Header({ rootCategories }: HeaderProps) {
       return;
     }
     const r = wrap.getBoundingClientRect();
+    if (r.width < 8) {
+      setSuggestBox(null);
+      return;
+    }
     setSuggestBox({
       top: r.bottom + 6,
       left: r.left,
@@ -354,16 +358,14 @@ export default function Header({ rootCategories }: HeaderProps) {
 
   return (
     <>
-      {/* Logo/search: trong <header>, cuộn theo trang */}
-      <header className="relative z-40 border-b border-white/10">
-      <div className="relative">
-        <HeaderBackdrop />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* —— Logo + Search + Hotline —— */}
-        <div className="flex flex-col gap-2 sm:gap-2 sm:flex-row sm:items-center sm:justify-between pt-2 pb-1.5 sm:pt-3 sm:pb-2">
+      {/* Thanh trên: theo docs/headermoi.md — nền sáng, tìm kiếm + hotline + trạng thái */}
+      <header className="relative z-40 border-b border-gray-200 bg-white/95 shadow-sm backdrop-blur-lg supports-[backdrop-filter]:bg-white/85">
+        <div className="relative">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:py-4">
           <Link
             href="/"
-            className={`group/logo relative flex shrink-0 min-w-0 items-center gap-2 rounded-xl px-2 py-1.5 text-white/95 outline-none ring-white/0 transition-transform duration-300 ease-[cubic-bezier(0.22,0.75,0.32,1)] motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.99] motion-reduce:hover:scale-100 motion-reduce:active:scale-100 sm:gap-2.5 sm:px-2.5 sm:py-2 ${logoBlockTransition} focus-visible:ring-2 focus-visible:ring-white/35`}
+            className={`group/logo relative flex shrink-0 min-w-0 items-center gap-2 rounded-xl px-2 py-1.5 text-gray-900 outline-none ring-gray-200/0 transition-transform duration-300 ease-[cubic-bezier(0.22,0.75,0.32,1)] motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.99] motion-reduce:hover:scale-100 motion-reduce:active:scale-100 sm:gap-3 sm:px-2 sm:py-1 ${logoBlockTransition} focus-visible:ring-2 focus-visible:ring-blue-500/40`}
           >
             <span
               className={`nav-bounce-logo flex min-w-0 items-center gap-2 sm:gap-2.5 ${logoBlockTransition}`}
@@ -379,22 +381,19 @@ export default function Header({ rootCategories }: HeaderProps) {
                   <AnimatedLogoMark />
                 </span>
               </span>
-              <span className="hidden min-w-0 motion-safe:transition-transform motion-safe:duration-500 motion-safe:ease-out motion-safe:group-hover/logo:translate-x-0.5 sm:block">
-                <span
-                  className={`block text-[0.72rem] uppercase tracking-[0.28em] text-white/70 transition-colors ${logoBlockTransition} group-hover/logo:text-[#FFFFFF]`}
-                >
-                  TẬP ĐOÀN HẢI CHÂU
+              <span className="hidden min-w-0 sm:block">
+                <span className="block text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-gray-500">
+                  Tập đoàn Hải Châu
                 </span>
-                <span className="mt-0.5 inline-block origin-left transition-transform duration-500 ease-out motion-safe:group-hover/logo:scale-[1.02] motion-reduce:group-hover/logo:scale-100">
-                  <NavLabelText forLogo className="block text-base font-extrabold lg:text-lg">
-                    CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN
-                  </NavLabelText>
+                <span className="mt-0.5 block text-lg font-bold leading-tight tracking-tight text-gray-900 md:text-xl">
+                  CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN
                 </span>
+                <p className="mt-0.5 text-xs text-gray-500">Nguồn nước sạch — Sức khỏe vàng</p>
               </span>
             </span>
           </Link>
 
-          <div className="flex flex-1 flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 min-w-0 w-full sm:justify-end">
+          <div className="flex min-w-0 flex-1 flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:justify-end sm:gap-3">
             <form
               onSubmit={handleSearch}
               onFocus={() => setSearchFocused(true)}
@@ -403,20 +402,22 @@ export default function Header({ rootCategories }: HeaderProps) {
                   setSearchFocused(false);
                 }
               }}
-              className={`w-full sm:max-w-md transition-all duration-300 ease-out ${
-                searchFocused ? "sm:max-w-xl scale-[1.01] sm:scale-[1.02]" : ""
+              className={`hidden w-full min-w-0 flex-1 transition-[max-width,transform] duration-300 ease-out md:mx-4 md:block md:max-w-md ${
+                searchFocused ? "md:max-w-xl md:scale-[1.02]" : ""
               }`}
             >
               <div
-                className={`relative flex-1 min-w-0 transition-all duration-300 ${
+                className={`relative min-w-0 rounded-full border-2 transition-[box-shadow,transform] duration-300 ${
                   searchFocused
-                    ? "shadow-[0_12px_40px_-8px_rgba(0,0,0,0.35)] ring-2 ring-white/50 rounded-full"
-                    : "rounded-full"
+                    ? "border-blue-500 shadow-[0_8px_24px_rgba(59,130,246,0.18)]"
+                    : "border-gray-200 shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
                 }`}
                 ref={wrapperRef}
               >
                 <svg
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/65 z-[1] pointer-events-none"
+                  className={`pointer-events-none absolute left-4 top-1/2 z-[1] h-5 w-5 -translate-y-1/2 transition-colors ${
+                    searchFocused ? "text-blue-500" : "text-gray-400"
+                  }`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -435,19 +436,23 @@ export default function Header({ rootCategories }: HeaderProps) {
                   onFocus={() => {
                     if (suggestions.length > 0) setOpen(true);
                   }}
-                  placeholder="Tìm kiếm bài viết..."
-                  className={`w-full pl-9 py-1.5 text-sm bg-white/15 border border-white/30 text-white placeholder:text-white/60 rounded-full focus:outline-none focus:ring-2 focus:ring-white/55 focus:bg-white/25 transition-[padding,background-color,box-shadow] duration-200 ${
-                    searchFocused ? "pr-[5.5rem] sm:pr-[5.75rem]" : "pr-3"
+                  placeholder="Tìm kiếm dịch vụ, tin tức..."
+                  className={`w-full rounded-full bg-white py-3 pl-12 pr-4 text-sm text-gray-900 placeholder:text-gray-400 transition-[padding,box-shadow] duration-200 focus:outline-none ${
+                    searchFocused && query.trim()
+                      ? "pr-[4.5rem]"
+                      : searchFocused
+                        ? "pr-4"
+                        : "pr-4"
                   }`}
                 />
                 <button
                   type="submit"
-                  tabIndex={searchFocused ? 0 : -1}
-                  aria-hidden={!searchFocused}
-                  className={`absolute right-1.5 top-1/2 z-[2] -translate-y-1/2 rounded-full px-3 py-1.5 text-xs font-semibold bg-white text-blue-800 shadow-md transition-all duration-200 ease-out hover:bg-blue-50 hover:shadow-lg active:scale-[0.97] ${
-                    searchFocused
-                      ? "pointer-events-auto translate-x-0 scale-100 opacity-100"
-                      : "pointer-events-none translate-x-2 scale-95 opacity-0 w-0 px-0 overflow-hidden border-0 py-0"
+                  tabIndex={searchFocused && query.trim() ? 0 : -1}
+                  aria-hidden={!(searchFocused && query.trim())}
+                  className={`absolute right-3 top-1/2 z-[2] -translate-y-1/2 rounded-full bg-blue-500 px-3 py-1 text-xs font-semibold text-white shadow-sm transition-all duration-200 hover:bg-blue-600 active:scale-[0.96] ${
+                    searchFocused && query.trim()
+                      ? "pointer-events-auto scale-100 opacity-100"
+                      : "pointer-events-none scale-90 opacity-0"
                   }`}
                 >
                   Enter
@@ -483,31 +488,61 @@ export default function Header({ rootCategories }: HeaderProps) {
               </div>
             </form>
 
-            <a
-              href="tel:1900123456"
-              className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 px-2.5 py-1.5 text-sm font-bold text-slate-900 shadow-lg shadow-orange-500/30 ring-2 ring-white/30 transition hover:brightness-105 hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap shrink-0 sm:px-3.5 sm:py-2 sm:rounded-2xl sm:gap-2"
+            {/* Mobile: ô tìm kiếm full width — headermoi.md */}
+            <form
+              onSubmit={handleSearch}
+              className="relative w-full md:hidden"
+              onFocus={() => setSearchFocused(true)}
+              onBlur={(e) => {
+                if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+                  setSearchFocused(false);
+                }
+              }}
             >
               <svg
-                className="h-5 w-5 shrink-0"
+                className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
+                fill="none"
+                stroke="currentColor"
                 viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden
               >
-                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z"
+                />
               </svg>
-              <span className="flex flex-col leading-tight text-left">
-                <span className="text-[0.65rem] font-extrabold uppercase tracking-wide opacity-90">
-                  Hotline
-                </span>
-                <span className="text-base font-black tabular-nums tracking-tight">
-                  02543 894 894
-                </span>
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Tìm kiếm..."
+                className="w-full rounded-full border border-gray-200 bg-gray-50 py-3 pl-12 pr-4 text-sm text-gray-900 placeholder:text-gray-400 transition-colors focus:border-blue-500 focus:outline-none"
+              />
+            </form>
+
+            <a
+              href="tel:02543894894"
+              className="hidden shrink-0 items-center gap-2 rounded-full bg-gradient-to-r from-green-500 to-green-600 px-4 py-2.5 text-white shadow-lg transition hover:shadow-xl motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.97] sm:inline-flex sm:px-5 sm:py-3"
+            >
+              <span className="relative inline-flex shrink-0">
+                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+                </svg>
+                <span
+                  className="header-hotline-ping pointer-events-none absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-white"
+                  aria-hidden
+                />
+              </span>
+              <span className="min-w-0 text-left leading-tight">
+                <span className="block text-xs opacity-90">Hotline</span>
+                <span className="block text-sm font-semibold tabular-nums">0254 3 894 894</span>
               </span>
             </a>
           </div>
+            </div>
+          </div>
         </div>
-        </div>
-      </div>
       </header>
 
       {/* Nav ngoài <header> — sticky; z trên dropdown gợi ý (95) khi chồng lên nhau */}
@@ -733,6 +768,20 @@ export default function Header({ rootCategories }: HeaderProps) {
         :global(.nav-bounce-logo:hover .logo-mark-wiggle) {
           animation: logoMarkWiggle 0.62s ease-in-out;
         }
+        @keyframes headerHotlinePing {
+          0%,
+          100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: scale(1.45);
+            opacity: 0.55;
+          }
+        }
+        :global(.header-hotline-ping) {
+          animation: headerHotlinePing 1.5s ease-in-out infinite;
+        }
         :global(.animate-headerFloat) {
           animation: headerFloat 7.5s ease-in-out infinite;
           will-change: transform;
@@ -777,6 +826,11 @@ export default function Header({ rootCategories }: HeaderProps) {
           }
           :global(.nav-bounce-logo:hover .logo-mark-wiggle) {
             animation: none;
+          }
+          :global(.header-hotline-ping) {
+            animation: none;
+            opacity: 1;
+            transform: scale(1);
           }
         }
       `}</style>
