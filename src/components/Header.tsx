@@ -363,22 +363,34 @@ export default function Header({ rootCategories }: HeaderProps) {
         <div className="flex flex-col gap-2 sm:gap-2 sm:flex-row sm:items-center sm:justify-between pt-2 pb-1.5 sm:pt-3 sm:pb-2">
           <Link
             href="/"
-            className={`nav-bounce-logo group/logo relative flex shrink-0 min-w-0 items-center gap-2 rounded-xl px-2 py-1.5 text-white/95 outline-none ring-white/0 transition-colors sm:gap-2.5 sm:px-2.5 sm:py-2 ${logoBlockTransition} focus-visible:ring-2 focus-visible:ring-white/35`}
+            className={`group/logo relative flex shrink-0 min-w-0 items-center gap-2 rounded-xl px-2 py-1.5 text-white/95 outline-none ring-white/0 transition-transform duration-300 ease-[cubic-bezier(0.22,0.75,0.32,1)] motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.99] motion-reduce:hover:scale-100 motion-reduce:active:scale-100 sm:gap-2.5 sm:px-2.5 sm:py-2 ${logoBlockTransition} focus-visible:ring-2 focus-visible:ring-white/35`}
           >
             <span
-              className={`inline-flex shrink-0 transition-[filter] motion-reduce:transition-none motion-reduce:group-hover/logo:brightness-100 motion-reduce:group-hover/logo:saturate-100 ${logoBlockTransition} group-hover/logo:brightness-110 group-hover/logo:saturate-125`}
+              className={`nav-bounce-logo flex min-w-0 items-center gap-2 sm:gap-2.5 ${logoBlockTransition}`}
             >
-              <AnimatedLogoMark />
-            </span>
-            <span className="hidden min-w-0 sm:block">
-              <span
-                className={`block text-[0.72rem] uppercase tracking-[0.28em] text-white/70 transition-colors ${logoBlockTransition} group-hover/logo:text-[#FFFFFF]`}
-              >
-                TẬP ĐOÀN HẢI CHÂU
+              <span className="relative inline-flex h-14 w-14 shrink-0 sm:h-16 sm:w-16">
+                <span
+                  className="logo-hover-ripple pointer-events-none absolute inset-0 z-0 rounded-full bg-sky-300/40"
+                  aria-hidden
+                />
+                <span
+                  className={`logo-mark-wiggle relative z-[1] inline-flex shrink-0 rounded-full shadow-lg transition-[filter,box-shadow] motion-reduce:shadow-md motion-reduce:transition-none motion-reduce:group-hover/logo:brightness-100 motion-reduce:group-hover/logo:saturate-100 motion-safe:group-hover/logo:shadow-2xl motion-safe:group-hover/logo:shadow-sky-400/45 ${logoBlockTransition} group-hover/logo:brightness-110 group-hover/logo:saturate-125`}
+                >
+                  <AnimatedLogoMark />
+                </span>
               </span>
-              <NavLabelText forLogo className="mt-0.5 block text-base font-extrabold lg:text-lg">
-                CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN
-              </NavLabelText>
+              <span className="hidden min-w-0 motion-safe:transition-transform motion-safe:duration-500 motion-safe:ease-out motion-safe:group-hover/logo:translate-x-0.5 sm:block">
+                <span
+                  className={`block text-[0.72rem] uppercase tracking-[0.28em] text-white/70 transition-colors ${logoBlockTransition} group-hover/logo:text-[#FFFFFF]`}
+                >
+                  TẬP ĐOÀN HẢI CHÂU
+                </span>
+                <span className="mt-0.5 inline-block origin-left transition-transform duration-500 ease-out motion-safe:group-hover/logo:scale-[1.02] motion-reduce:group-hover/logo:scale-100">
+                  <NavLabelText forLogo className="block text-base font-extrabold lg:text-lg">
+                    CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN
+                  </NavLabelText>
+                </span>
+              </span>
             </span>
           </Link>
 
@@ -687,6 +699,40 @@ export default function Header({ rootCategories }: HeaderProps) {
             transform: translateY(0);
           }
         }
+        @keyframes logoMarkWiggle {
+          0% {
+            transform: rotate(0deg) scale(1);
+          }
+          18% {
+            transform: rotate(-14deg) scale(1.07);
+          }
+          36% {
+            transform: rotate(12deg) scale(1.09);
+          }
+          54% {
+            transform: rotate(-8deg) scale(1.05);
+          }
+          72% {
+            transform: rotate(5deg) scale(1.02);
+          }
+          100% {
+            transform: rotate(0deg) scale(1);
+          }
+        }
+        :global(.logo-hover-ripple) {
+          opacity: 0;
+          transform: scale(1);
+          transition:
+            opacity 0.55s cubic-bezier(0.22, 0.75, 0.32, 1),
+            transform 0.55s cubic-bezier(0.22, 0.75, 0.32, 1);
+        }
+        :global(.nav-bounce-logo:hover .logo-hover-ripple) {
+          opacity: 0.34;
+          transform: scale(1.42);
+        }
+        :global(.nav-bounce-logo:hover .logo-mark-wiggle) {
+          animation: logoMarkWiggle 0.62s ease-in-out;
+        }
         :global(.animate-headerFloat) {
           animation: headerFloat 7.5s ease-in-out infinite;
           will-change: transform;
@@ -723,6 +769,13 @@ export default function Header({ rootCategories }: HeaderProps) {
           }
           :global(.nav-bounce-hover:hover),
           :global(.nav-bounce-logo:hover) {
+            animation: none;
+          }
+          :global(.nav-bounce-logo:hover .logo-hover-ripple) {
+            opacity: 0;
+            transform: scale(1);
+          }
+          :global(.nav-bounce-logo:hover .logo-mark-wiggle) {
             animation: none;
           }
         }
