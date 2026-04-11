@@ -1,6 +1,5 @@
-import NewsCard from "@/components/NewsCard";
-import CategoryFilter from "@/components/CategoryFilter";
-import { CARD_HOVER_CLASS } from "@/lib/cardHover";
+import ArticleListView from "@/components/article/ArticleListView";
+import ArticleListPagination from "@/components/article/ArticleListPagination";
 import { articleService } from "@/services/article";
 import { categoryService } from "@/services/category";
 import type { Article, PaginatedMeta } from "@/types";
@@ -30,13 +29,10 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
 
   try {
     if (categorySlug) {
-      const articlesResult = await categoryService.getArticlesBySlug(
-        categorySlug,
-        {
-          page,
-          size: 9,
-        },
-      );
+      const articlesResult = await categoryService.getArticlesBySlug(categorySlug, {
+        page,
+        size: 9,
+      });
       articles = articlesResult.result;
       meta = articlesResult.meta;
     } else {
@@ -56,69 +52,16 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Tin tức</h1>
-
-      {/* Category filter */}
-      <div className="mb-8">
-        <CategoryFilter
-          categories={categories}
-          activeSlug={categorySlug}
-          basePath="/category"
-        />
-      </div>
-
-      {/* Articles grid */}
-      {articles.length > 0 ? (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-            {articles.map((article) => (
-              <NewsCard key={article.id} article={article} />
-            ))}
-          </div>
-
-          <PaginationNav
-            current={meta.page}
-            lastPage={meta.pages}
-            buildUrl={buildUrl}
-          />
-        </>
-      ) : (
-        <p className="text-gray-500 text-center py-16">Chưa có bài viết nào.</p>
-      )}
-    </div>
-  );
-}
-
-// Server-rendered pagination links for SEO
-function PaginationNav({
-  current,
-  lastPage,
-  buildUrl,
-}: {
-  current: number;
-  lastPage: number;
-  buildUrl: (page: number) => string;
-}) {
-  if (lastPage <= 1) return null;
-  return (
-    <div className="flex justify-center gap-2 mt-4">
-      {current > 1 && (
-        <a
-          href={buildUrl(current - 1)}
-          className={`inline-block px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 ${CARD_HOVER_CLASS}`}
-        >
-          ← Trước
-        </a>
-      )}
-      {current < lastPage && (
-        <a
-          href={buildUrl(current + 1)}
-          className={`inline-block px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 ${CARD_HOVER_CLASS}`}
-        >
-          Tiếp →
-        </a>
-      )}
-    </div>
+    <ArticleListView
+      heroTitle="Tin tức"
+      heroDescription="Cập nhật những thông tin mới nhất về dịch vụ, chính sách và hoạt động của công ty"
+      articles={articles}
+      totalCount={meta.total}
+      categories={categories}
+      activeCategorySlug={categorySlug ?? null}
+      showCategoryTabs
+    >
+      <ArticleListPagination current={meta.page} lastPage={meta.pages} buildUrl={buildUrl} />
+    </ArticleListView>
   );
 }

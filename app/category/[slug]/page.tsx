@@ -1,10 +1,9 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import NewsCard from "@/components/NewsCard";
-import CategoryFilter from "@/components/CategoryFilter";
-import { CARD_HOVER_CLASS } from "@/lib/cardHover";
+import ArticleListView from "@/components/article/ArticleListView";
+import ArticleListPagination from "@/components/article/ArticleListPagination";
 import { categoryService } from "@/services/category";
-import type { Article, Category, PaginatedMeta } from "@/types";
+import type { Article, PaginatedMeta } from "@/types";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -15,7 +14,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   try {
     const result = await categoryService.getArticlesBySlug(slug, { size: 1 });
-    // Get category name from first article if available
     const catName = result.result[0]?.category?.name;
     return { title: `${catName ?? "Chuyên mục"} | TinTức` };
   } catch {
@@ -30,7 +28,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
   let articles: Article[] = [];
   let meta: PaginatedMeta = { page: 1, pageSize: 9, total: 0, pages: 1 };
-  let categories: Category[] = [];
+  let categories: { id: number; name: string; slug: string }[] = [];
   let categoryName = slug;
 
   try {
@@ -52,7 +50,6 @@ export default async function CategoryPage({ params, searchParams }: Props) {
       }
     }
 
-    // Category name: từ bài đầu (category có thể null) hoặc từ cây danh mục
     if (articles.length > 0) {
       const fromArticle = articles[0].category?.name;
       if (fromArticle) categoryName = fromArticle;
@@ -68,9 +65,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
     categories = tree.map((n) => ({ id: n.id, name: n.name, slug: n.slug }));
   } catch (err: unknown) {
-    if ((err as { digest?: string })?.digest?.includes("NEXT_NOT_FOUND"))
-      throw err;
-    // API not available
+    if ((err as { digest?: string })?.digest?.includes("NEXT_NOT_FOUND")) throw err;
   }
 
   function buildUrl(newPage: number) {
@@ -78,48 +73,16 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">{categoryName}</h1>
-
-      <div className="mb-8">
-        <CategoryFilter
-          categories={categories}
-          activeSlug={slug}
-          basePath="/category"
-        />
-      </div>
-
-      {articles.length > 0 ? (
-        <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-            {articles.map((article) => (
-              <NewsCard key={article.id} article={article} />
-            ))}
-          </div>
-          {meta.pages > 1 && (
-            <div className="flex justify-center gap-2">
-              {meta.page > 1 && (
-                <a
-                  href={buildUrl(meta.page - 1)}
-                  className={`inline-block px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 ${CARD_HOVER_CLASS}`}
-                >
-                  ← Trước
-                </a>
-              )}
-              {meta.page < meta.pages && (
-                <a
-                  href={buildUrl(meta.page + 1)}
-                  className={`inline-block px-3 py-1.5 text-sm border border-gray-300 rounded-lg hover:bg-gray-50 ${CARD_HOVER_CLASS}`}
-                >
-                  Tiếp →
-                </a>
-              )}
-            </div>
-          )}
-        </>
-      ) : (
-        <p className="text-gray-500 text-center py-16">Chưa có bài viết nào.</p>
-      )}
-    </div>
+    <ArticleListView
+      heroTitle={categoryName}
+      heroDescription="Danh sách bài viết theo chuyên mục — cập nhật liên tục."
+      articles={articles}
+      totalCount={meta.total}
+      categories={categories}
+      activeCategorySlug={slug}
+      showCategoryTabs
+    >
+      <ArticleListPagination current={meta.page} lastPage={meta.pages} buildUrl={buildUrl} />
+    </ArticleListView>
   );
 }

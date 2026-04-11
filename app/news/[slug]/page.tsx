@@ -9,7 +9,7 @@ import ArticleNewsletterCta from "@/components/article/ArticleNewsletterCta";
 import RelatedArticlesBlock from "@/components/article/RelatedArticlesBlock";
 import { articleService } from "@/services/article";
 import { categoryService } from "@/services/category";
-import { estimateReadMinutes } from "@/lib/articleText";
+import { articleExcerpt, estimateReadMinutes } from "@/lib/articleText";
 import type { CategoryNode } from "@/types";
 
 function resolveThumb(thumbnail: string): string {
@@ -127,6 +127,7 @@ export default async function ArticleDetailPage({ params }: Props) {
   }
 
   const shareUrl = await buildShareUrl(article.slug);
+  const subtitle = articleExcerpt(article.content, 220);
   const readMinutes = estimateReadMinutes(article.content);
   const published = new Date(article.createdAt).toLocaleDateString("vi-VN", {
     year: "numeric",
@@ -172,9 +173,13 @@ export default async function ArticleDetailPage({ params }: Props) {
                 </span>
               </div>
 
-              <h1 className="mb-6 text-3xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl lg:text-5xl">
+              <h1 className="mb-4 text-3xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl lg:text-5xl">
                 {article.title}
               </h1>
+
+              {subtitle ? (
+                <p className="mb-6 text-lg leading-relaxed text-gray-600 md:text-xl">{subtitle}</p>
+              ) : null}
 
               <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-gray-200 pb-6">
                 <div className="flex items-center gap-2 text-gray-600">
