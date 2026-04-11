@@ -1,71 +1,19 @@
 import Link from "next/link";
-import Image from "next/image";
-import NewsCard from "@/components/NewsCard";
 import VanBanSidebar from "@/components/VanBanSidebar";
+import HomeCompanyIntro from "@/components/HomeCompanyIntro";
 import { CARD_HOVER_CLASS } from "@/lib/cardHover";
 import { categoryService } from "@/services/category";
 import type { Article } from "@/types";
 
-function resolveThumb(thumbnail: string): string {
-  if (!thumbnail) return "/placeholder.svg";
-  if (thumbnail.startsWith("http")) return thumbnail;
-  return `${process.env.NEXT_PUBLIC_MEDIA_URL || "http://localhost:8080"}${thumbnail}`;
-}
-
-function IconRssFeed({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      className={className}
-      aria-hidden
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12.75 19.5v-.75a7.5 7.5 0 00-7.5-7.5H4.5m0-6.75h.75c0 8.284 6.716 15 15 15v.75M8.25 7.5H9m8.25 8.25V19.5"
-      />
-    </svg>
-  );
-}
-
-function IconInformationCircle({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.5}
-      className={className}
-      aria-hidden
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="m11.25 11.25.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
-      />
-    </svg>
-  );
-}
-
 export default async function HomePage() {
-  let tinTucArticles: Article[] = [];
   let vanBanArticles: Article[] = [];
-  let gioiThieuArticles: Article[] = [];
 
   try {
-    const [tinTucResult, vanBanResult, gioiThieuResult] = await Promise.all([
-      categoryService.getArticlesBySlug("tin-tuc", { page: 1, size: 3 }),
-      categoryService.getArticlesBySlug("van-ban", { page: 1, size: 30 }),
-      categoryService.getArticlesBySlug("gioi-thieu", { page: 1, size: 3 }),
-    ]);
-    tinTucArticles = tinTucResult.result;
+    const vanBanResult = await categoryService.getArticlesBySlug("van-ban", {
+      page: 1,
+      size: 30,
+    });
     vanBanArticles = vanBanResult.result;
-    gioiThieuArticles = gioiThieuResult.result;
   } catch {
     // API not available — render empty state
   }
@@ -207,59 +155,7 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Tin tức — bắt đầu sau khối nổi bật (màn đầu chỉ hero + dịch vụ + Văn bản) */}
-        <div className="mt-5 scroll-mt-4 border-t border-sky-100/70 pt-5 sm:mt-6 sm:pt-6">
-          <div className="mb-4 flex items-center justify-between sm:mb-5">
-            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-              <IconRssFeed className="w-6 h-6 text-blue-600 shrink-0" />
-              Tin tức
-            </h2>
-            <Link
-              href="/category/tin-tuc"
-              className="text-sm text-blue-600 hover:underline font-medium"
-            >
-              Xem tất cả →
-            </Link>
-          </div>
-          {tinTucArticles.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {tinTucArticles.map((article) => (
-                <NewsCard key={article.id} article={article} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-gray-500 text-center py-10">
-              Chưa có bài viết nào.
-            </p>
-          )}
-        </div>
-
-        {/* Giới thiệu */}
-        <div className="mt-8 sm:mt-10">
-          <div className="mb-4 flex items-center justify-between sm:mb-5">
-            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-              <IconInformationCircle className="w-6 h-6 text-blue-600 shrink-0" />
-              Giới thiệu
-            </h2>
-            <Link
-              href="/category/gioi-thieu"
-              className="text-sm text-blue-600 hover:underline font-medium"
-            >
-              Xem tất cả →
-            </Link>
-          </div>
-          {gioiThieuArticles.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {gioiThieuArticles.map((article) => (
-                <NewsCard key={article.id} article={article} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-gray-500 text-center py-10">
-              Chưa có bài viết nào.
-            </p>
-          )}
-        </div>
+        <HomeCompanyIntro />
       </div>
     </div>
   );
