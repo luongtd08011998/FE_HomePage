@@ -25,7 +25,7 @@ function IconWaterDrop({ className }: { className?: string }) {
 }
 
 const vanBanRowClass =
-  "group/vanban relative block rounded-md px-2.5 py-2 transition-[transform,background-color] duration-200 ease-out hover:-translate-x-3 hover:bg-sky-50/90";
+  "group/vanban relative block rounded-md px-2.5 py-2 transition-[transform,background-color] duration-200 ease-out hover:-translate-x-3 hover:bg-white/10";
 
 export default function VanBanSidebar({ articles }: { articles: Article[] }) {
   const listRef = useRef<HTMLDivElement>(null);
@@ -64,21 +64,21 @@ export default function VanBanSidebar({ articles }: { articles: Article[] }) {
   }, [recompute]);
 
   return (
-    <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-sky-100 bg-white shadow-sm">
-      <div className="flex shrink-0 items-center gap-2 bg-blue-700 px-3 py-1.5 text-sm font-semibold text-white sm:px-4 sm:py-1.5 sm:text-base">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-white/20 bg-white/10 shadow-lg shadow-blue-900/30 backdrop-blur-lg">
+      <div className="flex shrink-0 items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 px-3 py-1.5 text-sm font-semibold text-white sm:px-4 sm:py-1.5 sm:text-base">
         Văn bản
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
         {articles.length === 0 ? (
-          <p className="px-3 py-6 text-center text-sm text-slate-500">
+          <p className="px-3 py-6 text-center text-sm text-slate-400">
             Chưa có văn bản.
           </p>
         ) : (
           <>
             <div
               ref={listRef}
-              className="min-h-0 flex-1 divide-y overflow-hidden px-3"
+              className="min-h-0 flex-1 divide-y divide-white/10 overflow-hidden px-3"
             >
               {articles.slice(0, visible).map((article, idx) => (
                 <div
@@ -88,16 +88,16 @@ export default function VanBanSidebar({ articles }: { articles: Article[] }) {
                   <Link href={`/news/${article.slug}`} className={vanBanRowClass}>
                     <div className="relative z-10 flex items-start gap-2">
                       <span
-                        className="mt-0.5 shrink-0 text-blue-600 transition-colors group-hover/vanban:text-blue-700"
+                        className="mt-0.5 shrink-0 text-cyan-400 transition-colors group-hover/vanban:text-cyan-300"
                         aria-hidden
                       >
                         <IconWaterDrop className="h-4 w-4" />
                       </span>
-                      <p className="min-w-0 flex-1 text-left text-sm text-slate-800 line-clamp-2 group-hover/vanban:line-clamp-none group-hover/vanban:text-blue-950">
+                      <p className="min-w-0 flex-1 text-left text-sm text-slate-200 line-clamp-2 group-hover/vanban:line-clamp-none group-hover/vanban:text-white">
                         {article.title}
                       </p>
                     </div>
-                    <p className="relative z-10 mt-1 pl-6 text-xs text-slate-400 group-hover/vanban:text-slate-500">
+                    <p className="relative z-10 mt-1 pl-6 text-xs text-slate-500 group-hover/vanban:text-slate-400">
                       {new Date(article.createdAt).toLocaleDateString("vi-VN")}
                     </p>
                   </Link>
@@ -107,7 +107,7 @@ export default function VanBanSidebar({ articles }: { articles: Article[] }) {
             {visible < articles.length ? (
               <Link
                 href="/category/van-ban"
-                className="shrink-0 border-t border-sky-100 px-3 py-2 text-center text-xs font-medium text-blue-700 hover:bg-sky-50 hover:underline"
+                className="shrink-0 border-t border-white/20 px-3 py-2 text-center text-xs font-medium text-cyan-400 hover:bg-white/10 hover:underline"
               >
                 Xem thêm ({articles.length - visible} bài)
               </Link>

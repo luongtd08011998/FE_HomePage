@@ -1,6 +1,12 @@
 import Link from "next/link";
+import KhachHang from "@/components/KhachHang";
+import LichSuCongTy from "@/components/LichSuCongTy";
+import PhamViCapNuoc from "@/components/PhamViCapNuoc";
+import QuyTrinhXuLyNuoc from "@/components/QuyTrinhXuLyNuoc";
+import HeThongXuLy from "@/components/HeThongXuLy";
+import KhuVucPhucVu from "@/components/KhuVucPhucVu";
+import KhachHangDoiTac from "@/components/KhachHangDoiTac";
 import VanBanSidebar from "@/components/VanBanSidebar";
-import HomeCompanyIntro from "@/components/HomeCompanyIntro";
 import { CARD_HOVER_CLASS } from "@/lib/cardHover";
 import { categoryService } from "@/services/category";
 import type { Article } from "@/types";
@@ -19,7 +25,7 @@ export default async function HomePage() {
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col bg-gradient-to-b from-sky-50 via-white to-white">
+    <div className="flex min-h-0 flex-1 flex-col bg-gradient-to-br from-blue-950 via-slate-900 to-blue-900">
       <div className="mx-auto flex w-full min-h-0 max-w-7xl flex-1 flex-col px-4 py-1 sm:px-6 sm:py-2">
         {/* Chiều cao = 100dvh − (header + nav + padding trang); offset lớn để khối không tràn khỏi màn hình. */}
         <section
@@ -31,13 +37,14 @@ export default async function HomePage() {
             <div className="col-span-12 flex min-h-0 flex-col gap-1.5 sm:gap-2 lg:col-span-8 lg:h-full lg:min-h-0">
               {/* HERO */}
               <div
-                className={`relative flex min-h-[4.5rem] shrink-0 flex-col items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-sky-200 to-blue-400 px-3 py-2.5 ring-1 ring-sky-100 shadow-sm sm:min-h-[5.25rem] lg:min-h-0 lg:flex-1 lg:basis-0 lg:py-3 ${CARD_HOVER_CLASS}`}
+                className={`relative flex min-h-[4.5rem] shrink-0 flex-col items-center justify-center overflow-hidden rounded-xl bg-gradient-to-r from-blue-700 to-cyan-700 px-3 py-2.5 ring-1 ring-blue-500/50 shadow-lg shadow-blue-900/50 sm:min-h-[5.25rem] lg:min-h-0 lg:flex-1 lg:basis-0 lg:py-3 ${CARD_HOVER_CLASS}`}
               >
-                <div className="text-center px-2 sm:px-3">
-                  <div className="text-xl font-extrabold tracking-tight text-blue-900 sm:text-2xl md:text-3xl">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-transparent to-emerald-600/20" aria-hidden />
+                <div className="relative text-center px-2 sm:px-3">
+                  <div className="text-xl font-extrabold tracking-tight text-white sm:text-2xl md:text-3xl">
                     NƯỚC TÓC TIÊN
                   </div>
-                  <p className="mt-0.5 text-xs text-slate-700 sm:text-sm">
+                  <p className="mt-0.5 text-xs text-blue-100 sm:text-sm">
                     Ứng dụng chăm sóc khách hàng
                   </p>
                 </div>
@@ -47,9 +54,9 @@ export default async function HomePage() {
               <div className="grid shrink-0 grid-cols-1 gap-2 md:grid-cols-3 md:gap-2">
                 {/* Hotline */}
                 <div
-                  className={`flex flex-col items-center rounded-xl border border-sky-100 bg-white p-3 text-center shadow-sm sm:p-4 ${CARD_HOVER_CLASS}`}
+                  className={`flex flex-col items-center rounded-xl border border-white/20 bg-white/10 p-3 text-center backdrop-blur-lg sm:p-4 ${CARD_HOVER_CLASS}`}
                 >
-                  <div className="mb-1.5 text-blue-600">
+                  <div className="mb-1.5 text-cyan-400">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-8 w-8 sm:h-9 sm:w-9"
@@ -65,19 +72,19 @@ export default async function HomePage() {
                       />
                     </svg>
                   </div>
-                  <p className="text-blue-700 font-semibold text-sm mb-1">
+                  <p className="text-blue-300 font-semibold text-sm mb-1">
                     Hotline{" "}
                     <a
                       href="tel:02543894894"
-                      className="font-extrabold hover:underline"
+                      className="font-extrabold hover:underline text-white"
                     >
                       0254 3 894 894
                     </a>
                   </p>
-                  <h3 className="mb-1 text-sm font-bold uppercase text-slate-900">
+                  <h3 className="mb-1 text-sm font-bold uppercase text-white">
                     Hỗ trợ trực tuyến
                   </h3>
-                  <p className="line-clamp-2 text-sm leading-relaxed text-slate-600">
+                  <p className="line-clamp-2 text-sm leading-relaxed text-slate-300">
                     Tư vấn, tiếp nhận đăng ký lắp mới, sửa chữa, thay thế và di
                     dời hệ thống nước.
                   </p>
@@ -86,9 +93,9 @@ export default async function HomePage() {
                 {/* Tra cứu hóa đơn */}
                 <Link
                   href="/tra-cuu-hoa-don"
-                  className={`flex flex-col items-center rounded-xl border border-sky-100 bg-white p-3 text-center shadow-sm sm:p-4 ${CARD_HOVER_CLASS}`}
+                  className={`flex flex-col items-center rounded-xl border border-white/20 bg-white/10 p-3 text-center backdrop-blur-lg sm:p-4 ${CARD_HOVER_CLASS}`}
                 >
-                  <div className="mb-1.5 text-blue-600">
+                  <div className="mb-1.5 text-cyan-400">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-8 w-8 sm:h-9 sm:w-9"
@@ -104,22 +111,22 @@ export default async function HomePage() {
                       />
                     </svg>
                   </div>
-                  <p className="text-blue-700 font-semibold text-sm mb-1">
+                  <p className="text-blue-300 font-semibold text-sm mb-1">
                     &nbsp;
                   </p>
-                  <h3 className="mb-1 text-sm font-bold uppercase text-slate-900">
+                  <h3 className="mb-1 text-sm font-bold uppercase text-white">
                     Tra cứu hóa đơn
                   </h3>
-                  <p className="line-clamp-2 text-sm leading-relaxed text-slate-600">
+                  <p className="line-clamp-2 text-sm leading-relaxed text-slate-300">
                     Tra cứu hóa đơn tiền nước nhanh chóng theo mã khách hàng.
                   </p>
                 </Link>
 
                 {/* Thanh toán */}
                 <div
-                  className={`flex flex-col items-center rounded-xl border border-sky-100 bg-white p-3 text-center shadow-sm sm:p-4 ${CARD_HOVER_CLASS}`}
+                  className={`flex flex-col items-center rounded-xl border border-white/20 bg-white/10 p-3 text-center backdrop-blur-lg sm:p-4 ${CARD_HOVER_CLASS}`}
                 >
-                  <div className="mb-1.5 text-blue-600">
+                  <div className="mb-1.5 text-cyan-400">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-8 w-8 sm:h-9 sm:w-9"
@@ -135,13 +142,13 @@ export default async function HomePage() {
                       />
                     </svg>
                   </div>
-                  <p className="text-blue-700 font-semibold text-sm mb-1">
+                  <p className="text-blue-300 font-semibold text-sm mb-1">
                     &nbsp;
                   </p>
-                  <h3 className="mb-1 text-sm font-bold uppercase text-slate-900">
+                  <h3 className="mb-1 text-sm font-bold uppercase text-white">
                     Thanh toán
                   </h3>
-                  <p className="line-clamp-2 text-sm leading-relaxed text-slate-600">
+                  <p className="line-clamp-2 text-sm leading-relaxed text-slate-300">
                     Thanh toán qua app ngân hàng. Vào mục hóa đơn và chọn đơn vị
                     cấp nước.
                   </p>
@@ -154,9 +161,12 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
-
-        <HomeCompanyIntro />
       </div>
+      <LichSuCongTy />
+      <QuyTrinhXuLyNuoc />
+      <HeThongXuLy />
+      <KhuVucPhucVu />
+      <KhachHangDoiTac />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import type { ApiResponse, PaginatedData } from "@/types";
 import qlkhApi, { QLKH_API_BASE } from "@/lib/qlkhAxios";
 
@@ -30,6 +30,10 @@ export interface QlkhInvoice {
   paymentStatusLabel: string | null;
   oldVal: number | null;
   newVal: number | null;
+  /** Khóa tích hợp VNPT (nếu có). */
+  rootKey?: string | null;
+  /** Fkey VNPT — dùng để tải XML hóa đơn điện tử. */
+  fkey?: string | null;
 }
 
 export interface LoginPayload {
@@ -89,6 +93,81 @@ export async function qlkhGetInvoice(id: number): Promise<QlkhInvoice> {
     `/qlkh/invoices/${id}`,
   );
   return data.data;
+}
+
+/**
+ * Tải file hóa đơn điện tử từ VNPT (BE có thể trả XML hoặc ZIP).
+ */
+export async function qlkhDownloadMonthEInvoiceXml(
+  invoiceId: number,
+): Promise<{ blob: Blob; filename: string; contentType: string }> {
+  try {
+    const res = await qlkhApi.get<Blob>(
+      `/qlkh/invoices/${invoiceId}/e-invoice-download`,
+      {
+        responseType: "blob",
+        headers: {
+          Accept: "application/zip, application/xml, application/json, */*",
+        },
+      },
+    );
+    const ct = String(res.headers["content-type"] ?? "");
+    const cd = String(res.headers["content-disposition"] ?? "");
+    if (ct.includes("application/json") && res.data instanceof Blob) {
+      const text = await res.data.text();
+      const parsed = JSON.parse(text) as ApiResponse<unknown> & {
+        error?: string;
+      };
+      throw new Error(
+        parsed.message ?? parsed.error ?? "Tải hóa đơn thất bại.",
+      );
+    }
+    const filename =
+      parseContentDispositionFilename(cd) ||
+      (ct.includes("zip")
+        ? `hoadon-tien-nuoc-${invoiceId}.zip`
+        : `hoadon-tien-nuoc-${invoiceId}.xml`);
+    return { blob: res.data, filename, contentType: ct };
+  } catch (err: unknown) {
+    if (isAxiosError(err) && err.response?.data instanceof Blob) {
+      const text = await err.response.data.text();
+      try {
+        const parsed = JSON.parse(text) as ApiResponse<unknown> & {
+          error?: string;
+        };
+        throw new Error(
+          parsed.message ?? parsed.error ?? "Tải hóa đơn thất bại.",
+        );
+      } catch (e) {
+        if (e instanceof SyntaxError) {
+          throw new Error(
+            text.trim().slice(0, 240) || "Tải hóa đơn thất bại.",
+          );
+        }
+        throw e;
+      }
+    }
+    throw err;
+  }
+}
+
+function parseContentDispositionFilename(cd: string): string | null {
+  const s = cd.trim();
+  if (!s) return null;
+  // Ưu tiên filename* (RFC 5987): filename*=UTF-8''...
+  const mStar = s.match(/filename\*\s*=\s*([^;]+)/i);
+  if (mStar) {
+    const raw = mStar[1].trim().replace(/^UTF-8''/i, "").replace(/^\"|\"$/g, "");
+    try {
+      return decodeURIComponent(raw);
+    } catch {
+      return raw;
+    }
+  }
+  // Fallback filename="..."
+  const m = s.match(/filename\s*=\s*([^;]+)/i);
+  if (!m) return null;
+  return m[1].trim().replace(/^\"|\"$/g, "");
 }
 
 export interface QlkhSalesInvoice {

@@ -23,6 +23,7 @@ import {
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import {
+  qlkhDownloadMonthEInvoiceXml,
   qlkhGetInvoice,
   qlkhGetInvoices,
   qlkhGetMe,
@@ -128,6 +129,9 @@ export default function TraCuuHoaDonClient() {
   const [detailOpen, setDetailOpen] = useState(false);
   const [detailLoading, setDetailLoading] = useState(false);
   const [detailInvoice, setDetailInvoice] = useState<QlkhInvoice | null>(null);
+  const [eInvoiceDownloadLoadingId, setEInvoiceDownloadLoadingId] = useState<
+    number | null
+  >(null);
 
   const [invoiceListTab, setInvoiceListTab] = useState<"water" | "services">(
     "water",
@@ -288,6 +292,34 @@ export default function TraCuuHoaDonClient() {
     }
   }, []);
 
+  const downloadMonthEInvoiceXml = useCallback(async (invoiceId: number) => {
+    setEInvoiceDownloadLoadingId(invoiceId);
+    try {
+      const { blob, filename, contentType } =
+        await qlkhDownloadMonthEInvoiceXml(invoiceId);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.rel = "noopener";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      message.success(
+        contentType.includes("zip")
+          ? "Đã tải file ZIP hóa đơn điện tử."
+          : "Đã tải file XML hóa đơn điện tử.",
+      );
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error ? err.message : "Không tải được hóa đơn điện tử.";
+      message.error(msg);
+    } finally {
+      setEInvoiceDownloadLoadingId(null);
+    }
+  }, []);
+
   const openSalesDetail = useCallback(async (row: QlkhSalesInvoice) => {
     setSalesDetailOpen(true);
     setSalesDetailLoading(true);
@@ -400,26 +432,35 @@ export default function TraCuuHoaDonClient() {
         width: 90,
         align: "center",
         fixed: "right",
-        render: () => (
-          <div className="flex justify-center">
-            <Button
-              type="link"
-              size="small"
-              className="!px-2"
-              onClick={(e) => {
-                e.stopPropagation();
-                message.info(
-                  "Chức năng tải về đang hoàn thiện. API sẽ được cập nhật sau.",
-                );
-              }}
-            >
-              Tải về
-            </Button>
-          </div>
-        ),
+        render: (_: unknown, record) => {
+          const hasFkey = Boolean(record.fkey?.trim());
+          return (
+            <div className="flex justify-center">
+              <Button
+                type="link"
+                size="small"
+                className="!px-2"
+                disabled={!hasFkey}
+                loading={eInvoiceDownloadLoadingId === record.id}
+                title={
+                  hasFkey
+                    ? "Tải XML hóa đơn điện tử (VNPT)"
+                    : "Chưa có Fkey trên hệ thống"
+                }
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (!hasFkey) return;
+                  void downloadMonthEInvoiceXml(record.id);
+                }}
+              >
+                Tải XML
+              </Button>
+            </div>
+          );
+        },
       },
     ],
-    [openDetail],
+    [openDetail, downloadMonthEInvoiceXml, eInvoiceDownloadLoadingId],
   );
 
   const salesColumns: ColumnsType<QlkhSalesInvoice> = useMemo(
@@ -806,6 +847,20 @@ export default function TraCuuHoaDonClient() {
           setDetailInvoice(null);
         }}
         footer={[
+          <Button
+            key="dl"
+            disabled={!detailInvoice?.fkey?.trim()}
+            loading={
+              detailInvoice
+                ? eInvoiceDownloadLoadingId === detailInvoice.id
+                : false
+            }
+            onClick={() => {
+              if (detailInvoice?.id) void downloadMonthEInvoiceXml(detailInvoice.id);
+            }}
+          >
+            Tải XML hóa đơn điện tử
+          </Button>,
           <Button key="close" type="primary" onClick={() => setDetailOpen(false)}>
             Đóng
           </Button>,
