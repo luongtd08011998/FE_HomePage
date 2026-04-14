@@ -15,7 +15,7 @@ const achievementStats = [
     valueColor: "text-amber-400",
   },
   {
-    value: "1000+",
+    value: "8000+",
     label: "Hộ Dân Phục Vụ",
     grad: "from-blue-600 to-cyan-600",
     card: "from-blue-600/10 to-cyan-600/10",
