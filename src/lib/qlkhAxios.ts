@@ -3,7 +3,7 @@ import { useQlkhAuthStore } from "@/stores/qlkhAuthStore";
 
 /** Base URL API (trùng env NEXT_PUBLIC_API_URL). Dùng cho login không qua interceptor. */
 export const QLKH_API_BASE =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080/api/v1";
+  process.env.NEXT_PUBLIC_API_URL || "/api/v1";
 
 const qlkhApi = axios.create({
   baseURL: QLKH_API_BASE,
