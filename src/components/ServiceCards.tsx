@@ -42,6 +42,27 @@ function IconInvoice({ className }: { className?: string }) {
   );
 }
 
+/** Giấy tờ + bút — gợi đăng ký / hồ sơ lắp đặt. */
+function IconRegisterOnline({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      aria-hidden
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+      />
+    </svg>
+  );
+}
+
 const cardShell = `flex flex-col items-center rounded-2xl border p-6 text-center backdrop-blur-md transition-colors sm:p-8 ${CARD_HOVER_CLASS}`;
 
 /**
@@ -60,10 +81,11 @@ export default function ServiceCards() {
       >
         <div className="absolute -left-20 top-32 h-64 w-64 rounded-full bg-emerald-500/15 blur-3xl" />
         <div className="absolute -right-10 bottom-20 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl" />
+        <div className="absolute left-1/2 top-24 h-56 w-56 -translate-x-1/2 rounded-full bg-violet-500/10 blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-7xl px-4 pt-6 pb-12 sm:px-6 sm:pt-8 sm:pb-16">
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
           <div
             className={`${cardShell} border-emerald-500/30 bg-white/[0.06] hover:border-emerald-400/50 hover:bg-white/[0.08]`}
           >
@@ -105,6 +127,25 @@ export default function ServiceCards() {
               Mở tra cứu →
             </span>
           </Link>
+
+          <a
+            href="tel:02543894894"
+            className={`${cardShell} border-violet-500/30 bg-white/[0.06] hover:border-violet-400/50 hover:bg-white/[0.08]`}
+          >
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-500/20 text-violet-300 ring-1 ring-violet-400/30">
+              <IconRegisterOnline className="h-8 w-8" />
+            </div>
+            <h2 className="text-lg font-bold uppercase tracking-wide text-white">
+              Đăng ký lắp đặt trực tuyến
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-slate-400">
+              Gửi yêu cầu lắp mới trực tuyến qua website — Sau đó bộ phận CSKH
+              hướng dẫn hồ sơ và lịch khảo sát.
+            </p>
+            <span className="mt-4 text-sm font-semibold text-violet-300 hover:text-violet-200">
+              Mở đăng ký online →
+            </span>
+          </a>
         </div>
 
         <div className="mt-10 sm:mt-12">

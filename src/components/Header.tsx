@@ -75,6 +75,22 @@ function IconFolder({ className }: { className?: string }) {
   );
 }
 
+function IconMenu({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+    </svg>
+  );
+}
+
+function IconClose({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  );
+}
+
 /** Giới thiệu — tòa nhà / doanh nghiệp */
 function IconIntro({ className }: { className?: string }) {
   return (
@@ -217,6 +233,7 @@ export default function Header({ rootCategories }: HeaderProps) {
   const [suggestions, setSuggestions] = useState<Article[]>([]);
   const [open, setOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const debouncedQ = useDebounce(query, 300);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const suggestionsRef = useRef<HTMLUListElement>(null);
@@ -339,6 +356,24 @@ export default function Header({ rootCategories }: HeaderProps) {
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
+  useEffect(() => {
+    setMobileNavOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!mobileNavOpen) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") setMobileNavOpen(false);
+    }
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [mobileNavOpen]);
+
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
     if (query.trim()) {
@@ -368,12 +403,13 @@ export default function Header({ rootCategories }: HeaderProps) {
         <div className="relative">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:py-4">
+          <div className="flex w-full min-w-0 items-center justify-between gap-2 sm:w-auto sm:justify-start sm:gap-3">
           <Link
             href="/"
-            className={`group/logo relative flex shrink-0 min-w-0 items-center gap-2 rounded-xl px-2 py-1.5 text-gray-900 outline-none ring-gray-200/0 transition-transform duration-300 ease-[cubic-bezier(0.22,0.75,0.32,1)] motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.99] motion-reduce:hover:scale-100 motion-reduce:active:scale-100 sm:gap-3 sm:px-2 sm:py-1 ${logoBlockTransition} focus-visible:ring-2 focus-visible:ring-blue-500/40`}
+            className={`group/logo relative flex min-w-0 flex-1 items-center gap-2 rounded-xl px-2 py-1.5 text-gray-900 outline-none ring-gray-200/0 transition-transform duration-300 ease-[cubic-bezier(0.22,0.75,0.32,1)] motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.99] motion-reduce:hover:scale-100 motion-reduce:active:scale-100 sm:shrink-0 sm:gap-3 sm:px-2 sm:py-1 ${logoBlockTransition} focus-visible:ring-2 focus-visible:ring-blue-500/40`}
           >
             <span
-              className={`nav-bounce-logo flex min-w-0 items-center gap-2 sm:gap-2.5 ${logoBlockTransition}`}
+              className={`nav-bounce-logo flex min-w-0 flex-1 items-center gap-2 sm:gap-2.5 ${logoBlockTransition}`}
             >
               <span className="relative inline-flex h-14 w-14 shrink-0 sm:h-16 sm:w-16">
                 <span
@@ -386,17 +422,40 @@ export default function Header({ rootCategories }: HeaderProps) {
                   <AnimatedLogoMark />
                 </span>
               </span>
-              <span className="hidden min-w-0 sm:block">
-                <span className="block text-[0.65rem] font-semibold uppercase tracking-[0.22em] text-gray-500">
+              <span className="flex min-w-0 flex-1 flex-col justify-center gap-0.5 sm:gap-1">
+                <span className="block text-[0.58rem] font-semibold uppercase leading-tight tracking-[0.14em] text-gray-500 sm:text-[0.65rem] sm:tracking-[0.22em]">
                   Tập đoàn Hải Châu
                 </span>
-                <span className="mt-0.5 block text-lg font-bold leading-tight tracking-tight text-gray-900 md:text-xl">
+                <span className="line-clamp-2 text-[0.7rem] font-bold leading-snug tracking-tight text-gray-900 sm:line-clamp-none sm:text-lg md:text-xl">
                   CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN
                 </span>
-                <p className="mt-0.5 text-xs text-gray-500">Nguồn nước sạch — Sức khỏe vàng</p>
               </span>
             </span>
           </Link>
+
+          <div className="flex shrink-0 items-center gap-2 lg:hidden">
+            <a
+              href="tel:02543894894"
+              className="inline-flex h-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md transition hover:shadow-lg active:scale-[0.98]"
+              aria-label="Gọi hotline 0254 3 894 894"
+            >
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+              </svg>
+            </a>
+            <button
+              type="button"
+              id="mobile-nav-open"
+              aria-label="Mở menu điều hướng"
+              aria-expanded={mobileNavOpen}
+              aria-controls="mobile-nav-drawer"
+              onClick={() => setMobileNavOpen(true)}
+              className="inline-flex h-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm transition hover:bg-gray-50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
+            >
+              <IconMenu className="h-6 w-6" />
+            </button>
+          </div>
+          </div>
 
           <div className="flex min-w-0 flex-1 flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:justify-end sm:gap-3">
             <form
@@ -550,15 +609,15 @@ export default function Header({ rootCategories }: HeaderProps) {
         </div>
       </header>
 
-      {/* Nav ngoài <header> — sticky; z trên dropdown gợi ý (95) khi chồng lên nhau */}
+      {/* Nav desktop (lg+): hover dropdown; mobile dùng drawer — tránh hover-only trên cảm ứng */}
       <div
-        className={`sticky top-0 z-[100] w-full border-b border-white/10 relative transition-[box-shadow] duration-300 ${navShadow}`}
+        className={`sticky top-0 z-[100] hidden w-full border-b border-white/10 relative transition-[box-shadow] duration-300 lg:block ${navShadow}`}
       >
         <HeaderBackdrop />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* —— Nav —— */}
         <div className="border-t border-white/20 pb-1.5 pt-1 sm:pb-2 sm:pt-1.5">
-          <nav className="flex flex-wrap items-center gap-0.5 text-sm font-semibold">
+          <nav className="flex flex-wrap items-center gap-0.5 text-sm font-semibold lg:flex-nowrap lg:gap-1 lg:overflow-x-auto lg:overflow-y-hidden lg:pb-1 lg:[-webkit-overflow-scrolling:touch] lg:[scrollbar-width:thin]">
             <Link
               href="/"
               className={`nav-bounce-hover group/nav-item relative flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg transition-colors sm:gap-2 sm:px-2.5 sm:py-2 sm:rounded-xl ${navMenuTransition} ${
@@ -674,6 +733,141 @@ export default function Header({ rootCategories }: HeaderProps) {
         </div>
         </div>
       </div>
+
+      {mobileNavOpen &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <>
+            <div
+              role="presentation"
+              className="fixed inset-0 z-[200] bg-black/50 backdrop-blur-[1px] lg:hidden"
+              onClick={() => setMobileNavOpen(false)}
+              aria-hidden
+            />
+            <div
+              id="mobile-nav-drawer"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="mobile-nav-title"
+              className="fixed inset-y-0 right-0 z-[210] flex w-full max-w-[min(100%,20rem)] flex-col bg-gradient-to-b from-sky-800 via-blue-900 to-slate-950 shadow-2xl lg:hidden"
+              style={{
+                paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))",
+              }}
+            >
+              <div
+                className="flex shrink-0 items-center justify-between border-b border-white/10 px-4 py-3"
+                style={{
+                  paddingTop: "max(0.75rem, env(safe-area-inset-top, 0px))",
+                }}
+              >
+                <h2 id="mobile-nav-title" className="text-base font-bold tracking-tight text-white">
+                  Danh mục
+                </h2>
+                <button
+                  type="button"
+                  aria-label="Đóng menu"
+                  onClick={() => setMobileNavOpen(false)}
+                  className="inline-flex h-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-xl text-white/95 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/60"
+                >
+                  <IconClose className="h-6 w-6" />
+                </button>
+              </div>
+              <nav
+                className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain px-3 pb-4 pt-2"
+                aria-label="Menu chính"
+              >
+                <Link
+                  href="/"
+                  onClick={() => setMobileNavOpen(false)}
+                  className={`mb-1 flex min-h-[48px] items-center gap-3 rounded-xl px-3 py-3 text-base font-semibold transition active:bg-white/10 ${
+                    pathname === "/"
+                      ? "bg-white/20 text-white"
+                      : "text-white/95 hover:bg-white/12"
+                  }`}
+                >
+                  <IconHome className="h-5 w-5 shrink-0 text-cyan-100" />
+                  Trang chủ
+                </Link>
+
+                {roots.map((root) => {
+                  const children = childrenByRootId[root.id] ?? [];
+                  const introRoot = isIntroRoot(root.slug);
+                  if (children.length === 0) {
+                    const active = pathname === `/category/${root.slug}`;
+                    return (
+                      <Link
+                        key={root.id}
+                        href={`/category/${root.slug}`}
+                        onClick={() => setMobileNavOpen(false)}
+                        className={`mb-1 flex min-h-[48px] items-center gap-3 rounded-xl px-3 py-3 text-base font-semibold transition active:bg-white/10 ${
+                          active
+                            ? "bg-white/20 text-white"
+                            : "text-white/95 hover:bg-white/12"
+                        }`}
+                      >
+                        <NavRootIcon slug={root.slug} className="h-5 w-5 shrink-0 text-cyan-100" />
+                        <span className="min-w-0 truncate">{root.name}</span>
+                      </Link>
+                    );
+                  }
+
+                  return (
+                    <details
+                      key={root.id}
+                      className="mobile-nav-details mb-2 overflow-hidden rounded-xl border border-white/15 bg-white/[0.07]"
+                    >
+                      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-3 text-base font-semibold text-white [&::-webkit-details-marker]:hidden">
+                        <span className="flex min-w-0 items-center gap-3">
+                          <NavRootIcon slug={root.slug} className="h-5 w-5 shrink-0 text-cyan-100" />
+                          <span className="truncate">{root.name}</span>
+                        </span>
+                        <svg
+                          className="chevron-icon h-5 w-5 shrink-0 text-white/70 transition-transform duration-200"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          aria-hidden
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </summary>
+                      <div className="border-t border-white/10 bg-slate-950/35 py-1">
+                        {children.map((child) => {
+                          const href = introRoot
+                            ? `/gioi-thieu/${child.slug}`
+                            : `/category/${child.slug}`;
+                          const childActive = introRoot
+                            ? pathname === `/gioi-thieu/${child.slug}`
+                            : pathname === `/category/${child.slug}`;
+                          return (
+                            <Link
+                              key={child.id}
+                              href={href}
+                              onClick={() => setMobileNavOpen(false)}
+                              className={`block min-h-[44px] border-t border-white/5 py-3 pl-12 pr-3 text-sm font-medium transition first:border-t-0 active:bg-white/10 ${
+                                childActive
+                                  ? "bg-white/15 text-cyan-100"
+                                  : "text-white/90 hover:bg-white/8"
+                              }`}
+                            >
+                              {child.name}
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    </details>
+                  );
+                })}
+              </nav>
+            </div>
+          </>,
+          document.body,
+        )}
 
       <style jsx>{`
         @keyframes headerFloat {
@@ -833,6 +1027,9 @@ export default function Header({ rootCategories }: HeaderProps) {
         }
         :global(.nav-bounce-logo:hover) {
           animation: navBounceLogo 2s cubic-bezier(0.22, 0.75, 0.32, 1);
+        }
+        :global(details.mobile-nav-details[open] summary .chevron-icon) {
+          transform: rotate(180deg);
         }
         @media (prefers-reduced-motion: reduce) {
           :global(.animate-headerFloat),
