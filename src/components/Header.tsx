@@ -353,6 +353,11 @@ export default function Header({ rootCategories }: HeaderProps) {
     router.push(`/news/${slug}`);
   }
 
+  function isIntroRoot(slug: string): boolean {
+    const s = slug.toLowerCase().replace(/_/g, "-");
+    return s.includes("gioi-thieu") || s.includes("gioithieu");
+  }
+
   const navShadow =
     "shadow-[0_14px_34px_-18px_rgba(2,132,199,0.55)]";
 
@@ -571,9 +576,14 @@ export default function Header({ rootCategories }: HeaderProps) {
 
             {roots.map((root) => {
               const children = childrenByRootId[root.id] ?? [];
+              const introRoot = isIntroRoot(root.slug);
               const rootActive =
-                pathname === `/category/${root.slug}` ||
-                children.some((c) => pathname === `/category/${c.slug}`);
+                (introRoot
+                  ? pathname === `/category/${root.slug}` ||
+                    pathname === "/gioi-thieu" ||
+                    pathname.startsWith("/gioi-thieu/")
+                  : pathname === `/category/${root.slug}` ||
+                    children.some((c) => pathname === `/category/${c.slug}`));
               if (children.length === 0) {
                 return (
                   <Link
@@ -629,13 +639,29 @@ export default function Header({ rootCategories }: HeaderProps) {
                       {children.map((child) => (
                         <Link
                           key={child.id}
-                          href={`/category/${child.slug}`}
-                          className={`block px-4 py-2.5 text-sm tracking-tight transition-colors ${
-                            pathname === `/category/${child.slug}`
-                              ? "text-blue-600 bg-blue-50 font-semibold"
-                              : "text-gray-800 hover:bg-blue-50 hover:text-blue-600 font-medium"
-                          }`}
+                          href={
+                            introRoot
+                              ? `/gioi-thieu/${child.slug}`
+                              : `/category/${child.slug}`
+                          }
+                          className={[
+                            "group/child relative block px-4 py-2.5 text-sm tracking-tight font-medium",
+                            "transition-[color,background-color,transform] duration-200 ease-out",
+                            "hover:bg-blue-50/90 hover:text-blue-700 hover:translate-x-[2px]",
+                            "focus-visible:outline-none focus-visible:bg-blue-50/90 focus-visible:text-blue-700",
+                            introRoot
+                              ? pathname === `/gioi-thieu/${child.slug}`
+                                ? "bg-blue-50 text-blue-700 font-semibold"
+                                : "text-gray-800"
+                              : pathname === `/category/${child.slug}`
+                                ? "bg-blue-50 text-blue-700 font-semibold"
+                                : "text-gray-800",
+                          ].join(" ")}
                         >
+                          <span
+                            aria-hidden
+                            className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r bg-blue-600 opacity-0 transition-opacity duration-200 group-hover/child:opacity-100"
+                          />
                           {child.name}
                         </Link>
                       ))}

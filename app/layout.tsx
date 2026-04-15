@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Cormorant_Garamond, Geist } from "next/font/google";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import HeaderWrapper from "@/components/HeaderWrapper";
 import Footer from "@/components/Footer";
@@ -8,6 +8,12 @@ import "./globals.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+});
+
+const cormorantGaramond = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "600"],
+  variable: "--font-cormorant",
 });
 
 export const metadata: Metadata = {
@@ -24,7 +30,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" className={`${geistSans.variable} h-full antialiased`}>
+    <html
+      lang="vi"
+      className={`${geistSans.variable} ${cormorantGaramond.variable} h-full antialiased`}
+    >
       <body className="min-h-full flex flex-col bg-gray-50">
         <AntdRegistry>
           <HeaderWrapper />

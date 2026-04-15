@@ -81,11 +81,11 @@ export default function VanBanSidebar({ articles }: { articles: Article[] }) {
               className="min-h-0 flex-1 divide-y divide-white/10 overflow-hidden px-3"
             >
               {articles.slice(0, visible).map((article, idx) => (
-                <div
-                  key={article.id}
-                  ref={idx === 0 ? firstRowRef : undefined}
-                >
-                  <Link href={`/news/${article.slug}`} className={vanBanRowClass}>
+                <div key={article.id} ref={idx === 0 ? firstRowRef : undefined}>
+                  <Link
+                    href={`/news/${article.slug}`}
+                    className={vanBanRowClass}
+                  >
                     <div className="relative z-10 flex items-start gap-2">
                       <span
                         className="mt-0.5 shrink-0 text-cyan-400 transition-colors group-hover/vanban:text-cyan-300"
