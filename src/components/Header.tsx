@@ -681,7 +681,6 @@ export default function Header({ rootCategories }: HeaderProps) {
                           : "text-white/95 hover:bg-white/18"
                       }`}
                     >
-                      <NavRootIcon slug={root.slug} className={navIconClass} />
                       <NavLabelText>{root.name}</NavLabelText>
                       {active && (
                         <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-cyan-200 shadow-[0_0_12px_rgba(165,243,252,0.9)] sm:left-3 sm:right-3" />
@@ -700,7 +699,6 @@ export default function Header({ rootCategories }: HeaderProps) {
                           : "text-white/95 hover:bg-white/18"
                       }`}
                     >
-                      <NavRootIcon slug={root.slug} className={navIconClass} />
                       <NavLabelText>{root.name}</NavLabelText>
                       <svg
                         className={`h-3.5 w-3.5 shrink-0 text-white/90 transition-all ${navMenuTransition} group-hover/nav-item:text-amber-200 group-hover:rotate-180`}
@@ -771,7 +769,6 @@ export default function Header({ rootCategories }: HeaderProps) {
                     : "text-white/95 hover:bg-white/18"
                 }`}
               >
-                <IconPhone className={navIconClass} />
                 <NavLabelText>Liên hệ</NavLabelText>
                 {pathname === "/lien-he" && (
                   <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-cyan-200 shadow-[0_0_12px_rgba(165,243,252,0.9)] sm:left-3 sm:right-3" />
