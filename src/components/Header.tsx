@@ -617,7 +617,7 @@ export default function Header({ rootCategories }: HeaderProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* —— Nav —— */}
         <div className="border-t border-white/20 pb-1.5 pt-1 sm:pb-2 sm:pt-1.5">
-          <nav className="flex flex-wrap items-center gap-0.5 text-sm font-semibold lg:flex-nowrap lg:gap-1 lg:overflow-x-auto lg:overflow-y-hidden lg:pb-1 lg:[-webkit-overflow-scrolling:touch] lg:[scrollbar-width:thin]">
+          <nav className="flex flex-wrap items-center gap-0.5 text-sm font-semibold lg:flex-nowrap lg:gap-1 lg:overflow-visible lg:pb-1">
             <Link
               href="/"
               className={`nav-bounce-hover group/nav-item relative flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg transition-colors sm:gap-2 sm:px-2.5 sm:py-2 sm:rounded-xl ${navMenuTransition} ${

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { publicMediaUrl } from "@/lib/publicMediaUrl";
 
 interface ArticleContentProps {
   content: string;
@@ -8,11 +9,10 @@ interface ArticleContentProps {
 
 function normalizeMediaUrl(src: string): string {
   if (!src) return src;
-  // absolute urls keep as is
-  if (/^https?:\/\//i.test(src) || src.startsWith("data:")) return src;
-  // relative media path from backend (common: /uploads/..)
-  const base = process.env.NEXT_PUBLIC_MEDIA_URL || "http://localhost:8080";
-  if (src.startsWith("/")) return `${base}${src}`;
+  if (src.startsWith("data:")) return src;
+  if (/^https?:\/\//i.test(src)) return publicMediaUrl(src);
+  // relative path from backend (common: /uploads/..)
+  if (src.startsWith("/")) return publicMediaUrl(src);
   return src;
 }
 
