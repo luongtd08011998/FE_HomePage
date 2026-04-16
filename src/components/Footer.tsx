@@ -139,7 +139,9 @@ export default function Footer() {
                 className={`${linkRow} items-start`}
               >
                 <IconMapPin className="mt-0.5 h-5 w-5 shrink-0 text-sky-200 transition-colors group-hover:text-amber-200" />
-                <span className="min-w-0 break-words text-pretty">{ADDRESS}</span>
+                <span className="min-w-0 break-words text-pretty">
+                  {ADDRESS}
+                </span>
               </a>
               <a
                 href="mailto:office@toctienltd.vn"
@@ -149,20 +151,19 @@ export default function Footer() {
                 <span className="min-w-0">office@toctienltd.vn</span>
               </a>
               <div className="flex min-h-[44px] items-start gap-2 rounded-lg py-1.5 sm:min-h-0 sm:gap-2 sm:py-0">
-                <IconPhone className="mt-0.5 h-5 w-5 shrink-0 text-sky-200" aria-hidden />
+                <IconPhone
+                  className="mt-0.5 h-5 w-5 shrink-0 text-sky-200"
+                  aria-hidden
+                />
                 <div className="min-w-0 flex-1 space-y-1 text-sm text-blue-100">
                   <a
                     href="tel:02543894894"
                     className="group/phone block font-medium text-white underline-offset-2 transition hover:underline"
                   >
                     Hotline:{" "}
-                    <span className="tabular-nums">0254 3 894 894</span>
-                  </a>
-                  <a
-                    href="tel:08653379119"
-                    className="block text-blue-100/95 transition hover:text-white"
-                  >
-                    Fax: <span className="tabular-nums">0865 3 379 119</span>
+                    <span className="tabular-nums">
+                      0254 3 894 894 - 0865 3 379 119
+                    </span>
                   </a>
                 </div>
               </div>
