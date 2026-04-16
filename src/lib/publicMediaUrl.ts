@@ -25,8 +25,10 @@ export function publicMediaUrl(srcOrPath: string): string {
         host === "::1" ||
         host.endsWith(".localhost");
 
-      // Trình duyệt public HTTPS không nên fetch loopback/private trực tiếp
-      if (isLoopback || typeof window !== "undefined") {
+      // Chỉ rewrite khi URL trỏ tới loopback — giữ nguyên https/http tới domain khác (ảnh ngoài, CDN).
+      // Lưu ý: không dùng `typeof window !== "undefined"` ở đây: trên client điều đó luôn true và sẽ
+      // biến mọi URL tuyệt đối thành path trên origin hiện tại (làm hỏng ảnh hotlink).
+      if (isLoopback) {
         return normalizeUploadsPath(`${u.pathname}${u.search}`);
       }
 

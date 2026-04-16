@@ -17,7 +17,7 @@ const cormorantGaramond = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Cấp nước Tóc Tiên",
+  title: "CẤP NƯỚC TÓC TIÊN",
   description: "Đọc tin tức nhanh, chính xác và cập nhật nhất",
   icons: {
     icon: "/logocty1.jpg",
