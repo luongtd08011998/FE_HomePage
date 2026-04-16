@@ -56,6 +56,25 @@ function IconHome({ className }: { className?: string }) {
   );
 }
 
+function IconPhone({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      aria-hidden
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M2.5 5.25A2.75 2.75 0 015.25 2.5h1.1c.9 0 1.69.61 1.92 1.48l.8 3.02c.2.77-.1 1.59-.75 2.02l-1.17.78a14.7 14.7 0 006.5 6.5l.78-1.17c.43-.65 1.25-.95 2.02-.75l3.02.8c.87.23 1.48 1.02 1.48 1.92v1.1a2.75 2.75 0 01-2.75 2.75h-.25C9.1 21.95 2.05 14.9 2.05 6v-.75z"
+      />
+    </svg>
+  );
+}
+
 function IconFolder({ className }: { className?: string }) {
   return (
     <svg
@@ -161,7 +180,7 @@ function NavLabelText({
   forLogo?: boolean;
 }) {
   const base =
-    "text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-cyan-100 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)] transition-[background-image,filter,opacity]";
+    "uppercase text-transparent bg-clip-text bg-gradient-to-r from-white via-sky-100 to-cyan-100 tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.25)] transition-[background-image,filter,opacity]";
   if (forLogo) {
     return (
       <span
@@ -615,122 +634,151 @@ export default function Header({ rootCategories }: HeaderProps) {
       >
         <HeaderBackdrop />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* —— Nav —— */}
-        <div className="border-t border-white/20 pb-1.5 pt-1 sm:pb-2 sm:pt-1.5">
-          <nav className="flex flex-wrap items-center gap-0.5 text-sm font-semibold lg:flex-nowrap lg:gap-1 lg:overflow-visible lg:pb-1">
-            <Link
-              href="/"
-              className={`nav-bounce-hover group/nav-item relative flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg transition-colors sm:gap-2 sm:px-2.5 sm:py-2 sm:rounded-xl ${navMenuTransition} ${
-                pathname === "/"
-                  ? "bg-white/25 text-white"
-                  : "text-white/95 hover:bg-white/18"
-              }`}
-            >
-              <IconHome className={navIconClass} />
-              <NavLabelText>Trang chủ</NavLabelText>
-              {pathname === "/" && (
-                <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-cyan-200 shadow-[0_0_12px_rgba(165,243,252,0.9)] sm:left-3 sm:right-3" />
-              )}
-            </Link>
+          {/* —— Nav —— */}
+          <div className="border-t border-white/20 pb-1.5 pt-1 sm:pb-2 sm:pt-1.5">
+            <nav className="flex flex-wrap items-center gap-0.5 text-sm font-semibold lg:flex-nowrap lg:gap-1 lg:overflow-visible lg:pb-1">
+              <Link
+                href="/"
+                className={`nav-bounce-hover group/nav-item relative flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2 py-1.5 transition-colors sm:gap-2 sm:rounded-xl sm:px-2.5 sm:py-2 ${navMenuTransition} ${
+                  pathname === "/"
+                    ? "bg-white/25 text-white"
+                    : "text-white/95 hover:bg-white/18"
+                }`}
+              >
+                <IconHome className={navIconClass} />
+                <NavLabelText>Trang chủ</NavLabelText>
+                {pathname === "/" && (
+                  <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-cyan-200 shadow-[0_0_12px_rgba(165,243,252,0.9)] sm:left-3 sm:right-3" />
+                )}
+              </Link>
 
-            {roots.map((root) => {
-              const children = childrenByRootId[root.id] ?? [];
-              const introRoot = isIntroRoot(root.slug);
-              const rootActive =
-                (introRoot
-                  ? pathname === `/category/${root.slug}` ||
-                    pathname === "/gioi-thieu" ||
-                    pathname.startsWith("/gioi-thieu/")
-                  : pathname === `/category/${root.slug}` ||
-                    children.some((c) => pathname === `/category/${c.slug}`));
-              if (children.length === 0) {
-                return (
-                  <Link
-                    key={root.id}
-                    href={`/category/${root.slug}`}
-                    className={`nav-bounce-hover group/nav-item relative flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg transition-colors sm:gap-2 sm:px-2.5 sm:py-2 sm:rounded-xl ${navMenuTransition} ${
-                      pathname === `/category/${root.slug}`
-                        ? "bg-white/25 text-white"
-                        : "text-white/95 hover:bg-white/18"
-                    }`}
-                  >
-                    <NavRootIcon slug={root.slug} className={navIconClass} />
-                    <NavLabelText>{root.name}</NavLabelText>
-                    {pathname === `/category/${root.slug}` && (
-                      <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-cyan-200 shadow-[0_0_12px_rgba(165,243,252,0.9)] sm:left-3 sm:right-3" />
-                    )}
-                  </Link>
-                );
-              }
+              {roots.map((root) => {
+                const children = childrenByRootId[root.id] ?? [];
+                const introRoot = isIntroRoot(root.slug);
+                const isLienHe = root.slug === "lien-he";
+                const rootHref = isLienHe ? "/lien-he" : `/category/${root.slug}`;
+                const rootActive =
+                  (introRoot
+                    ? pathname === `/category/${root.slug}` ||
+                      pathname === "/gioi-thieu" ||
+                      pathname.startsWith("/gioi-thieu/")
+                    : (isLienHe
+                        ? pathname === "/lien-he"
+                        : pathname === `/category/${root.slug}`) ||
+                      children.some((c) => pathname === `/category/${c.slug}`));
 
-              return (
-                <div key={root.id} className="relative group">
-                  <Link
-                    href={`/category/${root.slug}`}
-                    className={`nav-bounce-hover group/nav-item relative flex items-center gap-1.5 whitespace-nowrap px-2 py-1.5 rounded-lg transition-colors sm:gap-2 sm:px-2.5 sm:py-2 sm:rounded-xl ${navMenuTransition} ${
-                      rootActive
-                        ? "bg-white/25 text-white"
-                        : "text-white/95 hover:bg-white/18"
-                    }`}
-                  >
-                    <NavRootIcon slug={root.slug} className={navIconClass} />
-                    <NavLabelText>{root.name}</NavLabelText>
-                    <svg
-                      className={`w-3.5 h-3.5 shrink-0 text-white/90 transition-all ${navMenuTransition} group-hover:rotate-180 group-hover/nav-item:text-amber-200`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                if (children.length === 0) {
+                  const active = isLienHe
+                    ? pathname === "/lien-he"
+                    : pathname === `/category/${root.slug}`;
+                  return (
+                    <Link
+                      key={root.id}
+                      href={rootHref}
+                      className={`nav-bounce-hover group/nav-item relative flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2 py-1.5 transition-colors sm:gap-2 sm:rounded-xl sm:px-2.5 sm:py-2 ${navMenuTransition} ${
+                        active
+                          ? "bg-white/25 text-white"
+                          : "text-white/95 hover:bg-white/18"
+                      }`}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                    {rootActive && (
-                      <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-cyan-200 shadow-[0_0_12px_rgba(165,243,252,0.9)] sm:left-3 sm:right-3" />
-                    )}
-                  </Link>
+                      <NavRootIcon slug={root.slug} className={navIconClass} />
+                      <NavLabelText>{root.name}</NavLabelText>
+                      {active && (
+                        <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-cyan-200 shadow-[0_0_12px_rgba(165,243,252,0.9)] sm:left-3 sm:right-3" />
+                      )}
+                    </Link>
+                  );
+                }
 
-                  <div className="absolute top-full left-0 z-[60] hidden w-56 pt-1 group-hover:block">
-                    <div className="bg-white rounded-xl shadow-xl border border-gray-100 py-1">
-                      {children.map((child) => (
-                        <Link
-                          key={child.id}
-                          href={
-                            introRoot
-                              ? `/gioi-thieu/${child.slug}`
-                              : `/category/${child.slug}`
-                          }
-                          className={[
-                            "group/child relative block px-4 py-2.5 text-sm tracking-tight font-medium",
-                            "transition-[color,background-color,transform] duration-200 ease-out",
-                            "hover:bg-blue-50/90 hover:text-blue-700 hover:translate-x-[2px]",
-                            "focus-visible:outline-none focus-visible:bg-blue-50/90 focus-visible:text-blue-700",
-                            introRoot
-                              ? pathname === `/gioi-thieu/${child.slug}`
-                                ? "bg-blue-50 text-blue-700 font-semibold"
-                                : "text-gray-800"
-                              : pathname === `/category/${child.slug}`
-                                ? "bg-blue-50 text-blue-700 font-semibold"
-                                : "text-gray-800",
-                          ].join(" ")}
-                        >
-                          <span
-                            aria-hidden
-                            className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r bg-blue-600 opacity-0 transition-opacity duration-200 group-hover/child:opacity-100"
-                          />
-                          {child.name}
-                        </Link>
-                      ))}
+                return (
+                  <div key={root.id} className="relative group">
+                    <Link
+                      href={rootHref}
+                      className={`nav-bounce-hover group/nav-item relative flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2 py-1.5 transition-colors sm:gap-2 sm:rounded-xl sm:px-2.5 sm:py-2 ${navMenuTransition} ${
+                        rootActive
+                          ? "bg-white/25 text-white"
+                          : "text-white/95 hover:bg-white/18"
+                      }`}
+                    >
+                      <NavRootIcon slug={root.slug} className={navIconClass} />
+                      <NavLabelText>{root.name}</NavLabelText>
+                      <svg
+                        className={`h-3.5 w-3.5 shrink-0 text-white/90 transition-all ${navMenuTransition} group-hover/nav-item:text-amber-200 group-hover:rotate-180`}
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                      {rootActive && (
+                        <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-cyan-200 shadow-[0_0_12px_rgba(165,243,252,0.9)] sm:left-3 sm:right-3" />
+                      )}
+                    </Link>
+
+                    <div className="absolute left-0 top-full z-[60] hidden w-56 pt-1 group-hover:block">
+                      <div className="rounded-xl border border-gray-100 bg-white py-1 shadow-xl">
+                        {children.map((child) => (
+                          <Link
+                            key={child.id}
+                            href={
+                              introRoot
+                                ? `/gioi-thieu/${child.slug}`
+                                : child.slug === "lien-he"
+                                  ? "/lien-he"
+                                  : `/category/${child.slug}`
+                            }
+                            className={[
+                              "group/child relative block px-4 py-2.5 text-sm font-medium tracking-tight",
+                              "transition-[color,background-color,transform] duration-200 ease-out",
+                              "hover:bg-blue-50/90 hover:text-blue-700 hover:translate-x-[2px]",
+                              "focus-visible:outline-none focus-visible:bg-blue-50/90 focus-visible:text-blue-700",
+                              introRoot
+                                ? pathname === `/gioi-thieu/${child.slug}`
+                                  ? "bg-blue-50 text-blue-700 font-semibold"
+                                  : "text-gray-800"
+                                : child.slug === "lien-he"
+                                  ? pathname === "/lien-he"
+                                    ? "bg-blue-50 text-blue-700 font-semibold"
+                                    : "text-gray-800"
+                                  : pathname === `/category/${child.slug}`
+                                    ? "bg-blue-50 text-blue-700 font-semibold"
+                                    : "text-gray-800",
+                            ].join(" ")}
+                          >
+                            <span
+                              aria-hidden
+                              className="absolute bottom-1.5 left-0 top-1.5 w-1 rounded-r bg-blue-600 opacity-0 transition-opacity duration-200 group-hover/child:opacity-100"
+                            />
+                            {child.name}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </nav>
-        </div>
+                );
+              })}
+
+              <Link
+                href="/lien-he"
+                className={`nav-bounce-hover group/nav-item relative flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2 py-1.5 transition-colors sm:gap-2 sm:rounded-xl sm:px-2.5 sm:py-2 ${navMenuTransition} ${
+                  pathname === "/lien-he"
+                    ? "bg-white/25 text-white"
+                    : "text-white/95 hover:bg-white/18"
+                }`}
+              >
+                <IconPhone className={navIconClass} />
+                <NavLabelText>Liên hệ</NavLabelText>
+                {pathname === "/lien-he" && (
+                  <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-cyan-200 shadow-[0_0_12px_rgba(165,243,252,0.9)] sm:left-3 sm:right-3" />
+                )}
+              </Link>
+            </nav>
+          </div>
         </div>
       </div>
 
@@ -793,11 +841,13 @@ export default function Header({ rootCategories }: HeaderProps) {
                   const children = childrenByRootId[root.id] ?? [];
                   const introRoot = isIntroRoot(root.slug);
                   if (children.length === 0) {
-                    const active = pathname === `/category/${root.slug}`;
+                    const isLienHe = root.slug === "lien-he";
+                    const href = isLienHe ? "/lien-he" : `/category/${root.slug}`;
+                    const active = isLienHe ? pathname === "/lien-he" : pathname === `/category/${root.slug}`;
                     return (
                       <Link
                         key={root.id}
-                        href={`/category/${root.slug}`}
+                        href={href}
                         onClick={() => setMobileNavOpen(false)}
                         className={`mb-1 flex min-h-[48px] items-center gap-3 rounded-xl px-3 py-3 text-base font-semibold transition active:bg-white/10 ${
                           active
@@ -840,10 +890,14 @@ export default function Header({ rootCategories }: HeaderProps) {
                         {children.map((child) => {
                           const href = introRoot
                             ? `/gioi-thieu/${child.slug}`
-                            : `/category/${child.slug}`;
+                            : child.slug === "lien-he"
+                              ? "/lien-he"
+                              : `/category/${child.slug}`;
                           const childActive = introRoot
                             ? pathname === `/gioi-thieu/${child.slug}`
-                            : pathname === `/category/${child.slug}`;
+                            : child.slug === "lien-he"
+                              ? pathname === "/lien-he"
+                              : pathname === `/category/${child.slug}`;
                           return (
                             <Link
                               key={child.id}
@@ -863,6 +917,19 @@ export default function Header({ rootCategories }: HeaderProps) {
                     </details>
                   );
                 })}
+
+                <Link
+                  href="/lien-he"
+                  onClick={() => setMobileNavOpen(false)}
+                  className={`mb-1 mt-2 flex min-h-[48px] items-center gap-3 rounded-xl px-3 py-3 text-base font-semibold transition active:bg-white/10 ${
+                    pathname === "/lien-he"
+                      ? "bg-white/20 text-white"
+                      : "text-white/95 hover:bg-white/12"
+                  }`}
+                >
+                  <IconPhone className="h-5 w-5 shrink-0 text-cyan-100" />
+                  LIÊN HỆ
+                </Link>
               </nav>
             </div>
           </>,
