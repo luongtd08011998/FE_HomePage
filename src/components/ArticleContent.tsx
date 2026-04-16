@@ -50,7 +50,23 @@ export default function ArticleContent({ content }: ArticleContentProps) {
   return (
     <div
       ref={ref}
-      className="prose prose-lg max-w-none prose-headings:font-bold prose-a:text-blue-600 prose-img:rounded-xl"
+      style={{ fontFamily: "var(--font-cormorant)" }}
+      className={[
+        "prose prose-base max-w-none",
+        "leading-relaxed",
+        "prose-headings:font-semibold prose-headings:tracking-tight",
+        "prose-h2:mt-10 prose-h2:mb-4 prose-h3:mt-8 prose-h3:mb-3",
+        "prose-headings:text-gray-900 prose-p:text-gray-900 prose-strong:text-gray-900",
+        "prose-p:my-4",
+        "prose-a:text-gray-900 prose-a:underline prose-a:decoration-gray-300 hover:prose-a:decoration-gray-500",
+        "prose-blockquote:border-l-gray-300 prose-blockquote:text-gray-900",
+        "prose-blockquote:my-8 prose-blockquote:py-1",
+        "prose-hr:border-gray-200",
+        "prose-li:marker:text-gray-500",
+        "prose-img:rounded-xl prose-img:shadow-xl prose-img:my-8",
+        "prose-figcaption:text-gray-600",
+        "selection:bg-gray-200 selection:text-gray-900",
+      ].join(" ")}
     />
   );
 }

@@ -2,25 +2,19 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
+import Image from "next/image";
 import ArticleContent from "@/components/ArticleContent";
 import ArticleViewTracker from "@/components/article/ArticleViewTracker";
-import ArticleNewsletterCta from "@/components/article/ArticleNewsletterCta";
-import RelatedArticlesBlock from "@/components/article/RelatedArticlesBlock";
+import ReadingProgressBar from "@/components/article/ReadingProgressBar";
 import { articleService } from "@/services/article";
 import { categoryService } from "@/services/category";
-import { articleExcerpt, estimateReadMinutes } from "@/lib/articleText";
+import { estimateReadMinutes } from "@/lib/articleText";
+import { publicMediaUrl } from "@/lib/publicMediaUrl";
 import type { CategoryNode } from "@/types";
 
 function resolveThumb(thumbnail: string): string {
   if (!thumbnail) return "/placeholder.svg";
-  if (thumbnail.startsWith("http")) return thumbnail;
-  return `${process.env.NEXT_PUBLIC_MEDIA_URL || "http://localhost:8080"}${thumbnail}`;
-}
-
-function firstImageFromHtml(html: string): string {
-  if (!html) return "";
-  const m = html.match(/<img[^>]*\ssrc=["']([^"']+)["'][^>]*>/i);
-  return m?.[1] ?? "";
+  return publicMediaUrl(thumbnail);
 }
 
 async function buildShareUrl(slug: string): Promise<string> {
@@ -95,18 +89,10 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  try {
-    const article = await articleService.getBySlug(slug);
-    return {
-      openGraph: {
-        title: article.title,
-        images: article.thumbnail ? [{ url: resolveThumb(article.thumbnail) }] : [],
-      },
-    };
-  } catch {
-    return {};
-  }
+  // Keep metadata consistent across pages (see app/layout.tsx).
+  // This route should not derive metadata from article content.
+  await params;
+  return {};
 }
 
 export default async function ArticleDetailPage({ params }: Props) {
@@ -143,8 +129,6 @@ export default async function ArticleDetailPage({ params }: Props) {
     // no related articles
   }
 
-  const shareUrl = await buildShareUrl(article.slug);
-  const subtitle = articleExcerpt(article.content, 220);
   const readMinutes = estimateReadMinutes(article.content);
   const published = new Date(article.createdAt).toLocaleDateString("vi-VN", {
     year: "numeric",
@@ -153,100 +137,98 @@ export default async function ArticleDetailPage({ params }: Props) {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#e0f2fe] via-[#f8fafb] to-[#dbeafe]">
+      <ReadingProgressBar />
       <ArticleViewTracker slug={article.slug} />
-      {/* Breadcrumb — theo Details.md */}
-      <div className="border-b border-gray-100 bg-white">
-        <div className="mx-auto max-w-7xl px-4 py-3 md:px-6">
-          <nav className="flex flex-wrap items-center gap-2 text-sm text-gray-500" aria-label="Breadcrumb">
-            <Link href="/" className="transition-colors hover:text-blue-600">
-              Trang chủ
-            </Link>
-            <IconChevron className="h-4 w-4 shrink-0 text-gray-400" />
-            <Link href="/news" className="transition-colors hover:text-blue-600">
-              Tin tức
-            </Link>
-            <IconChevron className="h-4 w-4 shrink-0 text-gray-400" />
-            <span className="line-clamp-1 text-gray-900">
-              {article.category?.name ?? "Bài viết"}
-            </span>
-          </nav>
-        </div>
-      </div>
+      <main className="pt-20">
+        <article className="mx-auto max-w-6xl px-6">
+          <div className="mb-12">
+            <div className="mb-6">
+              <span className="inline-block rounded-full bg-amber-100 px-4 py-1.5 text-xs font-semibold tracking-wider text-amber-900 uppercase">
+                {article.category?.name ?? "Bài viết"}
+              </span>
+            </div>
 
-      <div className="mx-auto max-w-7xl px-4 py-8 md:px-6">
-        <div className="grid gap-8 lg:grid-cols-12">
-          <div className="lg:col-span-8">
-            <header className="mb-8">
-              <div className="mb-4 flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-700">
-                  {article.category?.name ?? "Chưa phân loại"}
+            <h1 className="mb-6 text-xl font-bold leading-snug tracking-tight text-[#0c4a6e] sm:text-2xl lg:text-3xl">
+              {article.title}
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-6 border-b border-amber-900/10 pb-8">
+              <div className="flex items-center gap-3">
+                <div className="grid h-12 w-12 place-items-center rounded-full border-2 border-amber-200 bg-white text-sm font-semibold text-amber-900 shadow-sm">
+                  {(article.author?.name ?? "B")[0]?.toUpperCase()}
+                </div>
+                <div>
+                  <div className="text-sm font-semibold text-amber-950">
+                    {article.author?.name ?? "Ban biên tập"}
+                  </div>
+                  <div className="text-xs text-amber-700">Cập nhật tin tức</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4 text-sm text-amber-700">
+                <span className="flex items-center gap-1.5">
+                  <IconCalendar className="h-4 w-4" />
+                  {published}
                 </span>
-                <span className="text-gray-400" aria-hidden>
-                  •
-                </span>
-                <span className="flex items-center gap-1 text-sm text-gray-500">
-                  <IconClock className="h-4 w-4 shrink-0" />
+                <span className="flex items-center gap-1.5">
+                  <IconClock className="h-4 w-4" />
                   {readMinutes} phút đọc
                 </span>
               </div>
-
-              <h1 className="mb-4 text-3xl font-bold leading-tight tracking-tight text-gray-900 md:text-4xl lg:text-5xl">
-                {article.title}
-              </h1>
-
-              {subtitle ? (
-                <p className="mb-6 text-lg leading-relaxed text-gray-600 md:text-xl">{subtitle}</p>
-              ) : null}
-
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-b border-gray-200 pb-6">
-                <div className="flex items-center gap-2 text-gray-600">
-                  <IconUser className="h-4 w-4 shrink-0" />
-                  <span className="text-sm">{article.author?.name ?? "Ban biên tập"}</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-600">
-                  <IconCalendar className="h-4 w-4 shrink-0" />
-                  <span className="text-sm">{published}</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-600">
-                  <IconEye className="h-4 w-4 shrink-0" aria-hidden />
-                  <span className="text-sm tabular-nums">
-                    {(article.views ?? 0).toLocaleString("vi-VN")} lượt xem
-                  </span>
-                </div>
-              </div>
-            </header>
-
-            <div className="mb-8 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
-              <ArticleContent content={article.content} />
             </div>
+          </div>
 
-            {article.tags && article.tags.length > 0 ? (
-              <div className="mb-10 flex flex-wrap items-center gap-2">
-                <IconTag className="h-4 w-4 shrink-0 text-gray-500" />
+          <div className="mx-auto mb-20 max-w-4xl">
+            <ArticleContent content={article.content} />
+          </div>
+
+          {article.tags && article.tags.length > 0 ? (
+            <div className="mx-auto mb-12 max-w-4xl border-b border-amber-900/10 pb-12">
+              <div className="flex flex-wrap gap-2">
                 {article.tags.map((tag) =>
                   tag ? (
                     <Link
                       key={tag.id}
                       href={`/tag/${tag.id}`}
-                      className="rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700 transition-colors hover:bg-blue-100 hover:text-blue-700"
+                      className="cursor-pointer rounded-full bg-amber-50 px-3 py-1 text-xs text-amber-800 transition-colors hover:bg-amber-100"
                     >
-                      {tag.name}
+                      #{tag.name}
                     </Link>
                   ) : null,
                 )}
               </div>
-            ) : null}
-          </div>
-
-          <aside className="lg:col-span-4">
-            <div className="lg:sticky lg:top-24">
-              <RelatedArticlesBlock articles={related} />
-              <ArticleNewsletterCta />
             </div>
-          </aside>
-        </div>
-      </div>
+          ) : null}
+
+          <div className="mb-20">
+            <h2 className="mb-8 text-3xl font-semibold text-amber-950">
+              Bài viết liên quan
+            </h2>
+            <div className="grid gap-6 md:grid-cols-3">
+              {related.slice(0, 3).map((a) => (
+                <Link key={a.id} href={`/news/${a.slug}`} className="group">
+                  <div className="mb-3 aspect-[4/3] overflow-hidden rounded-xl bg-white shadow-sm">
+                    <Image
+                      src={resolveThumb(a.thumbnail)}
+                      alt={a.title}
+                      width={640}
+                      height={480}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                  </div>
+                  <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-amber-950 transition-colors group-hover:text-amber-700">
+                    {a.title}
+                  </h3>
+                  <p className="text-sm text-amber-700">
+                    {estimateReadMinutes(a.content)} phút đọc
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </article>
+      </main>
     </div>
   );
 }
