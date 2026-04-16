@@ -99,14 +99,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const article = await articleService.getBySlug(slug);
     return {
-      title: `${article.title} | TinTức`,
       openGraph: {
         title: article.title,
         images: article.thumbnail ? [{ url: resolveThumb(article.thumbnail) }] : [],
       },
     };
   } catch {
-    return { title: "Bài viết | TinTức" };
+    return {};
   }
 }
 

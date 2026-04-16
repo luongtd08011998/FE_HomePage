@@ -19,6 +19,9 @@ const cormorantGaramond = Cormorant_Garamond({
 export const metadata: Metadata = {
   title: "Cấp nước Tóc Tiên",
   description: "Đọc tin tức nhanh, chính xác và cập nhật nhất",
+  icons: {
+    icon: "/logocty1.jpg",
+  },
 };
 
 /** Header gọi API danh mục — tránh menu đóng băng từ lúc build. */

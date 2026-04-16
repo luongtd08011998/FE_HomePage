@@ -11,14 +11,10 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  try {
-    const result = await categoryService.getArticlesBySlug(slug, { size: 1 });
-    const catName = result.result[0]?.category?.name;
-    return { title: `${catName ?? "Chuyên mục"} | TinTức` };
-  } catch {
-    return { title: "Chuyên mục | TinTức" };
-  }
+  // Keep site title constant (defined in app/layout.tsx).
+  // Do not override `title` per-category.
+  await params;
+  return {};
 }
 
 export default async function CategoryPage({ params, searchParams }: Props) {

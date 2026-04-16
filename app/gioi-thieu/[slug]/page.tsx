@@ -18,8 +18,10 @@ function introTitleFromSlug(slug: string): string {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  return { title: `${introTitleFromSlug(slug)} | Giới thiệu` };
+  // Keep site title constant (defined in app/layout.tsx).
+  // Do not override `title` per intro section.
+  await params;
+  return {};
 }
 
 export default async function GioiThieuDetailPage({ params }: Props) {

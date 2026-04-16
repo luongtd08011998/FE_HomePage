@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import SearchContent from "./SearchContent";
 
 export const metadata = {
-  title: "Tìm kiếm | TinTức",
+  // Keep site title constant (defined in app/layout.tsx).
 };
 
 export default function SearchPage() {

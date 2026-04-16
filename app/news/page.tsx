@@ -9,7 +9,7 @@ interface NewsPageProps {
 }
 
 export const metadata = {
-  title: "Tin tức | TinTức",
+  // Keep site title constant (defined in app/layout.tsx).
 };
 
 export default async function NewsPage({ searchParams }: NewsPageProps) {

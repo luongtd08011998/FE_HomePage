@@ -11,20 +11,10 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  try {
-    const isId = /^\d+$/.test(slug);
-    if (isId) {
-      const tags = await tagService.getAll();
-      const tag = tags.find((t) => t.id === Number(slug));
-      return { title: `#${tag?.name ?? slug} | TinTức` };
-    }
-    const tags = await tagService.getAll();
-    const tag = tags.find((t) => t.slug === slug);
-    return { title: `#${tag?.name ?? slug} | TinTức` };
-  } catch {
-    return { title: `Tag | TinTức` };
-  }
+  // Keep site title constant (defined in app/layout.tsx).
+  // Do not override `title` per-tag.
+  await params;
+  return {};
 }
 
 export default async function TagPage({ params, searchParams }: Props) {

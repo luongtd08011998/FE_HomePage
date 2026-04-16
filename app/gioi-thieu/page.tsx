@@ -5,7 +5,7 @@ import { categoryService } from "@/services/category";
 import { CARD_HOVER_CLASS } from "@/lib/cardHover";
 
 export const metadata: Metadata = {
-  title: "Giới thiệu",
+  // Keep site title constant (defined in app/layout.tsx).
 };
 
 function isIntroRootSlug(slug: string) {
