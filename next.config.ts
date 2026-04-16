@@ -24,6 +24,14 @@ const nextConfig: NextConfig = {
         hostname: "localhost",
       },
       {
+        protocol: "http",
+        hostname: "127.0.0.1",
+      },
+      {
+        protocol: "http",
+        hostname: "**",
+      },
+      {
         protocol: "https",
         hostname: "**",
       },
@@ -35,6 +43,10 @@ const nextConfig: NextConfig = {
       {
         source: "/api/v1/:path*",
         destination: `${origin}/api/v1/:path*`,
+      },
+      {
+        source: "/uploads/:path*",
+        destination: `${origin}/uploads/:path*`,
       },
     ];
   },

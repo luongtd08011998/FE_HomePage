@@ -7,12 +7,12 @@ import { paymentChannels, type PaymentChannel } from "./paymentChannelsData";
 function ChannelLogo({ channel }: { channel: PaymentChannel }) {
   if (channel.logo.type === "image") {
     return (
-      <div className="flex h-20 w-full items-center justify-center sm:h-24">
+      <div className="flex h-8 w-full items-center justify-center sm:h-9">
         <Image
           src={channel.logo.src}
           alt={channel.logo.alt}
-          width={360}
-          height={200}
+          width={172}
+          height={92}
           className={[
             "max-h-full w-full object-contain",
             channel.logo.className ?? "",
@@ -25,7 +25,7 @@ function ChannelLogo({ channel }: { channel: PaymentChannel }) {
   return (
     <span
       className={[
-        "inline-flex h-20 w-full items-center justify-center rounded-xl text-[0.7rem] font-extrabold tracking-tight sm:h-24",
+        "inline-flex h-8 w-full items-center justify-center rounded-xl text-[0.6rem] font-extrabold tracking-tight sm:h-9",
         channel.logo.className,
       ].join(" ")}
       aria-hidden
@@ -46,14 +46,11 @@ export default function PaymentChannels() {
               Thanh toán trực tuyến
             </span>
           </div>
-          <h3 className="mt-4 text-2xl font-bold tracking-tight text-white sm:text-3xl">
-            Kênh thanh toán
-          </h3>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10">
+        <div className="flex flex-nowrap items-center gap-3 overflow-x-auto overscroll-x-contain px-1 pb-2 [-webkit-overflow-scrolling:touch] sm:justify-center sm:gap-4 sm:overflow-visible sm:pb-0">
           {paymentChannels.map((c) => (
-            <div key={c.id} className="w-40 sm:w-52 md:w-60">
+            <div key={c.id} className="shrink-0 w-20 sm:w-24 md:w-28">
               <ChannelLogo channel={c} />
             </div>
           ))}

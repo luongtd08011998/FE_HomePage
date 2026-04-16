@@ -1,10 +1,9 @@
 import { notFound, redirect } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import ArticleContent from "@/components/ArticleContent";
-import ArticleActionBar from "@/components/article/ArticleActionBar";
+import ArticleViewTracker from "@/components/article/ArticleViewTracker";
 import ArticleNewsletterCta from "@/components/article/ArticleNewsletterCta";
 import RelatedArticlesBlock from "@/components/article/RelatedArticlesBlock";
 import { articleService } from "@/services/article";
@@ -16,6 +15,12 @@ function resolveThumb(thumbnail: string): string {
   if (!thumbnail) return "/placeholder.svg";
   if (thumbnail.startsWith("http")) return thumbnail;
   return `${process.env.NEXT_PUBLIC_MEDIA_URL || "http://localhost:8080"}${thumbnail}`;
+}
+
+function firstImageFromHtml(html: string): string {
+  if (!html) return "";
+  const m = html.match(/<img[^>]*\ssrc=["']([^"']+)["'][^>]*>/i);
+  return m?.[1] ?? "";
 }
 
 async function buildShareUrl(slug: string): Promise<string> {
@@ -60,6 +65,19 @@ function IconCalendar({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
       <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    </svg>
+  );
+}
+
+function IconEye({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+      />
     </svg>
   );
 }
@@ -137,6 +155,7 @@ export default async function ArticleDetailPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <ArticleViewTracker slug={article.slug} />
       {/* Breadcrumb — theo Details.md */}
       <div className="border-b border-gray-100 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-3 md:px-6">
@@ -190,23 +209,14 @@ export default async function ArticleDetailPage({ params }: Props) {
                   <IconCalendar className="h-4 w-4 shrink-0" />
                   <span className="text-sm">{published}</span>
                 </div>
+                <div className="flex items-center gap-2 text-gray-600">
+                  <IconEye className="h-4 w-4 shrink-0" aria-hidden />
+                  <span className="text-sm tabular-nums">
+                    {(article.views ?? 0).toLocaleString("vi-VN")} lượt xem
+                  </span>
+                </div>
               </div>
             </header>
-
-            <ArticleActionBar shareUrl={shareUrl} title={article.title} slug={article.slug} />
-
-            <div className="mb-8 overflow-hidden rounded-2xl shadow-xl ring-1 ring-gray-200/60">
-              <div className="relative aspect-[16/9] w-full min-h-[220px] md:min-h-[360px]">
-                <Image
-                  src={resolveThumb(article.thumbnail)}
-                  alt={article.title}
-                  fill
-                  priority
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 66vw"
-                />
-              </div>
-            </div>
 
             <div className="mb-8 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm sm:p-8">
               <ArticleContent content={article.content} />
