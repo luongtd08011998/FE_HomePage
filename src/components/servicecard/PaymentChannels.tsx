@@ -60,14 +60,11 @@ export default function PaymentChannels() {
               Thanh toán trực tuyến
             </span>
           </div>
-          <p className="mt-3 text-sm text-slate-400 font-medium">
-            Hỗ trợ chuyển khoản qua các ngân hàng uy tín
-          </p>
         </motion.div>
 
         {/* Bank Cards Grid */}
         <motion.div
-          className="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-9 sm:gap-3"
+          className="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-10 sm:gap-3"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
@@ -156,30 +153,85 @@ export default function PaymentChannels() {
               </div>
             </motion.div>
           ))}
-        </motion.div>
-
-        {/* Và nhiều ngân hàng khác */}
-        <motion.div
-          className="mt-4 text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.5 }}
-        >
-          <div
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10"
-            style={{
-              background: "rgba(255,255,255,0.04)",
-              backdropFilter: "blur(8px)",
-              fontSize: "0.82rem",
-              color: "#94a3b8",
-              fontWeight: 500,
+          <motion.div
+            key="more-banks"
+            initial={{ opacity: 0, scale: 0.85, y: 16 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{
+              delay: 0.3 + banks.length * 0.07,
+              duration: 0.45,
+              ease: [0.22, 1, 0.36, 1],
             }}
+            whileHover={{
+              scale: 1.06,
+              y: -4,
+              transition: { duration: 0.18 },
+            }}
+            className="relative group cursor-pointer"
           >
-            <span style={{ letterSpacing: "0.12em", color: "#64748b" }}>
-              •••
-            </span>
-            <span>Và nhiều ngân hàng khác: VietBank, NCB, VIB, MB, ACB...</span>
-          </div>
+            <div
+              className="relative overflow-hidden rounded-xl p-3 h-24 flex flex-col items-center justify-center border border-white/10 transition-all duration-300 group-hover:border-white/20"
+              style={{
+                background: "rgba(255,255,255,0.05)",
+                backdropFilter: "blur(8px)",
+              }}
+            >
+              <div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(148,163,184,0.10) 0%, rgba(148,163,184,0.16) 100%)",
+                }}
+              />
+
+              <div className="relative z-10 text-center">
+                <div
+                  className="font-bold tracking-tight group-hover:scale-110 transition-transform duration-300"
+                  style={{
+                    fontSize: "1.05rem",
+                    color: "#cbd5e1",
+                    letterSpacing: "-0.01em",
+                    marginBottom: "0.2rem",
+                  }}
+                >
+                  ...+
+                </div>
+                <div
+                  className="h-px w-7 mx-auto rounded-full"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, transparent, rgba(203,213,225,0.85), transparent)",
+                    opacity: 0.45,
+                  }}
+                />
+              </div>
+
+              <div
+                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 group-hover:-translate-y-1 z-20"
+                style={{
+                  background: "rgba(15, 23, 42, 0.96)",
+                  color: "white",
+                  fontSize: "0.72rem",
+                  fontWeight: 500,
+                  boxShadow: "0 4px 16px rgba(0,0,0,0.35)",
+                  backdropFilter: "blur(10px)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                }}
+              >
+                Nhiều ngân hàng khác
+                <div
+                  className="absolute top-full left-1/2 -translate-x-1/2 -mt-px"
+                  style={{
+                    width: 0,
+                    height: 0,
+                    borderLeft: "4px solid transparent",
+                    borderRight: "4px solid transparent",
+                    borderTop: "4px solid rgba(15, 23, 42, 0.96)",
+                  }}
+                />
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
 
         {/* Hướng dẫn 3 bước */}
