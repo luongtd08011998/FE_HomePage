@@ -96,16 +96,38 @@ function IconFolder({ className }: { className?: string }) {
 
 function IconMenu({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      aria-hidden
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+      />
     </svg>
   );
 }
 
 function IconClose({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      aria-hidden
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M6 18L18 6M6 6l12 12"
+      />
     </svg>
   );
 }
@@ -113,8 +135,19 @@ function IconClose({ className }: { className?: string }) {
 /** Giới thiệu — tòa nhà / doanh nghiệp */
 function IconIntro({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      aria-hidden
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+      />
     </svg>
   );
 }
@@ -122,7 +155,13 @@ function IconIntro({ className }: { className?: string }) {
 /** Tin tức — báo / tin */
 function IconNews({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden>
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      aria-hidden
+    >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -136,13 +175,30 @@ function IconNews({ className }: { className?: string }) {
 /** Quan hệ khách hàng — đối tác / chăm sóc KH */
 function IconCustomerRel({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      aria-hidden
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+      />
     </svg>
   );
 }
 
-function NavRootIcon({ slug, className }: { slug: string; className?: string }) {
+function NavRootIcon({
+  slug,
+  className,
+}: {
+  slug: string;
+  className?: string;
+}) {
   const s = slug.toLowerCase().replace(/_/g, "-");
   if (s.includes("gioi-thieu") || s.includes("gioithieu")) {
     return <IconIntro className={className} />;
@@ -412,8 +468,7 @@ export default function Header({ rootCategories }: HeaderProps) {
     return s.includes("gioi-thieu") || s.includes("gioithieu");
   }
 
-  const navShadow =
-    "shadow-[0_14px_34px_-18px_rgba(2,132,199,0.55)]";
+  const navShadow = "shadow-[0_14px_34px_-18px_rgba(2,132,199,0.55)]";
 
   return (
     <>
@@ -422,207 +477,197 @@ export default function Header({ rootCategories }: HeaderProps) {
         <div className="relative">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:py-4">
-          <div className="flex w-full min-w-0 items-center justify-between gap-2 sm:w-auto sm:justify-start sm:gap-3">
-          <Link
-            href="/"
-            className={`group/logo relative flex min-w-0 flex-1 items-center gap-2 rounded-xl px-2 py-1.5 text-gray-900 outline-none ring-gray-200/0 transition-transform duration-300 ease-[cubic-bezier(0.22,0.75,0.32,1)] motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.99] motion-reduce:hover:scale-100 motion-reduce:active:scale-100 sm:shrink-0 sm:gap-3 sm:px-2 sm:py-1 ${logoBlockTransition} focus-visible:ring-2 focus-visible:ring-blue-500/40`}
-          >
-            <span
-              className={`nav-bounce-logo flex min-w-0 flex-1 items-center gap-2 sm:gap-2.5 ${logoBlockTransition}`}
-            >
-              <span className="relative inline-flex h-14 w-14 shrink-0 sm:h-16 sm:w-16">
-                <span
-                  className="logo-hover-ripple pointer-events-none absolute inset-0 z-0 rounded-full bg-sky-300/40"
-                  aria-hidden
-                />
-                <span
-                  className={`logo-mark-wiggle relative z-[1] inline-flex shrink-0 rounded-full shadow-lg transition-[filter,box-shadow] motion-reduce:shadow-md motion-reduce:transition-none motion-reduce:group-hover/logo:brightness-100 motion-reduce:group-hover/logo:saturate-100 motion-safe:group-hover/logo:shadow-2xl motion-safe:group-hover/logo:shadow-sky-400/45 ${logoBlockTransition} group-hover/logo:brightness-110 group-hover/logo:saturate-125`}
+              <div className="flex w-full min-w-0 items-center justify-between gap-2 sm:w-auto sm:justify-start sm:gap-3">
+                <Link
+                  href="/"
+                  className={`group/logo relative flex min-w-0 flex-1 items-center gap-2 rounded-xl px-2 py-1.5 text-gray-900 outline-none ring-gray-200/0 transition-transform duration-300 ease-[cubic-bezier(0.22,0.75,0.32,1)] motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.99] motion-reduce:hover:scale-100 motion-reduce:active:scale-100 sm:shrink-0 sm:gap-3 sm:px-2 sm:py-1 ${logoBlockTransition} focus-visible:ring-2 focus-visible:ring-blue-500/40`}
                 >
-                  <AnimatedLogoMark />
-                </span>
-              </span>
-              <span className="flex min-w-0 flex-1 flex-col justify-center gap-0.5 sm:gap-1">
-                <span className="block text-[0.58rem] font-semibold uppercase leading-tight tracking-[0.14em] text-gray-500 sm:text-[0.65rem] sm:tracking-[0.22em]">
-                  Tập đoàn Hải Châu
-                </span>
-                <span className="line-clamp-2 text-[0.7rem] font-bold leading-snug tracking-tight text-gray-900 sm:line-clamp-none sm:text-lg md:text-xl">
-                  CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN
-                </span>
-              </span>
-            </span>
-          </Link>
+                  <span
+                    className={`nav-bounce-logo flex min-w-0 flex-1 items-center gap-2 sm:gap-2.5 ${logoBlockTransition}`}
+                  >
+                    <span className="relative inline-flex h-14 w-14 shrink-0 sm:h-16 sm:w-16">
+                      <span
+                        className="logo-hover-ripple pointer-events-none absolute inset-0 z-0 rounded-full bg-sky-300/40"
+                        aria-hidden
+                      />
+                      <span
+                        className={`logo-mark-wiggle relative z-[1] inline-flex shrink-0 rounded-full shadow-lg transition-[filter,box-shadow] motion-reduce:shadow-md motion-reduce:transition-none motion-reduce:group-hover/logo:brightness-100 motion-reduce:group-hover/logo:saturate-100 motion-safe:group-hover/logo:shadow-2xl motion-safe:group-hover/logo:shadow-sky-400/45 ${logoBlockTransition} group-hover/logo:brightness-110 group-hover/logo:saturate-125`}
+                      >
+                        <AnimatedLogoMark />
+                      </span>
+                    </span>
+                    <span className="flex min-w-0 flex-1 flex-col justify-center gap-0.5 sm:gap-1">
+                      <span className="block text-[0.58rem] font-semibold uppercase leading-tight tracking-[0.14em] text-gray-500 sm:text-[0.65rem] sm:tracking-[0.22em]">
+                        Tập đoàn Hải Châu
+                      </span>
+                      <span className="line-clamp-2 text-[0.7rem] font-bold leading-snug tracking-tight text-gray-900 sm:line-clamp-none sm:text-lg md:text-xl">
+                        CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN
+                      </span>
+                    </span>
+                  </span>
+                </Link>
 
-          <div className="flex shrink-0 items-center gap-2 lg:hidden">
-            <a
-              href="tel:02543894894"
-              className="inline-flex h-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md transition hover:shadow-lg active:scale-[0.98]"
-              aria-label="Gọi hotline 0254 3 894 894"
-            >
-              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
-              </svg>
-            </a>
-            <button
-              type="button"
-              id="mobile-nav-open"
-              aria-label="Mở menu điều hướng"
-              aria-expanded={mobileNavOpen}
-              aria-controls="mobile-nav-drawer"
-              onClick={() => setMobileNavOpen(true)}
-              className="inline-flex h-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm transition hover:bg-gray-50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
-            >
-              <IconMenu className="h-6 w-6" />
-            </button>
-          </div>
-          </div>
-
-          <div className="flex min-w-0 flex-1 flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:justify-end sm:gap-3">
-            <form
-              onSubmit={handleSearch}
-              onFocus={() => setSearchFocused(true)}
-              onBlur={(e) => {
-                if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
-                  setSearchFocused(false);
-                }
-              }}
-              className={`hidden w-full min-w-0 flex-1 transition-[max-width,transform] duration-300 ease-out md:mx-4 md:block md:max-w-md ${
-                searchFocused ? "md:max-w-xl md:scale-[1.02]" : ""
-              }`}
-            >
-              <div
-                className={`relative min-w-0 rounded-full border-2 transition-[box-shadow,transform] duration-300 ${
-                  searchFocused
-                    ? "border-blue-500 shadow-[0_8px_24px_rgba(59,130,246,0.18)]"
-                    : "border-gray-200 shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
-                }`}
-                ref={wrapperRef}
-              >
-                <svg
-                  className={`pointer-events-none absolute left-4 top-1/2 z-[1] h-5 w-5 -translate-y-1/2 transition-colors ${
-                    searchFocused ? "text-blue-500" : "text-gray-400"
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z"
-                  />
-                </svg>
-                <input
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  onFocus={() => {
-                    if (suggestions.length > 0) setOpen(true);
-                  }}
-                  placeholder="Tìm kiếm dịch vụ, tin tức..."
-                  className={`w-full rounded-full bg-white py-3 pl-12 pr-4 text-sm text-gray-900 placeholder:text-gray-400 transition-[padding,box-shadow] duration-200 focus:outline-none ${
-                    searchFocused && query.trim()
-                      ? "pr-[4.5rem]"
-                      : searchFocused
-                        ? "pr-4"
-                        : "pr-4"
-                  }`}
-                />
-                <button
-                  type="submit"
-                  tabIndex={searchFocused && query.trim() ? 0 : -1}
-                  aria-hidden={!(searchFocused && query.trim())}
-                  className={`absolute right-3 top-1/2 z-[2] -translate-y-1/2 rounded-full bg-blue-500 px-3 py-1 text-xs font-semibold text-white shadow-sm transition-all duration-200 hover:bg-blue-600 active:scale-[0.96] ${
-                    searchFocused && query.trim()
-                      ? "pointer-events-auto scale-100 opacity-100"
-                      : "pointer-events-none scale-90 opacity-0"
-                  }`}
-                >
-                  Enter
-                </button>
-                {open &&
-                  suggestBox &&
-                  typeof document !== "undefined" &&
-                  createPortal(
-                    <ul
-                      ref={suggestionsRef}
-                      className="fixed z-[110] overflow-y-auto rounded-xl border border-gray-100 bg-white shadow-xl"
-                      style={{
-                        top: suggestBox.top,
-                        left: suggestBox.left,
-                        width: suggestBox.width,
-                        maxHeight: `min(20rem, calc(100dvh - ${suggestBox.top}px - 0.75rem))`,
-                      }}
+                <div className="flex shrink-0 items-center gap-2 lg:hidden">
+                  <a
+                    href="tel:02543894894"
+                    className="inline-flex h-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md transition hover:shadow-lg active:scale-[0.98]"
+                    aria-label="Gọi hotline 0254 3 894 894"
+                  >
+                    <svg
+                      className="h-5 w-5"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      aria-hidden
                     >
-                      {suggestions.map((article) => (
-                        <li key={article.id}>
-                          <button
-                            type="button"
-                            onMouseDown={() => pickSuggestion(article.slug)}
-                            className="block w-full truncate px-4 py-2.5 text-left text-sm text-gray-700 transition-colors hover:bg-blue-50 hover:text-blue-700"
-                          >
-                            {article.title}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>,
-                    document.body,
-                  )}
+                      <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
+                    </svg>
+                  </a>
+                  <button
+                    type="button"
+                    id="mobile-nav-open"
+                    aria-label="Mở menu điều hướng"
+                    aria-expanded={mobileNavOpen}
+                    aria-controls="mobile-nav-drawer"
+                    onClick={() => setMobileNavOpen(true)}
+                    className="inline-flex h-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm transition hover:bg-gray-50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
+                  >
+                    <IconMenu className="h-6 w-6" />
+                  </button>
+                </div>
               </div>
-            </form>
 
-            {/* Mobile: ô tìm kiếm full width — headermoi.md */}
-            <form
-              onSubmit={handleSearch}
-              className="relative w-full md:hidden"
-              onFocus={() => setSearchFocused(true)}
-              onBlur={(e) => {
-                if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
-                  setSearchFocused(false);
-                }
-              }}
-            >
-              <svg
-                className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z"
-                />
-              </svg>
-              <input
-                type="search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Tìm kiếm..."
-                className="w-full rounded-full border border-gray-200 bg-gray-50 py-3 pl-12 pr-4 text-sm text-gray-900 placeholder:text-gray-400 transition-colors focus:border-blue-500 focus:outline-none"
-              />
-            </form>
+              <div className="flex min-w-0 flex-1 flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:justify-end sm:gap-3">
+                <form
+                  onSubmit={handleSearch}
+                  onFocus={() => setSearchFocused(true)}
+                  onBlur={(e) => {
+                    if (
+                      !e.currentTarget.contains(e.relatedTarget as Node | null)
+                    ) {
+                      setSearchFocused(false);
+                    }
+                  }}
+                  className={`hidden w-full min-w-0 flex-1 transition-[max-width,transform] duration-300 ease-out md:mx-4 md:block md:max-w-md ${
+                    searchFocused ? "md:max-w-xl md:scale-[1.02]" : ""
+                  }`}
+                >
+                  <div
+                    className={`relative min-w-0 rounded-full border-2 transition-[box-shadow,transform] duration-300 ${
+                      searchFocused
+                        ? "border-blue-500 shadow-[0_8px_24px_rgba(59,130,246,0.18)]"
+                        : "border-gray-200 shadow-[0_2px_8px_rgba(0,0,0,0.06)]"
+                    }`}
+                    ref={wrapperRef}
+                  >
+                    <svg
+                      className={`pointer-events-none absolute left-4 top-1/2 z-[1] h-5 w-5 -translate-y-1/2 transition-colors ${
+                        searchFocused ? "text-blue-500" : "text-gray-400"
+                      }`}
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z"
+                      />
+                    </svg>
+                    <input
+                      type="text"
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      onFocus={() => {
+                        if (suggestions.length > 0) setOpen(true);
+                      }}
+                      placeholder="Tìm kiếm dịch vụ, tin tức..."
+                      className={`w-full rounded-full bg-white py-3 pl-12 pr-4 text-sm text-gray-900 placeholder:text-gray-400 transition-[padding,box-shadow] duration-200 focus:outline-none ${
+                        searchFocused && query.trim()
+                          ? "pr-[4.5rem]"
+                          : searchFocused
+                            ? "pr-4"
+                            : "pr-4"
+                      }`}
+                    />
+                    <button
+                      type="submit"
+                      tabIndex={searchFocused && query.trim() ? 0 : -1}
+                      aria-hidden={!(searchFocused && query.trim())}
+                      className={`absolute right-3 top-1/2 z-[2] -translate-y-1/2 rounded-full bg-blue-500 px-3 py-1 text-xs font-semibold text-white shadow-sm transition-all duration-200 hover:bg-blue-600 active:scale-[0.96] ${
+                        searchFocused && query.trim()
+                          ? "pointer-events-auto scale-100 opacity-100"
+                          : "pointer-events-none scale-90 opacity-0"
+                      }`}
+                    >
+                      Enter
+                    </button>
+                    {open &&
+                      suggestBox &&
+                      typeof document !== "undefined" &&
+                      createPortal(
+                        <ul
+                          ref={suggestionsRef}
+                          className="fixed z-[110] overflow-y-auto rounded-xl border border-gray-100 bg-white shadow-xl"
+                          style={{
+                            top: suggestBox.top,
+                            left: suggestBox.left,
+                            width: suggestBox.width,
+                            maxHeight: `min(20rem, calc(100dvh - ${suggestBox.top}px - 0.75rem))`,
+                          }}
+                        >
+                          {suggestions.map((article) => (
+                            <li key={article.id}>
+                              <button
+                                type="button"
+                                onMouseDown={() => pickSuggestion(article.slug)}
+                                className="block w-full truncate px-4 py-2.5 text-left text-sm text-gray-700 transition-colors hover:bg-blue-50 hover:text-blue-700"
+                              >
+                                {article.title}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>,
+                        document.body,
+                      )}
+                  </div>
+                </form>
 
-            <a
-              href="tel:02543894894"
-              className="hidden shrink-0 items-center gap-2 rounded-full bg-gradient-to-r from-green-500 to-green-600 px-4 py-2.5 text-white shadow-lg transition hover:shadow-xl motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.97] sm:inline-flex sm:px-5 sm:py-3"
-            >
-              <span className="relative inline-flex shrink-0">
-                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                  <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
-                </svg>
-                <span
-                  className="header-hotline-ping pointer-events-none absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-white"
-                  aria-hidden
-                />
-              </span>
-              <span className="min-w-0 text-left leading-tight">
-                <span className="block text-xs opacity-90">Hotline</span>
-                <span className="block text-sm font-semibold tabular-nums">0254 3 894 894</span>
-              </span>
-            </a>
-          </div>
+                {/* Mobile: ô tìm kiếm full width — headermoi.md */}
+                <form
+                  onSubmit={handleSearch}
+                  className="relative w-full md:hidden"
+                  onFocus={() => setSearchFocused(true)}
+                  onBlur={(e) => {
+                    if (
+                      !e.currentTarget.contains(e.relatedTarget as Node | null)
+                    ) {
+                      setSearchFocused(false);
+                    }
+                  }}
+                >
+                  <svg
+                    className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z"
+                    />
+                  </svg>
+                  <input
+                    type="search"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Tìm kiếm..."
+                    className="w-full rounded-full border border-gray-200 bg-gray-50 py-3 pl-12 pr-4 text-sm text-gray-900 placeholder:text-gray-400 transition-colors focus:border-blue-500 focus:outline-none"
+                  />
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -656,16 +701,17 @@ export default function Header({ rootCategories }: HeaderProps) {
                 const children = childrenByRootId[root.id] ?? [];
                 const introRoot = isIntroRoot(root.slug);
                 const isLienHe = root.slug === "lien-he";
-                const rootHref = isLienHe ? "/lien-he" : `/category/${root.slug}`;
-                const rootActive =
-                  (introRoot
-                    ? pathname === `/category/${root.slug}` ||
-                      pathname === "/gioi-thieu" ||
-                      pathname.startsWith("/gioi-thieu/")
-                    : (isLienHe
-                        ? pathname === "/lien-he"
-                        : pathname === `/category/${root.slug}`) ||
-                      children.some((c) => pathname === `/category/${c.slug}`));
+                const rootHref = isLienHe
+                  ? "/lien-he"
+                  : `/category/${root.slug}`;
+                const rootActive = introRoot
+                  ? pathname === `/category/${root.slug}` ||
+                    pathname === "/gioi-thieu" ||
+                    pathname.startsWith("/gioi-thieu/")
+                  : (isLienHe
+                      ? pathname === "/lien-he"
+                      : pathname === `/category/${root.slug}`) ||
+                    children.some((c) => pathname === `/category/${c.slug}`);
 
                 if (children.length === 0) {
                   const active = isLienHe
@@ -805,7 +851,10 @@ export default function Header({ rootCategories }: HeaderProps) {
                   paddingTop: "max(0.75rem, env(safe-area-inset-top, 0px))",
                 }}
               >
-                <h2 id="mobile-nav-title" className="text-base font-bold tracking-tight text-white">
+                <h2
+                  id="mobile-nav-title"
+                  className="text-base font-bold tracking-tight text-white"
+                >
                   Danh mục
                 </h2>
                 <button
@@ -839,8 +888,12 @@ export default function Header({ rootCategories }: HeaderProps) {
                   const introRoot = isIntroRoot(root.slug);
                   if (children.length === 0) {
                     const isLienHe = root.slug === "lien-he";
-                    const href = isLienHe ? "/lien-he" : `/category/${root.slug}`;
-                    const active = isLienHe ? pathname === "/lien-he" : pathname === `/category/${root.slug}`;
+                    const href = isLienHe
+                      ? "/lien-he"
+                      : `/category/${root.slug}`;
+                    const active = isLienHe
+                      ? pathname === "/lien-he"
+                      : pathname === `/category/${root.slug}`;
                     return (
                       <Link
                         key={root.id}
@@ -852,7 +905,10 @@ export default function Header({ rootCategories }: HeaderProps) {
                             : "text-white/95 hover:bg-white/12"
                         }`}
                       >
-                        <NavRootIcon slug={root.slug} className="h-5 w-5 shrink-0 text-cyan-100" />
+                        <NavRootIcon
+                          slug={root.slug}
+                          className="h-5 w-5 shrink-0 text-cyan-100"
+                        />
                         <span className="min-w-0 truncate">{root.name}</span>
                       </Link>
                     );
@@ -865,7 +921,10 @@ export default function Header({ rootCategories }: HeaderProps) {
                     >
                       <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-3 text-base font-semibold text-white [&::-webkit-details-marker]:hidden">
                         <span className="flex min-w-0 items-center gap-3">
-                          <NavRootIcon slug={root.slug} className="h-5 w-5 shrink-0 text-cyan-100" />
+                          <NavRootIcon
+                            slug={root.slug}
+                            className="h-5 w-5 shrink-0 text-cyan-100"
+                          />
                           <span className="truncate">{root.name}</span>
                         </span>
                         <svg

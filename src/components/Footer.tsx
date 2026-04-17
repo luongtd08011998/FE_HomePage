@@ -160,7 +160,7 @@ export default function Footer() {
                     href="tel:02543894894"
                     className="group/phone block font-medium text-white underline-offset-2 transition hover:underline"
                   >
-                    Hotline:{" "}
+                    Điện thoại:{" "}
                     <span className="tabular-nums">
                       0254 3 894 894 - 0865 3 379 119
                     </span>

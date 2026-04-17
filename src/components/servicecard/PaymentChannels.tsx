@@ -1,70 +1,202 @@
 "use client";
 
-import { CreditCard, CheckCircle2 } from "lucide-react";
-import Image from "next/image";
-import { paymentChannels, type PaymentChannel } from "./paymentChannelsData";
+import { motion } from "motion/react";
+import { CreditCard, CheckCircle2, ShieldCheck } from "lucide-react";
 
-function ChannelLogo({ channel }: { channel: PaymentChannel }) {
-  if (channel.logo.type === "image") {
-    return (
-      <div className="flex h-8 w-full items-center justify-center sm:h-9">
-        <Image
-          src={channel.logo.src}
-          alt={channel.logo.alt}
-          width={172}
-          height={92}
-          className={[
-            "max-h-full w-full object-contain",
-            channel.logo.className ?? "",
-          ].join(" ")}
-          priority
-        />
-      </div>
-    );
-  }
-  return (
-    <span
-      className={[
-        "inline-flex h-8 w-full items-center justify-center rounded-xl text-[0.6rem] font-extrabold tracking-tight sm:h-9",
-        channel.logo.className,
-      ].join(" ")}
-      aria-hidden
-    >
-      {channel.logo.text}
-    </span>
-  );
-}
+const banks = [
+  {
+    abbr: "Vietinbank",
+    name: "Ngân hàng TMCP Công Thương Việt Nam",
+    color: "#60a5fa",
+  },
+  {
+    abbr: "VCB",
+    name: "Ngân hàng TMCP Ngoại Thương Việt Nam",
+    color: "#34d399",
+  },
+  {
+    abbr: "Agribank",
+    name: "Ngân hàng Nông nghiệp và Phát triển nông thôn",
+    color: "#4ade80",
+  },
+  {
+    abbr: "BIDV",
+    name: "Ngân hàng TMCP Đầu tư và Phát triển Việt Nam",
+    color: "#818cf8",
+  },
+  { abbr: "BVBank", name: "Ngân hàng Bản Việt", color: "#f87171" },
+  {
+    abbr: "HDBank",
+    name: "Ngân hàng TMCP Phát triển TP Hồ Chí Minh",
+    color: "#38bdf8",
+  },
+  { abbr: "HSBC", name: "Ngân hàng TNHH MTV HSBC", color: "#fb7185" },
+  {
+    abbr: "Eximbank",
+    name: "Ngân hàng Xuất nhập Khẩu Việt Nam",
+    color: "#7dd3fc",
+  },
+  {
+    abbr: "VPBank",
+    name: "Ngân hàng TMCP Việt Nam Thịnh Vượng",
+    color: "#6ee7b7",
+  },
+];
 
 export default function PaymentChannels() {
   return (
     <section aria-label="Kênh thanh toán">
       <div className="mx-auto max-w-5xl">
-        <div className="mb-6 text-center">
+        {/* Badge tiêu đề */}
+        <motion.div
+          className="mb-8 text-center"
+          initial={{ opacity: 0, y: -16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-teal-400/30 bg-teal-500/10 px-4 py-2 text-teal-300 backdrop-blur">
             <CreditCard className="h-4 w-4" aria-hidden />
             <span className="text-xs font-semibold uppercase tracking-[0.18em]">
               Thanh toán trực tuyến
             </span>
           </div>
-        </div>
+          <p className="mt-3 text-sm text-slate-400 font-medium">
+            Hỗ trợ chuyển khoản qua các ngân hàng uy tín
+          </p>
+        </motion.div>
 
-        <div className="flex flex-nowrap items-center gap-3 overflow-x-auto overscroll-x-contain px-1 pb-2 [-webkit-overflow-scrolling:touch] sm:justify-center sm:gap-4 sm:overflow-visible sm:pb-0">
-          {paymentChannels.map((c) => (
-            <div key={c.id} className="shrink-0 w-20 sm:w-24 md:w-28">
-              <ChannelLogo channel={c} />
-            </div>
+        {/* Bank Cards Grid */}
+        <motion.div
+          className="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-9 sm:gap-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+        >
+          {banks.map((bank, index) => (
+            <motion.div
+              key={bank.abbr}
+              initial={{ opacity: 0, scale: 0.85, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{
+                delay: 0.3 + index * 0.07,
+                duration: 0.45,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              whileHover={{
+                scale: 1.06,
+                y: -4,
+                transition: { duration: 0.18 },
+              }}
+              className="relative group cursor-pointer"
+            >
+              <div
+                className="relative overflow-hidden rounded-xl p-3 h-24 flex flex-col items-center justify-center border border-white/10 transition-all duration-300 group-hover:border-white/20"
+                style={{
+                  background: "rgba(255,255,255,0.05)",
+                  backdropFilter: "blur(8px)",
+                }}
+              >
+                {/* Hover glow */}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"
+                  style={{
+                    background: `linear-gradient(135deg, ${bank.color}14 0%, ${bank.color}22 100%)`,
+                  }}
+                />
+
+                {/* Tên viết tắt */}
+                <div className="relative z-10 text-center">
+                  <div
+                    className="font-bold tracking-tight group-hover:scale-110 transition-transform duration-300"
+                    style={{
+                      fontSize: "1.05rem",
+                      color: bank.color,
+                      letterSpacing: "-0.01em",
+                      marginBottom: "0.2rem",
+                    }}
+                  >
+                    {bank.abbr}
+                  </div>
+
+                  {/* Đường trang trí */}
+                  <div
+                    className="h-px w-7 mx-auto rounded-full"
+                    style={{
+                      background: `linear-gradient(90deg, transparent, ${bank.color}, transparent)`,
+                      opacity: 0.45,
+                    }}
+                  />
+                </div>
+
+                {/* Tooltip tên đầy đủ */}
+                <div
+                  className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 group-hover:-translate-y-1 z-20"
+                  style={{
+                    background: "rgba(15, 23, 42, 0.96)",
+                    color: "white",
+                    fontSize: "0.72rem",
+                    fontWeight: 500,
+                    boxShadow: "0 4px 16px rgba(0,0,0,0.35)",
+                    backdropFilter: "blur(10px)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                  }}
+                >
+                  {bank.name}
+                  <div
+                    className="absolute top-full left-1/2 -translate-x-1/2 -mt-px"
+                    style={{
+                      width: 0,
+                      height: 0,
+                      borderLeft: "4px solid transparent",
+                      borderRight: "4px solid transparent",
+                      borderTop: "4px solid rgba(15, 23, 42, 0.96)",
+                    }}
+                  />
+                </div>
+              </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="mt-8 grid grid-cols-1 gap-4 rounded-2xl border border-white/10 bg-white/[0.05] p-5 backdrop-blur sm:grid-cols-3 sm:gap-5 sm:p-6">
+        {/* Và nhiều ngân hàng khác */}
+        <motion.div
+          className="mt-4 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 0.5 }}
+        >
+          <div
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/10"
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              backdropFilter: "blur(8px)",
+              fontSize: "0.82rem",
+              color: "#94a3b8",
+              fontWeight: 500,
+            }}
+          >
+            <span style={{ letterSpacing: "0.12em", color: "#64748b" }}>
+              •••
+            </span>
+            <span>Và nhiều ngân hàng khác: VietBank, NCB, VIB, MB, ACB...</span>
+          </div>
+        </motion.div>
+
+        {/* Hướng dẫn 3 bước */}
+        <motion.div
+          className="mt-6 grid grid-cols-1 gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur sm:grid-cols-3 sm:gap-5 sm:p-6"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1, duration: 0.5 }}
+        >
           {[
             "Mở app ngân hàng / ví điện tử",
-            "Chọn mục Thanh toán hóa đơn ",
-            "Tìm “Cấp nước Tóc Tiên” và nhập mã KH",
+            "Chọn mục Thanh toán hóa đơn",
+            'Tìm "Cấp nước Tóc Tiên" và nhập mã KH',
           ].map((t) => (
             <div key={t} className="flex items-start gap-3">
               <CheckCircle2
-                className="mt-0.5 h-5 w-5 text-teal-300"
+                className="mt-0.5 h-5 w-5 shrink-0 text-teal-300"
                 aria-hidden
               />
               <p className="text-sm font-medium leading-relaxed text-slate-200">
@@ -72,7 +204,15 @@ export default function PaymentChannels() {
               </p>
             </div>
           ))}
-        </div>
+        </motion.div>
+
+        {/* Badge bảo mật */}
+        <motion.div
+          className="mt-6 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.3, duration: 0.5 }}
+        ></motion.div>
       </div>
     </section>
   );
