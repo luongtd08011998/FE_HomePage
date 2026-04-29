@@ -271,12 +271,10 @@ function AnimatedLogoMark() {
         <span className="relative block h-full min-h-0 w-full backface-hidden [transform:translateZ(0)]">
           <Image
             src="/logocty1.jpg"
-            alt="Logo Công ty"
+            alt="Logo Công ty TNHH Cấp Nước Tóc Tiên"
             fill
-            sizes="(max-width: 640px) 3.5rem, 4rem"
-            quality={95}
-            priority
-            className="object-contain object-center p-px animate-logoImgDrift [image-rendering:auto]"
+            className="object-cover"
+            sizes="(max-width: 640px) 64px, 72px"
           />
         </span>
       </span>

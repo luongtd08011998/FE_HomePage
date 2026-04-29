@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { Article, Category } from "@/types";
 import { articleExcerpt, estimateReadMinutes } from "@/lib/articleText";
@@ -11,14 +10,6 @@ function resolveThumb(thumbnail: string): string {
   if (!thumbnail) return "/placeholder.svg";
   if (thumbnail.startsWith("http")) return thumbnail;
   return `${process.env.NEXT_PUBLIC_MEDIA_URL || "http://localhost:8080"}${thumbnail}`;
-}
-
-function IconSearch({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z" />
-    </svg>
-  );
 }
 
 function IconGrid({ className }: { className?: string }) {
@@ -218,20 +209,12 @@ export default function ArticleListView({
   showCategoryTabs = true,
   children,
 }: ArticleListViewProps) {
-  const router = useRouter();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [searchDraft, setSearchDraft] = useState("");
 
   const sortedCategories = useMemo(
     () => [...categories].sort((a, b) => a.name.localeCompare(b.name, "vi")),
     [categories],
   );
-
-  function onSearchSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    const q = searchDraft.trim();
-    if (q) router.push(`/search?q=${encodeURIComponent(q)}`);
-  }
 
   const allActive = activeCategorySlug == null || activeCategorySlug === "";
 
@@ -246,18 +229,8 @@ export default function ArticleListView({
 
       <div className="mx-auto max-w-7xl px-4 py-8 md:px-6">
         <div className="mb-8">
-          <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-stretch">
-            <form className="relative flex-1" onSubmit={onSearchSubmit}>
-              <IconSearch className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
-              <input
-                type="search"
-                value={searchDraft}
-                onChange={(e) => setSearchDraft(e.target.value)}
-                placeholder="Tìm kiếm bài viết..."
-                className="w-full rounded-xl border-2 border-gray-200 bg-white py-3 pl-12 pr-4 text-gray-900 placeholder:text-gray-400 transition-all focus:border-blue-500 focus:outline-none"
-              />
-            </form>
-            <div className="flex items-center gap-2 self-start rounded-xl border-2 border-gray-200 bg-white p-1 md:self-auto">
+          <div className="mb-6 flex items-stretch">
+            <div className="flex items-center gap-2 self-start rounded-xl border-2 border-gray-200 bg-white p-1">
               <button
                 type="button"
                 onClick={() => setViewMode("grid")}
@@ -331,10 +304,10 @@ export default function ArticleListView({
         {articles.length === 0 ? (
           <div className="py-16 text-center">
             <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-gray-100">
-              <IconSearch className="h-12 w-12 text-gray-400" />
+              <IconList className="h-12 w-12 text-gray-400" />
             </div>
             <h3 className="mb-2 text-xl font-semibold text-gray-900">Không có bài viết</h3>
-            <p className="text-gray-500">Thử chọn danh mục khác hoặc tìm kiếm trên trang chủ.</p>
+            <p className="text-gray-500">Thử chọn danh mục khác.</p>
           </div>
         ) : viewMode === "grid" ? (
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

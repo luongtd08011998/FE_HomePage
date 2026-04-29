@@ -96,8 +96,9 @@ export default function Footer() {
     <footer className="mt-auto bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white">
       <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 sm:pt-12 lg:px-8 pb-[max(2.5rem,env(safe-area-inset-bottom,0px))]">
         <div className="mb-8 grid grid-cols-1 gap-10 sm:gap-8 lg:grid-cols-12 lg:gap-10">
-          <div className="border-b border-white/15 pb-8 text-center sm:border-0 sm:pb-0 sm:text-left lg:col-span-4">
-            <div className="mb-6 flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:gap-3">
+          <div className="border-b border-white/15 pb-8 text-center sm:border-0 sm:pb-0 lg:col-span-4">
+            <div className="mb-6 flex flex-col items-center gap-4">
+              {/* Logo */}
               <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full bg-white shadow-lg ring-2 ring-white/40 motion-safe:transition-transform motion-safe:duration-500 motion-safe:hover:rotate-12 motion-reduce:hover:rotate-0 sm:h-[4.5rem] sm:w-[4.5rem]">
                 <Image
                   src="/logocty1.jpg"
@@ -107,7 +108,12 @@ export default function Footer() {
                   sizes="(max-width: 640px) 64px, 72px"
                 />
               </div>
-              <div className="min-w-0 max-w-md">
+
+              {/* Tên công ty */}
+              <div className="text-center">
+                <p className="mb-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-blue-200/90 sm:text-[0.7rem] sm:tracking-[0.2em] text-center">
+                  Tập đoàn Hải Châu
+                </p>
                 <h3 className="text-base font-semibold leading-snug tracking-tight sm:text-lg md:text-xl">
                   CÔNG TY TNHH
                 </h3>
@@ -116,13 +122,6 @@ export default function Footer() {
                 </h3>
               </div>
             </div>
-            <p className="mb-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-blue-200/90 sm:text-[0.7rem] sm:tracking-[0.2em]">
-              Tập đoàn Hải Châu
-            </p>
-            <p className="mx-auto max-w-md text-pretty leading-relaxed text-blue-100 sm:mx-0">
-              Cung cấp nước sạch chất lượng cao, đảm bảo sức khỏe cho mọi gia
-              đình.
-            </p>
           </div>
 
           <div className="lg:col-span-4">
