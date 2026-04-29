@@ -229,33 +229,9 @@ export default function ArticleListView({
 
       <div className="mx-auto max-w-7xl px-4 py-8 md:px-6">
         <div className="mb-8">
-          <div className="mb-6 flex items-stretch">
-            <div className="flex items-center gap-2 self-start rounded-xl border-2 border-gray-200 bg-white p-1">
-              <button
-                type="button"
-                onClick={() => setViewMode("grid")}
-                className={`rounded-lg p-2 transition-colors motion-safe:active:scale-95 ${
-                  viewMode === "grid" ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-100"
-                }`}
-                aria-label="Dạng lưới"
-              >
-                <IconGrid className="h-5 w-5" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewMode("list")}
-                className={`rounded-lg p-2 transition-colors motion-safe:active:scale-95 ${
-                  viewMode === "list" ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-100"
-                }`}
-                aria-label="Dạng danh sách"
-              >
-                <IconList className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
-
-          {showCategoryTabs && sortedCategories.length > 0 ? (
-            <div className="flex items-center gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <div className="mb-6 flex items-center justify-between gap-4">
+            {showCategoryTabs && sortedCategories.length > 0 ? (
+              <div className="flex min-w-0 flex-1 items-center gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               <Link
                 href="/news"
                 className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-medium transition-all ${
@@ -282,9 +258,31 @@ export default function ArticleListView({
                   </Link>
                 );
               })}
+              </div>
+            ) : null}
+            <div className="flex shrink-0 items-center gap-2 self-start rounded-xl border-2 border-gray-200 bg-white p-1">
+              <button
+                type="button"
+                onClick={() => setViewMode("grid")}
+                className={`rounded-lg p-2 transition-colors motion-safe:active:scale-95 ${
+                  viewMode === "grid" ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-100"
+                }`}
+                aria-label="Dạng lưới"
+              >
+                <IconGrid className="h-5 w-5" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode("list")}
+                className={`rounded-lg p-2 transition-colors motion-safe:active:scale-95 ${
+                  viewMode === "list" ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-100"
+                }`}
+                aria-label="Dạng danh sách"
+              >
+                <IconList className="h-5 w-5" />
+              </button>
             </div>
-          ) : null}
-        </div>
+          </div>
 
         <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
           <p className="text-gray-600">
@@ -324,6 +322,7 @@ export default function ArticleListView({
         )}
 
         {articles.length > 0 ? <div className="mt-10">{children}</div> : null}
+        </div>
       </div>
     </div>
   );
