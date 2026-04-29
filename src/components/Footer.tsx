@@ -83,10 +83,8 @@ const MAP_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
 
 const menuLinks = [
   { label: "Trang chủ", href: "/" },
-  { label: "Giới thiệu", href: "/category/gioi-thieu" },
-  { label: "Văn bản", href: "/category/van-ban" },
   { label: "Tin tức", href: "/category/tin-tuc" },
-  { label: "Liên hệ", href: "/news/thong-tin-lien-he" },
+  { label: "Liên hệ", href: "/lien-he" },
   { label: "Tra cứu hóa đơn", href: "/tra-cuu-hoa-don" },
 ] as const;
 
