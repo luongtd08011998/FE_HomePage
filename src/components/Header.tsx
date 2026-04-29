@@ -483,7 +483,7 @@ export default function Header({ rootCategories }: HeaderProps) {
                   <span
                     className={`nav-bounce-logo flex min-w-0 flex-1 items-center gap-2 sm:gap-2.5 ${logoBlockTransition}`}
                   >
-                    <span className="relative inline-flex h-14 w-14 shrink-0 sm:h-16 sm:w-16">
+                    <span className="relative inline-flex h-11 w-11 shrink-0 sm:h-16 sm:w-16">
                       <span
                         className="logo-hover-ripple pointer-events-none absolute inset-0 z-0 rounded-full bg-sky-300/40"
                         aria-hidden
@@ -495,10 +495,10 @@ export default function Header({ rootCategories }: HeaderProps) {
                       </span>
                     </span>
                     <span className="flex min-w-0 flex-1 flex-col justify-center gap-0.5 sm:gap-1">
-                      <span className="block text-[0.58rem] font-semibold uppercase leading-tight tracking-[0.14em] text-gray-500 sm:text-[0.65rem] sm:tracking-[0.22em]">
+                      <span className="block text-[0.6rem] font-semibold uppercase leading-tight tracking-[0.14em] text-gray-500 sm:text-[0.65rem] sm:tracking-[0.22em]">
                         Tập đoàn Hải Châu
                       </span>
-                      <span className="line-clamp-2 text-[0.7rem] font-bold leading-snug tracking-tight text-gray-900 sm:line-clamp-none sm:text-lg md:text-xl">
+                      <span className="line-clamp-1 text-[0.72rem] font-bold leading-snug tracking-tight text-gray-900 sm:line-clamp-none sm:text-lg md:text-xl">
                         CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN
                       </span>
                     </span>
@@ -506,20 +506,6 @@ export default function Header({ rootCategories }: HeaderProps) {
                 </Link>
 
                 <div className="flex shrink-0 items-center gap-2 lg:hidden">
-                  <a
-                    href="tel:02543894894"
-                    className="inline-flex h-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white shadow-md transition hover:shadow-lg active:scale-[0.98]"
-                    aria-label="Gọi hotline 0254 3 894 894"
-                  >
-                    <svg
-                      className="h-5 w-5"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      aria-hidden
-                    >
-                      <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
-                    </svg>
-                  </a>
                   <button
                     type="button"
                     id="mobile-nav-open"

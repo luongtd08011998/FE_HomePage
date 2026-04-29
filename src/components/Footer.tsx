@@ -99,25 +99,25 @@ export default function Footer() {
           <div className="border-b border-white/15 pb-8 text-center sm:border-0 sm:pb-0 lg:col-span-4">
             <div className="mb-6 flex flex-col items-center gap-4">
               {/* Logo */}
-              <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full bg-white shadow-lg ring-2 ring-white/40 motion-safe:transition-transform motion-safe:duration-500 motion-safe:hover:rotate-12 motion-reduce:hover:rotate-0 sm:h-[4.5rem] sm:w-[4.5rem]">
+              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-white shadow-lg ring-2 ring-white/40 motion-safe:transition-transform motion-safe:duration-500 motion-safe:hover:rotate-12 motion-reduce:hover:rotate-0 sm:h-[4.5rem] sm:w-[4.5rem]">
                 <Image
                   src="/logocty1.jpg"
                   alt="Logo Công ty TNHH Cấp Nước Tóc Tiên"
                   fill
                   className="object-cover"
-                  sizes="(max-width: 640px) 64px, 72px"
+                  sizes="(max-width: 640px) 48px, 72px"
                 />
               </div>
 
               {/* Tên công ty */}
               <div className="text-center">
-                <p className="mb-3 text-[0.65rem] font-semibold uppercase tracking-[0.18em] text-blue-200/90 sm:text-[0.7rem] sm:tracking-[0.2em] text-center">
+                <p className="mb-2 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-blue-200/90 sm:mb-3 sm:text-[0.7rem] sm:tracking-[0.2em]">
                   Tập đoàn Hải Châu
                 </p>
-                <h3 className="text-base font-semibold leading-snug tracking-tight sm:text-lg md:text-xl">
+                <h3 className="text-sm font-semibold leading-snug tracking-tight sm:text-lg md:text-xl">
                   CÔNG TY TNHH
                 </h3>
-                <h3 className="text-base font-semibold leading-snug tracking-tight sm:text-lg md:text-xl">
+                <h3 className="text-sm font-semibold leading-snug tracking-tight sm:text-lg md:text-xl">
                   CẤP NƯỚC TÓC TIÊN
                 </h3>
               </div>
