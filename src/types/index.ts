@@ -8,6 +8,7 @@ export interface CategoryNode {
   id: number;
   name: string;
   slug: string;
+  active?: number;
   parent: CategoryNode | null;
   children: CategoryNode[];
   createdAt: string;

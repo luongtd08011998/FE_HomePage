@@ -10,6 +10,8 @@ export interface ArticleParams {
   search?: string;
   /** 0=bài thường, 1=nổi bật, 2=tin tức — khớp ArticleFilterRequest. */
   type?: 0 | 1 | 2;
+  /** 1=đang hiện, 0=ẩn. */
+  active?: 0 | 1;
   sort?: string;
 }
 
@@ -18,6 +20,7 @@ export const articleService = {
     const { search, keyword, ...rest } = params ?? {};
     const query: Record<string, string | number | undefined> = {
       sort: "createdAt,desc",
+      active: 1,
       ...rest,
     };
     const kw = keyword ?? search;

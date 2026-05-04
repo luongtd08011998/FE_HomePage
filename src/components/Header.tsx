@@ -13,12 +13,11 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { articleService } from "@/services/article";
-import { categoryService } from "@/services/category";
-import type { Category, Article } from "@/types";
+import type { Category, Article, CategoryNode } from "@/types";
 import { IconDocuments } from "@/components/icons/IconDocuments";
 
 interface HeaderProps {
-  rootCategories: Category[];
+  categoryTree: CategoryNode[];
 }
 
 type CategoryWithActive = Category & { active?: number };
@@ -299,7 +298,114 @@ function HeaderBackdrop() {
   );
 }
 
-export default function Header({ rootCategories }: HeaderProps) {
+/** Component đệ quy cho dropdown menu */
+function NavDropdown({
+  children,
+  pathname,
+  introRoot,
+}: {
+  children: CategoryNode[];
+  pathname: string;
+  introRoot?: boolean;
+}) {
+  return (
+    <div className="absolute left-0 top-full z-[60] hidden min-w-[14rem] pt-1 group-hover:block">
+      <div className="rounded-xl border border-gray-100 bg-white py-1 shadow-xl">
+        {children.map((child) => {
+          const hasChildren = child.children && child.children.length > 0;
+          const href = introRoot
+            ? `/gioi-thieu/${child.slug}`
+            : child.slug === "lien-he"
+              ? "/lien-he"
+              : `/category/${child.slug}`;
+          
+          const isActive = introRoot
+            ? pathname === `/gioi-thieu/${child.slug}`
+            : child.slug === "lien-he"
+              ? pathname === "/lien-he"
+              : pathname === `/category/${child.slug}`;
+
+          return (
+            <div key={child.id} className="group/sub relative">
+              <Link
+                href={href}
+                className={[
+                  "group/child flex items-center justify-between px-4 py-2.5 text-sm font-medium tracking-tight",
+                  "transition-[color,background-color,transform] duration-200 ease-out",
+                  "hover:bg-blue-50/90 hover:text-blue-700 hover:translate-x-[2px]",
+                  "focus-visible:outline-none focus-visible:bg-blue-50/90 focus-visible:text-blue-700",
+                  isActive ? "bg-blue-50 text-blue-700 font-semibold" : "text-gray-800",
+                ].join(" ")}
+              >
+                <span className="flex items-center gap-2">
+                  <span
+                    aria-hidden
+                    className={`absolute bottom-1.5 left-0 top-1.5 w-1 rounded-r bg-blue-600 transition-opacity duration-200 ${
+                      isActive ? "opacity-100" : "opacity-0 group-hover/child:opacity-100"
+                    }`}
+                  />
+                  {child.name}
+                </span>
+                {hasChildren && (
+                  <svg
+                    className="h-3.5 w-3.5 -rotate-90 text-gray-400 transition-colors group-hover/child:text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                )}
+              </Link>
+
+              {hasChildren && (
+                <div className="absolute left-full top-0 hidden min-w-[14rem] pl-0.5 group-hover/sub:block">
+                  <div className="rounded-xl border border-gray-100 bg-white py-1 shadow-xl">
+                    {child.children.map((grandChild) => {
+                      const gcHref = introRoot
+                        ? `/gioi-thieu/${grandChild.slug}`
+                        : grandChild.slug === "lien-he"
+                          ? "/lien-he"
+                          : `/category/${grandChild.slug}`;
+                      const gcActive = introRoot
+                        ? pathname === `/gioi-thieu/${grandChild.slug}`
+                        : grandChild.slug === "lien-he"
+                          ? pathname === "/lien-he"
+                          : pathname === `/category/${grandChild.slug}`;
+
+                      return (
+                        <Link
+                          key={grandChild.id}
+                          href={gcHref}
+                          className={[
+                            "group/grandchild relative block px-4 py-2.5 text-sm font-medium tracking-tight",
+                            "transition-[color,background-color,transform] duration-200 ease-out",
+                            "hover:bg-blue-50/90 hover:text-blue-700 hover:translate-x-[2px]",
+                            isActive ? "bg-blue-50 text-blue-700 font-semibold" : "text-gray-800",
+                          ].join(" ")}
+                        >
+                          <span
+                            aria-hidden
+                            className={`absolute bottom-1.5 left-0 top-1.5 w-1 rounded-r bg-blue-600 transition-opacity duration-200 ${
+                              gcActive ? "opacity-100" : "opacity-0 group-hover/grandchild:opacity-100"
+                            }`}
+                          />
+                          {grandChild.name}
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+export default function Header({ categoryTree }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [query, setQuery] = useState("");
@@ -337,43 +443,9 @@ export default function Header({ rootCategories }: HeaderProps) {
 
   const roots = useMemo(
     () =>
-      rootCategories.filter((c) => isCategoryActive(c as CategoryWithActive)),
-    [rootCategories],
+      categoryTree.filter((c) => isCategoryActive(c as CategoryWithActive)),
+    [categoryTree],
   );
-
-  const [childrenByRootId, setChildrenByRootId] = useState<
-    Record<number, Category[]>
-  >({});
-
-  useEffect(() => {
-    if (roots.length === 0) {
-      setChildrenByRootId({});
-      return;
-    }
-    let cancelled = false;
-    Promise.all(
-      roots.map((r) =>
-        categoryService.getChildren(r.id).then((list) => ({
-          id: r.id,
-          list: list.filter((c) => isCategoryActive(c as CategoryWithActive)),
-        })),
-      ),
-    )
-      .then((pairs) => {
-        if (cancelled) return;
-        const next: Record<number, Category[]> = {};
-        for (const { id, list } of pairs) {
-          next[id] = list;
-        }
-        setChildrenByRootId(next);
-      })
-      .catch(() => {
-        if (!cancelled) setChildrenByRootId({});
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [roots]);
 
   useEffect(() => {
     if (!debouncedQ.trim()) {
@@ -682,12 +754,22 @@ export default function Header({ rootCategories }: HeaderProps) {
               </Link>
 
               {roots.map((root) => {
-                const children = childrenByRootId[root.id] ?? [];
+                const children = root.children ?? [];
                 const introRoot = isIntroRoot(root.slug);
                 const isLienHe = root.slug === "lien-he";
                 const rootHref = isLienHe
                   ? "/lien-he"
                   : `/category/${root.slug}`;
+                
+                // Root được coi là active nếu pathname là chính nó hoặc là bất kỳ con/cháu nào của nó
+                const checkActiveRecursive = (nodes: CategoryNode[]): boolean => {
+                  return nodes.some(n => 
+                    pathname === `/category/${n.slug}` || 
+                    pathname === `/gioi-thieu/${n.slug}` ||
+                    (n.children && checkActiveRecursive(n.children))
+                  );
+                };
+
                 const rootActive = introRoot
                   ? pathname === `/category/${root.slug}` ||
                     pathname === "/gioi-thieu" ||
@@ -695,7 +777,7 @@ export default function Header({ rootCategories }: HeaderProps) {
                   : (isLienHe
                       ? pathname === "/lien-he"
                       : pathname === `/category/${root.slug}`) ||
-                    children.some((c) => pathname === `/category/${c.slug}`);
+                    checkActiveRecursive(children);
 
                 if (children.length === 0) {
                   const active = isLienHe
@@ -748,45 +830,7 @@ export default function Header({ rootCategories }: HeaderProps) {
                       )}
                     </Link>
 
-                    <div className="absolute left-0 top-full z-[60] hidden w-56 pt-1 group-hover:block">
-                      <div className="rounded-xl border border-gray-100 bg-white py-1 shadow-xl">
-                        {children.map((child) => (
-                          <Link
-                            key={child.id}
-                            href={
-                              introRoot
-                                ? `/gioi-thieu/${child.slug}`
-                                : child.slug === "lien-he"
-                                  ? "/lien-he"
-                                  : `/category/${child.slug}`
-                            }
-                            className={[
-                              "group/child relative block px-4 py-2.5 text-sm font-medium tracking-tight",
-                              "transition-[color,background-color,transform] duration-200 ease-out",
-                              "hover:bg-blue-50/90 hover:text-blue-700 hover:translate-x-[2px]",
-                              "focus-visible:outline-none focus-visible:bg-blue-50/90 focus-visible:text-blue-700",
-                              introRoot
-                                ? pathname === `/gioi-thieu/${child.slug}`
-                                  ? "bg-blue-50 text-blue-700 font-semibold"
-                                  : "text-gray-800"
-                                : child.slug === "lien-he"
-                                  ? pathname === "/lien-he"
-                                    ? "bg-blue-50 text-blue-700 font-semibold"
-                                    : "text-gray-800"
-                                  : pathname === `/category/${child.slug}`
-                                    ? "bg-blue-50 text-blue-700 font-semibold"
-                                    : "text-gray-800",
-                            ].join(" ")}
-                          >
-                            <span
-                              aria-hidden
-                              className="absolute bottom-1.5 left-0 top-1.5 w-1 rounded-r bg-blue-600 opacity-0 transition-opacity duration-200 group-hover/child:opacity-100"
-                            />
-                            {child.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
+                    <NavDropdown children={children} pathname={pathname} introRoot={introRoot} />
                   </div>
                 );
               })}
@@ -868,7 +912,7 @@ export default function Header({ rootCategories }: HeaderProps) {
                 </Link>
 
                 {roots.map((root) => {
-                  const children = childrenByRootId[root.id] ?? [];
+                  const children = root.children ?? [];
                   const introRoot = isIntroRoot(root.slug);
                   if (children.length === 0) {
                     const isLienHe = root.slug === "lien-he";
@@ -938,6 +982,39 @@ export default function Header({ rootCategories }: HeaderProps) {
                             : child.slug === "lien-he"
                               ? pathname === "/lien-he"
                               : pathname === `/category/${child.slug}`;
+                          
+                          const hasGrandChildren = child.children && child.children.length > 0;
+
+                          if (hasGrandChildren) {
+                            return (
+                              <details key={child.id} className="border-t border-white/5 first:border-t-0">
+                                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 py-3 pl-12 pr-3 text-sm font-medium text-white/90 active:bg-white/10 [&::-webkit-details-marker]:hidden">
+                                  <span>{child.name}</span>
+                                  <svg
+                                    className="chevron-icon h-4 w-4 shrink-0 transition-transform duration-200"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                  </svg>
+                                </summary>
+                                <div className="bg-black/20 py-1">
+                                  {child.children.map((grandChild) => (
+                                    <Link
+                                      key={grandChild.id}
+                                      href={introRoot ? `/gioi-thieu/${grandChild.slug}` : `/category/${grandChild.slug}`}
+                                      onClick={() => setMobileNavOpen(false)}
+                                      className="block py-2.5 pl-16 pr-3 text-xs font-medium text-white/80 hover:bg-white/5"
+                                    >
+                                      {grandChild.name}
+                                    </Link>
+                                  ))}
+                                </div>
+                              </details>
+                            );
+                          }
+
                           return (
                             <Link
                               key={child.id}

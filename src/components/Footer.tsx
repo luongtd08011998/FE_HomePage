@@ -85,7 +85,7 @@ const menuLinks = [
   { label: "Trang chủ", href: "/" },
   { label: "Tin tức", href: "/category/tin-tuc" },
   { label: "Liên hệ", href: "/lien-he" },
-  { label: "Tra cứu hóa đơn", href: "/tra-cuu-hoa-don" },
+  { label: "Tra cứu hóa đơn", href: "/category/tra-cuu-hoa-don" },
 ] as const;
 
 const linkRow =

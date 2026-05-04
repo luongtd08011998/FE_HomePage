@@ -111,7 +111,7 @@ export default function ServiceCards() {
           </div>
 
           <Link
-            href="/tra-cuu-hoa-don"
+            href="/category/tra-cuu-hoa-don"
             className={`${cardShell} border-cyan-500/30 bg-white/[0.06] hover:border-cyan-400/50 hover:bg-white/[0.08]`}
           >
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-300 ring-1 ring-cyan-400/30">
@@ -128,8 +128,8 @@ export default function ServiceCards() {
             </span>
           </Link>
 
-          <a
-            href="tel:02543894894"
+          <Link
+            href="/category/dang-ky-lap-dat-truc-tuyen"
             className={`${cardShell} border-violet-500/30 bg-white/[0.06] hover:border-violet-400/50 hover:bg-white/[0.08]`}
           >
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-500/20 text-violet-300 ring-1 ring-violet-400/30">
@@ -145,7 +145,7 @@ export default function ServiceCards() {
             <span className="mt-4 text-sm font-semibold text-violet-300 hover:text-violet-200">
               Mở đăng ký online →
             </span>
-          </a>
+          </Link>
         </div>
 
         <div className="mt-10 sm:mt-12">

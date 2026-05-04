@@ -4,6 +4,7 @@ import ArticleListView from "@/components/article/ArticleListView";
 import ArticleListPagination from "@/components/article/ArticleListPagination";
 import { categoryService } from "@/services/category";
 import type { Article, PaginatedMeta } from "@/types";
+import TraCuuHoaDonClient from "@/components/qlkh/TraCuuHoaDonClient";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -66,6 +67,10 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
   function buildUrl(newPage: number) {
     return `/category/${slug}${newPage > 1 ? `?page=${newPage}` : ""}`;
+  }
+
+  if (slug === "tra-cuu-hoa-don") {
+    return <TraCuuHoaDonClient />;
   }
 
   return (

@@ -2,11 +2,11 @@ import { categoryService } from "@/services/category";
 import Header from "./Header";
 
 export default async function HeaderWrapper() {
-  let rootCategories: Awaited<ReturnType<typeof categoryService.getRoots>> = [];
+  let categoryTree: Awaited<ReturnType<typeof categoryService.getTree>> = [];
   try {
-    rootCategories = await categoryService.getRoots();
+    categoryTree = await categoryService.getTree();
   } catch {
-    // silently fail — header still renders without roots
+    // silently fail — header still renders without tree
   }
-  return <Header rootCategories={rootCategories} />;
+  return <Header categoryTree={categoryTree} />;
 }
