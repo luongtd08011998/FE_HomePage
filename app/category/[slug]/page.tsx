@@ -73,6 +73,15 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     return <TraCuuHoaDonClient />;
   }
 
+  if (slug === "dang-ky-lap-dat-truc-tuyen") {
+    const RegistrationForm = (await import("@/components/registration/RegistrationForm")).default;
+    return (
+      <div className="bg-gradient-to-b from-blue-50 to-white min-h-screen">
+        <RegistrationForm />
+      </div>
+    );
+  }
+
   return (
     <ArticleListView
       heroTitle={categoryName}
