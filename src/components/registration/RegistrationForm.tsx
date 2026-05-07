@@ -174,7 +174,6 @@ export default function RegistrationForm() {
                 className="md:col-span-2"
               >
                 <Input.TextArea 
-                  prefix={<HomeOutlined className="text-gray-400" />} 
                   placeholder="Nhập địa chỉ chi tiết nơi cần lắp đặt" 
                   className="rounded-xl border-gray-200 !min-h-[120px] pt-3"
                   autoSize={{ minRows: 3, maxRows: 6 }}
