@@ -45,8 +45,9 @@ const axiosConfig = {
 
 export async function POST(request: NextRequest) {
   try {
-    // Kiểm tra rate limit dựa trên IP
-    const ip = request.ip || request.headers.get("x-forwarded-for") || "unknown";
+    // Kiểm tra rate limit dựa trên IP (Lấy từ headers để tránh lỗi TypeScript)
+    const forwarded = request.headers.get("x-forwarded-for");
+    const ip = forwarded ? forwarded.split(",")[0] : "unknown";
     if (isRateLimited(ip)) {
       return NextResponse.json(
         { retCode: "ERR_SPAM", retMsg: "Bạn đã gửi quá nhiều yêu cầu. Vui lòng thử lại sau 24h." },
