@@ -10,6 +10,29 @@ const httpsAgent = new https.Agent({
   rejectUnauthorized: false,
 });
 
+// Rate limiting đơn giản (In-memory)
+// Trong thực tế nên dùng Redis cho môi trường production
+const rateLimitMap = new Map<string, { count: number; lastReset: number }>();
+const RATE_LIMIT_WINDOW = 24 * 60 * 60 * 1000; // 24 giờ
+const MAX_REQUESTS = 3; // Tối đa 3 lần đăng ký mỗi 24 giờ
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(ip);
+
+  if (!record || now - record.lastReset > RATE_LIMIT_WINDOW) {
+    rateLimitMap.set(ip, { count: 1, lastReset: now });
+    return false;
+  }
+
+  if (record.count >= MAX_REQUESTS) {
+    return true;
+  }
+
+  record.count += 1;
+  return false;
+}
+
 const axiosConfig = {
   headers: {
     "Content-Type": "application/json",
@@ -22,6 +45,15 @@ const axiosConfig = {
 
 export async function POST(request: NextRequest) {
   try {
+    // Kiểm tra rate limit dựa trên IP
+    const ip = request.ip || request.headers.get("x-forwarded-for") || "unknown";
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { retCode: "ERR_SPAM", retMsg: "Bạn đã gửi quá nhiều yêu cầu. Vui lòng thử lại sau 24h." },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const response = await axios.post(`${EXTERNAL_API_URL}/register_add`, body, axiosConfig);
     return NextResponse.json(response.data, { status: response.status });

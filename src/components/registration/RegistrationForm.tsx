@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Form, Input, Button, Card, message, Result, Typography } from "antd";
+import { Form, Input, Button, Card, message, Result, Typography, Alert, notification, Spin } from "antd";
 import { UserOutlined, PhoneOutlined, HomeOutlined, MailOutlined, SendOutlined, FileTextOutlined } from "@ant-design/icons";
 import { registrationService, type RegistrationPayload } from "@/services/registration";
 import { motion, AnimatePresence } from "motion/react";
@@ -13,26 +13,49 @@ export default function RegistrationForm() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [regTime, setRegTime] = useState<string | null>(null);
+  const [cooldown, setCooldown] = useState(0);
 
-  const onFinish = async (values: RegistrationPayload) => {
+  const onFinish = async (values: any) => {
+    // Honeypot check: Nếu trường ẩn này có dữ liệu -> Bắt bot
+    if (values.website) {
+      console.warn("Bot detected!");
+      return;
+    }
+
+    // Xóa trường website trước khi gửi đi
+    const { website, ...payload } = values;
+
     setLoading(true);
     try {
-      const res = await registrationService.register(values);
+      const res = await registrationService.register(payload);
+      
       if (res.retCode === "ERR_OK") {
+        notification.success({
+          title: "Đăng ký thành công",
+          description: "Yêu cầu của quý khách đã được gửi đi thành công.",
+          placement: "topRight",
+        });
         setSuccess(true);
-        // Sau khi đăng ký xong, thử lấy thời gian đăng ký (optional)
         try {
-          const time = await registrationService.getRegistrationTime(values.phone);
+          const time = await registrationService.getRegistrationTime(payload.phone);
           setRegTime(time);
         } catch (e) {
           console.error("Failed to fetch registration time", e);
         }
       } else {
-        message.error(res.retMsg || "Đăng ký thất bại. Vui lòng thử lại.");
+        // Xử lý tất cả các mã lỗi (bao gồm cả spam 429) thông qua notification
+        notification.error({
+          title: "Thông báo",
+          description: res.retMsg || "Đăng ký không thành công. Vui lòng thử lại.",
+          duration: 5,
+        });
       }
     } catch (error: any) {
-      console.error(error);
-      message.error("Có lỗi xảy ra khi kết nối với hệ thống.");
+      console.error("Unexpected Error:", error);
+      notification.error({
+        title: "Lỗi hệ thống",
+        description: "Đã có lỗi không mong muốn xảy ra. Vui lòng thử lại sau.",
+      });
     } finally {
       setLoading(false);
     }
@@ -118,14 +141,20 @@ export default function RegistrationForm() {
         <Card className="shadow-2xl border-0 overflow-hidden rounded-3xl bg-white/90 backdrop-blur-xl relative">
           <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-400" />
           
-          <Form
-            form={form}
-            layout="vertical"
-            onFinish={onFinish}
-            size="large"
-            className="p-4 md:p-8"
-            requiredMark={false}
-          >
+          <Spin spinning={loading} description="Đang xử lý yêu cầu..." size="large">
+            <Form
+              form={form}
+              layout="vertical"
+              onFinish={onFinish}
+              size="large"
+              className="p-4 md:p-8"
+              requiredMark={false}
+            >
+            {/* Honeypot field - Bot sẽ tự điền vào đây, người dùng thì không thấy */}
+            <Form.Item name="website" className="hidden" style={{ display: "none" }}>
+              <Input tabIndex={-1} autoComplete="off" />
+            </Form.Item>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
               <Form.Item
                 name="name"
@@ -205,10 +234,12 @@ export default function RegistrationForm() {
             </div>
 
             <div className="border-t border-blue-100 pt-6">
-              <h3 className="text-blue-900 font-bold mb-4 flex items-center gap-2">
-                <FileTextOutlined /> Hồ sơ cần chuẩn bị
+              <h3 className="text-blue-900 font-bold mb-2 flex items-center gap-2">
+                <FileTextOutlined /> Quý khách vui lòng chuẩn bị hồ sơ gồm:
               </h3>
-              <ul className="space-y-3 text-sm text-gray-600">
+              
+              
+              <ul className="space-y-3 text-sm text-gray-600 mb-6">
                 <li className="flex items-start gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
                   <span>
@@ -243,10 +274,21 @@ export default function RegistrationForm() {
                   <span>Hợp đồng thuê đất (Nếu là đất thuê)</span>
                 </li>
               </ul>
+
+              <Alert
+                title="Lưu ý quan trọng"
+                description="Kính đề nghị Quý khách chuẩn bị đầy đủ các loại giấy tờ nêu trên để cung cấp cho nhân viên khảo sát khi đến làm việc.
+
+Trường hợp hồ sơ hoặc thông tin chưa đầy đủ, chúng tôi rất tiếc chưa thể tiếp nhận và xử lý yêu cầu của Quý khách."
+                type="warning"
+                showIcon
+                className="rounded-xl border-orange-100 bg-orange-50/50"
+              />
             </div>
           </div>
-        </Card>
-      </motion.div>
+        </Spin>
+      </Card>
+    </motion.div>
     </div>
   );
 }

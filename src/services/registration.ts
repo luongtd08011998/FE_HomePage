@@ -18,11 +18,19 @@ export interface RegistrationResponse {
 export const registrationService = {
   /** Gửi yêu cầu đăng ký lắp đặt mới */
   async register(payload: RegistrationPayload): Promise<RegistrationResponse> {
-    const { data } = await axios.post<RegistrationResponse>(
-      REGISTRATION_INTERNAL_URL,
-      payload
-    );
-    return data;
+    try {
+      const { data } = await axios.post<RegistrationResponse>(
+        REGISTRATION_INTERNAL_URL,
+        payload,
+        { validateStatus: () => true } // Chấp nhận tất cả mã lỗi để không ném ngoại lệ
+      );
+      return data;
+    } catch (error: any) {
+      return {
+        retCode: "ERR_NETWORK",
+        retMsg: error.message || "Lỗi kết nối mạng",
+      };
+    }
   },
 
   /** Lấy thông tin thời gian đã đăng ký theo số điện thoại */
