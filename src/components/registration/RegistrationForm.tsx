@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Form, Input, Button, Card, message, Result, Typography } from "antd";
-import { UserOutlined, PhoneOutlined, HomeOutlined, MailOutlined, SendOutlined } from "@ant-design/icons";
+import { UserOutlined, PhoneOutlined, HomeOutlined, MailOutlined, SendOutlined, FileTextOutlined } from "@ant-design/icons";
 import { registrationService, type RegistrationPayload } from "@/services/registration";
 import { motion, AnimatePresence } from "motion/react";
 
@@ -194,14 +194,55 @@ export default function RegistrationForm() {
             </div>
           </Form>
 
-          <div className="bg-gray-50/50 p-6 border-t border-gray-100">
-            <div className="flex items-start gap-3">
+          <div className="bg-blue-50/50 p-6 border-t border-gray-100">
+            <div className="flex items-start gap-3 mb-6">
               <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
                 <span className="text-blue-600 font-bold text-xs">i</span>
               </div>
               <p className="text-gray-500 text-sm leading-relaxed">
                 Sau khi gửi yêu cầu, hệ thống sẽ tự động xử lý và chuyển cho bộ phận kỹ thuật. Chúng tôi sẽ liên hệ lại với quý khách theo số điện thoại đã cung cấp để hướng dẫn các bước tiếp theo.
               </p>
+            </div>
+
+            <div className="border-t border-blue-100 pt-6">
+              <h3 className="text-blue-900 font-bold mb-4 flex items-center gap-2">
+                <FileTextOutlined /> Hồ sơ cần chuẩn bị
+              </h3>
+              <ul className="space-y-3 text-sm text-gray-600">
+                <li className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
+                  <span>
+                    Đơn xin lắp đặt:{" "}
+                    <a 
+                      href="/2026_Giay_de_nghi_lap_dat_dong_ho_toctienltd.doc" 
+                      download 
+                      className="text-blue-600 hover:underline font-medium"
+                    >
+                      Tải về mẫu đơn tại đây
+                    </a>
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
+                  <span>Giấy chứng nhận quyền sử dụng đất chính chủ</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
+                  <span>Căn cước công dân của người đứng tên trên GCNQSDĐ</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
+                  <span>Giấy phép xây dựng (Nếu đất nằm ngoài khu TĐC và Khu đã được cấp phép)</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
+                  <span><strong>Đối với Doanh Nghiệp:</strong> Giấy phép ĐKKD, CCCD người đại diện</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
+                  <span>Hợp đồng thuê đất (Nếu là đất thuê)</span>
+                </li>
+              </ul>
             </div>
           </div>
         </Card>
