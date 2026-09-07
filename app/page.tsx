@@ -61,7 +61,7 @@ export default async function HomePage() {
         <section className="w-full" aria-label="Khu vực nổi bật">
           <div className="grid grid-cols-12 items-start gap-4 lg:items-stretch">
             {/* LEFT */}
-            <div className="col-span-12 flex flex-col gap-4 lg:col-span-8 lg:h-full">
+            <div className="col-span-12 order-2 flex flex-col gap-4 lg:order-1 lg:col-span-8 lg:h-full">
               {/* HERO */}
               <div
                 className={`relative h-[340px] overflow-hidden sm:h-[420px] lg:flex-1 lg:h-auto lg:min-h-[520px] ${CARD_HOVER_CLASS}`}
@@ -71,7 +71,7 @@ export default async function HomePage() {
             </div>
 
             {/* RIGHT */}
-            <div className="col-span-12 flex flex-col gap-4 lg:col-span-4">
+            <div className="col-span-12 order-1 flex flex-col gap-4 lg:order-2 lg:col-span-4">
               <HomeArticleSidebarSection
                 mode="featured"
                 title="Bài viết nổi bật"
