@@ -60,6 +60,16 @@ export default function ArticleContent({ content }: ArticleContentProps) {
           const next = normalizeMediaUrl(href);
           if (next && next !== href) a.setAttribute("href", next);
         });
+        // Wrap tables in overflow-x-auto div for mobile responsiveness
+        root.querySelectorAll("table").forEach((table) => {
+          if (!table.parentElement?.classList.contains('overflow-x-auto')) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'overflow-x-auto w-full my-6 border border-gray-200 rounded-lg shadow-sm';
+            table.parentNode?.insertBefore(wrapper, table);
+            wrapper.appendChild(table);
+            table.classList.add('w-full', 'min-w-[600px]'); // đảm bảo bảng không bị co nhỏ quá mức
+          }
+        });
       }
     }
     sanitize();
@@ -70,7 +80,7 @@ export default function ArticleContent({ content }: ArticleContentProps) {
       ref={ref}
       style={{ fontFamily: "Arial, Helvetica, sans-serif" }}
       className={[
-        "prose prose-base max-w-none text-left",
+        "prose prose-base max-w-none text-left break-words",
         "leading-[1.6]",
         "prose-headings:font-semibold prose-headings:tracking-tight",
         "prose-h2:mt-10 prose-h2:mb-4 prose-h3:mt-8 prose-h3:mb-3",
