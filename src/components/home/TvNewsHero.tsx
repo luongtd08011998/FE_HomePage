@@ -174,7 +174,7 @@ export default function TvNewsHero({ articles = [] }: TvNewsHeroProps) {
       </div>
 
       <div className="flex items-center justify-center gap-2 py-3 sm:gap-3 sm:py-5">
-        {newsArticles.map((_: TvNewsArticle, index: number) => (
+        {newsArticles.map((_, index: number) => (
           <button
             key={index}
             type="button"
