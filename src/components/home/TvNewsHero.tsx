@@ -165,9 +165,7 @@ export default function TvNewsHero({ articles = [] }: TvNewsHeroProps) {
               >
                 {current.title}
               </h2>
-              <p className="max-w-2xl text-sm leading-relaxed text-white/85 sm:text-base">
-                {current.description}
-              </p>
+
             </motion.div>
           </motion.div>
         </AnimatePresence>
