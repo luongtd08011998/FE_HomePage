@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, ChevronRight, Tag } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import type { Article } from "@/types";
 
 interface TvNewsHeroProps {
@@ -46,12 +47,14 @@ function swipePower(offset: number, velocity: number) {
 }
 
 export default function TvNewsHero({ articles = [] }: TvNewsHeroProps) {
+  const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const newsArticles = articles.map(a => ({
     id: a.id,
+    slug: a.slug,
     url: resolveThumb(a.thumbnail),
     title: a.title,
     description: stripHtml(a.content),
@@ -127,7 +130,8 @@ export default function TvNewsHero({ articles = [] }: TvNewsHeroProps) {
               if (swipe < -swipeConfidenceThreshold) paginate(1);
               else if (swipe > swipeConfidenceThreshold) paginate(-1);
             }}
-            className="absolute inset-0"
+            onClick={() => router.push(`/news/${current.slug}`)}
+            className="absolute inset-0 cursor-pointer"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
