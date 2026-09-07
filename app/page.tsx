@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { CARD_HOVER_CLASS } from "@/lib/cardHover";
 import { articleService } from "@/services/article";
+import { categoryService } from "@/services/category";
 import type { Article } from "@/types";
 
 function resolveThumb(thumbnail: string): string {
@@ -17,9 +18,10 @@ export default async function HomePage() {
   let featuredArticles: Article[] = [];
   let mostViewedArticles: Article[] = [];
   let latestArticles: Article[] = [];
+  let waterTestingArticles: Article[] = [];
 
   try {
-    const [featured, byViews, latest] = await Promise.all([
+    const [featured, byViews, latest, waterTesting] = await Promise.all([
       articleService.getAll({
         type: 1,
         page: 0,
@@ -36,10 +38,12 @@ export default async function HomePage() {
         size: 6,
         sort: "createdAt,desc",
       }),
+      categoryService.getArticlesBySlug("xet-nghiem-nuoc", { size: 5 }),
     ]);
     featuredArticles = featured.result;
     mostViewedArticles = byViews.result;
     latestArticles = latest.result;
+    waterTestingArticles = waterTesting.result;
   } catch {
     // API not available — render empty state
   }
@@ -62,7 +66,7 @@ export default async function HomePage() {
               <div
                 className={`relative h-[340px] overflow-hidden sm:h-[420px] lg:flex-1 lg:h-auto lg:min-h-[520px] ${CARD_HOVER_CLASS}`}
               >
-                <TvNewsHero />
+                <TvNewsHero articles={waterTestingArticles} />
               </div>
             </div>
 
