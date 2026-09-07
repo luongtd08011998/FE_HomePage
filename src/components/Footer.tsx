@@ -78,8 +78,8 @@ function IconChevronRight({ className }: { className?: string }) {
   );
 }
 
-const ADDRESS = "Ấp 6, Xã Châu Pha, TP. Hồ Chí Minh, Việt Nam";
-const MAP_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ADDRESS)}`;
+const ADDRESS = "Ấp Tóc Tiên 1, Xã Châu Pha, TP. Hồ Chí Minh, Việt Nam";
+const MAP_URL = "https://maps.app.goo.gl/nY1ZkzVAGcV9LwKc9";
 
 const menuLinks = [
   { label: "Trang chủ", href: "/" },

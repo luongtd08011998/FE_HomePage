@@ -32,7 +32,7 @@ export default function Lienhe() {
     {
       icon: MapPin,
       title: "Địa chỉ",
-      content: "Ấp 6, Xã Châu Pha, Thành phố Hồ Chí Minh, Việt Nam",
+      content: "Ấp Tóc Tiên 1, Xã Châu Pha, Thành phố Hồ Chí Minh, Việt Nam",
       delay: 0.2,
     },
     {
@@ -322,7 +322,7 @@ export default function Lienhe() {
                 Vị trí của chúng tôi
               </h3>
               <p className="text-[#64748b] max-w-md mx-auto px-6">
-                Ấp 6, Xã Châu Pha, Thành phố Hồ Chí Minh, Việt Nam
+                Ấp Tóc Tiên 1, Xã Châu Pha, Thành phố Hồ Chí Minh, Việt Nam
               </p>
             </div>
           </div>
