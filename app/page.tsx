@@ -16,23 +16,19 @@ function resolveThumb(thumbnail: string): string {
 
 export default async function HomePage() {
   let featuredArticles: Article[] = [];
-  let mostViewedArticles: Article[] = [];
+  let maintenanceArticles: Article[] = [];
   let latestArticles: Article[] = [];
   let waterTestingArticles: Article[] = [];
 
   try {
-    const [featured, byViews, latest, waterTesting] = await Promise.all([
+    const [featured, maintenance, latest, waterTesting] = await Promise.all([
       articleService.getAll({
         type: 1,
         page: 0,
         size: 5,
         sort: "createdAt,desc",
       }),
-      articleService.getAll({
-        page: 0,
-        size: 7,
-        sort: "views,desc",
-      }),
+      categoryService.getArticlesBySlug("lich-cup-nuoc-bao-duong", { size: 7 }),
       articleService.getAll({
         page: 0,
         size: 6,
@@ -41,7 +37,7 @@ export default async function HomePage() {
       categoryService.getArticlesBySlug("xet-nghiem-nuoc", { size: 5 }),
     ]);
     featuredArticles = featured.result;
-    mostViewedArticles = byViews.result;
+    maintenanceArticles = maintenance.result;
     latestArticles = latest.result;
     waterTestingArticles = waterTesting.result;
   } catch {
@@ -81,10 +77,10 @@ export default async function HomePage() {
               />
               <HomeArticleSidebarSection
                 mode="mostViewed"
-                title="Được xem nhiều"
-                articles={mostViewedArticles}
+                title="Lịch cúp nước bảo dưỡng"
+                articles={maintenanceArticles}
                 maxItems={7}
-                showViews
+                showViews={false}
               />
             </div>
           </div>
