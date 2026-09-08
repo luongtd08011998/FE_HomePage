@@ -835,19 +835,7 @@ export default function Header({ categoryTree }: HeaderProps) {
                 );
               })}
 
-              <Link
-                href="/lien-he"
-                className={`nav-bounce-hover group/nav-item relative flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2 py-1.5 transition-colors sm:gap-2 sm:rounded-xl sm:px-2.5 sm:py-2 ${navMenuTransition} ${
-                  pathname === "/lien-he"
-                    ? "bg-white/25 text-white"
-                    : "text-white/95 hover:bg-white/18"
-                }`}
-              >
-                <NavLabelText>Liên hệ</NavLabelText>
-                {pathname === "/lien-he" && (
-                  <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-cyan-200 shadow-[0_0_12px_rgba(165,243,252,0.9)] sm:left-3 sm:right-3" />
-                )}
-              </Link>
+
             </nav>
           </div>
         </div>
@@ -1035,18 +1023,7 @@ export default function Header({ categoryTree }: HeaderProps) {
                   );
                 })}
 
-                <Link
-                  href="/lien-he"
-                  onClick={() => setMobileNavOpen(false)}
-                  className={`mb-1 mt-2 flex min-h-[48px] items-center gap-3 rounded-xl px-3 py-3 text-base font-semibold transition active:bg-white/10 ${
-                    pathname === "/lien-he"
-                      ? "bg-white/20 text-white"
-                      : "text-white/95 hover:bg-white/12"
-                  }`}
-                >
-                  <IconPhone className="h-5 w-5 shrink-0 text-cyan-100" />
-                  LIÊN HỆ
-                </Link>
+
               </nav>
             </div>
           </>,
