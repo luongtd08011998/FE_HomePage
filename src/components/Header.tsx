@@ -302,26 +302,20 @@ function HeaderBackdrop() {
 function NavDropdown({
   children,
   pathname,
-  introRoot,
 }: {
   children: CategoryNode[];
   pathname: string;
-  introRoot?: boolean;
 }) {
   return (
     <div className="absolute left-0 top-full z-[60] hidden min-w-[14rem] pt-1 group-hover:block">
       <div className="rounded-xl border border-gray-100 bg-white py-1 shadow-xl">
         {children.map((child) => {
           const hasChildren = child.children && child.children.length > 0;
-          const href = introRoot
-            ? `/gioi-thieu/${child.slug}`
-            : child.slug === "lien-he"
+          const href = child.slug === "lien-he"
               ? "/lien-he"
               : `/category/${child.slug}`;
           
-          const isActive = introRoot
-            ? pathname === `/gioi-thieu/${child.slug}`
-            : child.slug === "lien-he"
+          const isActive = child.slug === "lien-he"
               ? pathname === "/lien-he"
               : pathname === `/category/${child.slug}`;
 
@@ -362,14 +356,10 @@ function NavDropdown({
                 <div className="absolute left-full top-0 hidden min-w-[14rem] pl-0.5 group-hover/sub:block">
                   <div className="rounded-xl border border-gray-100 bg-white py-1 shadow-xl">
                     {child.children.map((grandChild) => {
-                      const gcHref = introRoot
-                        ? `/gioi-thieu/${grandChild.slug}`
-                        : grandChild.slug === "lien-he"
+                      const gcHref = grandChild.slug === "lien-he"
                           ? "/lien-he"
                           : `/category/${grandChild.slug}`;
-                      const gcActive = introRoot
-                        ? pathname === `/gioi-thieu/${grandChild.slug}`
-                        : grandChild.slug === "lien-he"
+                      const gcActive = grandChild.slug === "lien-he"
                           ? pathname === "/lien-he"
                           : pathname === `/category/${grandChild.slug}`;
 
@@ -755,7 +745,6 @@ export default function Header({ categoryTree }: HeaderProps) {
 
               {roots.map((root) => {
                 const children = root.children ?? [];
-                const introRoot = isIntroRoot(root.slug);
                 const isLienHe = root.slug === "lien-he";
                 const rootHref = isLienHe
                   ? "/lien-he"
@@ -765,16 +754,11 @@ export default function Header({ categoryTree }: HeaderProps) {
                 const checkActiveRecursive = (nodes: CategoryNode[]): boolean => {
                   return nodes.some(n => 
                     pathname === `/category/${n.slug}` || 
-                    pathname === `/gioi-thieu/${n.slug}` ||
                     (n.children && checkActiveRecursive(n.children))
                   );
                 };
 
-                const rootActive = introRoot
-                  ? pathname === `/category/${root.slug}` ||
-                    pathname === "/gioi-thieu" ||
-                    pathname.startsWith("/gioi-thieu/")
-                  : (isLienHe
+                const rootActive = (isLienHe
                       ? pathname === "/lien-he"
                       : pathname === `/category/${root.slug}`) ||
                     checkActiveRecursive(children);
@@ -830,7 +814,7 @@ export default function Header({ categoryTree }: HeaderProps) {
                       )}
                     </Link>
 
-                    <NavDropdown children={children} pathname={pathname} introRoot={introRoot} />
+                    <NavDropdown children={children} pathname={pathname} />
                   </div>
                 );
               })}
@@ -901,7 +885,6 @@ export default function Header({ categoryTree }: HeaderProps) {
 
                 {roots.map((root) => {
                   const children = root.children ?? [];
-                  const introRoot = isIntroRoot(root.slug);
                   if (children.length === 0) {
                     const isLienHe = root.slug === "lien-he";
                     const href = isLienHe
@@ -960,14 +943,10 @@ export default function Header({ categoryTree }: HeaderProps) {
                       </summary>
                       <div className="border-t border-white/10 bg-slate-950/35 py-1">
                         {children.map((child) => {
-                          const href = introRoot
-                            ? `/gioi-thieu/${child.slug}`
-                            : child.slug === "lien-he"
+                          const href = child.slug === "lien-he"
                               ? "/lien-he"
                               : `/category/${child.slug}`;
-                          const childActive = introRoot
-                            ? pathname === `/gioi-thieu/${child.slug}`
-                            : child.slug === "lien-he"
+                          const childActive = child.slug === "lien-he"
                               ? pathname === "/lien-he"
                               : pathname === `/category/${child.slug}`;
                           
@@ -991,7 +970,7 @@ export default function Header({ categoryTree }: HeaderProps) {
                                   {child.children.map((grandChild) => (
                                     <Link
                                       key={grandChild.id}
-                                      href={introRoot ? `/gioi-thieu/${grandChild.slug}` : `/category/${grandChild.slug}`}
+                                      href={`/category/${grandChild.slug}`}
                                       onClick={() => setMobileNavOpen(false)}
                                       className="block py-2.5 pl-16 pr-3 text-xs font-medium text-white/80 hover:bg-white/5"
                                     >
