@@ -76,7 +76,7 @@ export default async function HomePage() {
                 showViews={false}
               />
               <HomeArticleSidebarSection
-                mode="mostViewed"
+                mode="maintenance"
                 title="Lịch cúp nước bảo dưỡng"
                 articles={maintenanceArticles}
                 maxItems={7}

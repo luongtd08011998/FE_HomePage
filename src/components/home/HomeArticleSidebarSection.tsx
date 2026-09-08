@@ -22,20 +22,33 @@ function IconEye({ className }: { className?: string }) {
   );
 }
 
+function IconCalendar({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  );
+}
+
 const rowClass =
   "group/homeart relative block rounded-xl px-2.5 py-2 transition-[transform,background-color] duration-200 ease-out hover:-translate-y-0.5 hover:bg-white/10";
 
 const headerStyles = {
   featured: "bg-gradient-to-r from-amber-600 to-orange-600",
   mostViewed: "bg-gradient-to-r from-sky-600 to-cyan-600",
+  maintenance: "bg-gradient-to-r from-sky-600 to-cyan-600",
 } as const;
 
 const accentIcon = {
   featured: "text-amber-300 group-hover/homeart:text-amber-200",
   mostViewed: "text-cyan-300 group-hover/homeart:text-cyan-200",
+  maintenance: "text-cyan-300 group-hover/homeart:text-cyan-200",
 } as const;
 
-export type HomeArticleSidebarMode = "featured" | "mostViewed";
+export type HomeArticleSidebarMode = "featured" | "mostViewed" | "maintenance";
 
 interface Props {
   mode: HomeArticleSidebarMode;
@@ -64,6 +77,8 @@ export default function HomeArticleSidebarSection({
       >
         {mode === "featured" ? (
           <IconStar className="h-4 w-4 shrink-0 text-amber-100" />
+        ) : mode === "maintenance" ? (
+          <IconCalendar className="h-4 w-4 shrink-0 text-cyan-100" />
         ) : (
           <IconEye className="h-4 w-4 shrink-0 text-cyan-100" />
         )}
@@ -82,6 +97,8 @@ export default function HomeArticleSidebarSection({
                     <span className={`mt-0.5 shrink-0 ${accentIcon[mode]}`} aria-hidden>
                       {mode === "featured" ? (
                         <IconStar className="h-3.5 w-3.5" />
+                      ) : mode === "maintenance" ? (
+                        <IconCalendar className="h-3.5 w-3.5" />
                       ) : (
                         <IconEye className="h-3.5 w-3.5" />
                       )}
