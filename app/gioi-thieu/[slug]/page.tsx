@@ -1,11 +1,13 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { articleService } from "@/services/article";
+import ArticleListView from "@/components/article/ArticleListView";
+import ArticleListPagination from "@/components/article/ArticleListPagination";
 import { categoryService } from "@/services/category";
-import ArticleContent from "@/components/ArticleContent";
+import type { Article, PaginatedMeta } from "@/types";
 
 interface Props {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ page?: string }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -13,38 +15,68 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {};
 }
 
-export default async function GioiThieuDetailPage({ params }: Props) {
+export default async function GioiThieuDetailPage({ params, searchParams }: Props) {
   const { slug } = await params;
-  
-  let article = null;
-  
+  const { page: pageParam } = await searchParams;
+  const page = Number(pageParam) || 1;
+
+  let articles: Article[] = [];
+  let meta: PaginatedMeta = { page: 1, pageSize: 9, total: 0, pages: 1 };
+  let categories: { id: number; name: string; slug: string }[] = [];
+  let categoryName = slug;
+
   try {
-    // Thử lấy bài viết theo exact slug trước
-    article = await articleService.getBySlug(slug);
-  } catch {
-    // Nếu không có, thử lấy bài viết đầu tiên của category có slug tương ứng
-    try {
-      const articlesResult = await categoryService.getArticlesBySlug(slug, { page: 1, size: 1 });
-      if (articlesResult.result && articlesResult.result.length > 0) {
-        article = articlesResult.result[0];
+    const [articlesResult, tree] = await Promise.all([
+      categoryService.getArticlesBySlug(slug, { page, size: 9 }),
+      categoryService.getTree(),
+    ]);
+
+    articles = articlesResult.result;
+    meta = articlesResult.meta;
+
+    function categoryTitleFromTree(nodes: typeof tree): string | undefined {
+      for (const n of nodes) {
+        if (n.slug === slug) return n.name;
+        if (n.children?.length) {
+          const found = categoryTitleFromTree(n.children);
+          if (found) return found;
+        }
       }
-    } catch {
-      // ignore
     }
+
+    if (articles.length > 0) {
+      const fromArticle = articles[0].category?.name;
+      if (fromArticle) categoryName = fromArticle;
+      else {
+        const name = categoryTitleFromTree(tree);
+        if (name) categoryName = name;
+      }
+    } else {
+      const name = categoryTitleFromTree(tree);
+      if (!name) notFound();
+      categoryName = name!;
+    }
+
+    categories = tree.map((n) => ({ id: n.id, name: n.name, slug: n.slug }));
+  } catch (err: unknown) {
+    if ((err as { digest?: string })?.digest?.includes("NEXT_NOT_FOUND")) throw err;
   }
 
-  if (!article) {
-    notFound();
+  function buildUrl(newPage: number) {
+    return `/gioi-thieu/${slug}${newPage > 1 ? `?page=${newPage}` : ""}`;
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#e0f2fe] via-[#f8fafb] to-[#dbeafe] py-20">
-      <main className="mx-auto max-w-4xl px-6 bg-white p-10 rounded-2xl shadow-sm">
-        <h1 className="mb-8 text-3xl font-bold leading-snug tracking-tight text-[#0c4a6e] text-center border-b border-gray-200 pb-6">
-          {article.title}
-        </h1>
-        <ArticleContent content={article.content} />
-      </main>
-    </div>
+    <ArticleListView
+      heroTitle={categoryName}
+      heroDescription="Danh sách bài viết — cập nhật liên tục."
+      articles={articles}
+      totalCount={meta.total}
+      categories={categories}
+      activeCategorySlug={slug}
+      showCategoryTabs
+    >
+      <ArticleListPagination current={meta.page} lastPage={meta.pages} buildUrl={buildUrl} />
+    </ArticleListView>
   );
 }
