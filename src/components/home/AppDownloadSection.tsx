@@ -22,7 +22,7 @@ export default function AppDownloadSection() {
 
   return (
     <section
-      className="relative py-6 sm:py-8 bg-slate-50/60 border-t border-slate-200/60"
+      className="hidden md:block relative py-6 sm:py-8 bg-slate-50/60 border-t border-slate-200/60"
       aria-label="Tải ứng dụng Cấp Nước Tóc Tiên"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

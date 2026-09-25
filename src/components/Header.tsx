@@ -259,9 +259,9 @@ const navIconClass = `h-4 w-4 shrink-0 transition-colors ${navMenuTransition} te
 /** Logo tròn: ảnh (nét) + viền gradient xoay + glow. */
 function AnimatedLogoMark() {
   return (
-    <span className="relative inline-block h-14 w-14 sm:h-16 sm:w-16 shrink-0">
+    <span className="relative inline-block h-full w-full shrink-0">
       <span
-        className="absolute inset-0 rounded-full p-[2.5px] animate-logoRingSpin"
+        className="absolute inset-0 rounded-full p-[2px] sm:p-[2.5px] animate-logoRingSpin"
         aria-hidden
       >
         <span className="block h-full w-full rounded-full bg-[conic-gradient(from_0deg,#22d3ee,#38bdf8,#0ea5e9,#06b6d4,#22d3ee)]" />
@@ -532,31 +532,31 @@ export default function Header({ categoryTree }: HeaderProps) {
       <header className="relative z-40 border-b border-gray-200 bg-white/95 shadow-sm backdrop-blur-lg supports-[backdrop-filter]:bg-white/85">
         <div className="relative">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col gap-3 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:py-4">
-              <div className="flex w-full min-w-0 items-center justify-between gap-2 sm:w-auto sm:justify-start sm:gap-3">
+            <div className="flex flex-col gap-2 py-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:py-4">
+              <div className="flex w-full min-w-0 items-center justify-between gap-3 sm:w-auto sm:justify-start sm:gap-4">
                 <Link
                   href="/"
-                  className={`group/logo relative flex min-w-0 flex-1 items-center gap-2 rounded-xl px-2 py-1.5 text-gray-900 outline-none ring-gray-200/0 transition-transform duration-300 ease-[cubic-bezier(0.22,0.75,0.32,1)] motion-safe:hover:scale-[1.02] motion-safe:active:scale-[0.99] motion-reduce:hover:scale-100 motion-reduce:active:scale-100 sm:shrink-0 sm:gap-3 sm:px-2 sm:py-1 ${logoBlockTransition} focus-visible:ring-2 focus-visible:ring-blue-500/40`}
+                  className={`group/logo relative flex min-w-0 flex-1 items-center gap-3 rounded-xl px-1 py-1 text-gray-900 outline-none transition-transform duration-300 sm:shrink-0 sm:gap-3.5 sm:px-2 ${logoBlockTransition}`}
                 >
                   <span
-                    className={`nav-bounce-logo flex min-w-0 flex-1 items-center gap-2 sm:gap-2.5 ${logoBlockTransition}`}
+                    className={`nav-bounce-logo flex min-w-0 flex-1 items-center gap-3 sm:gap-3.5 ${logoBlockTransition}`}
                   >
-                    <span className="relative inline-flex h-11 w-11 shrink-0 sm:h-16 sm:w-16">
+                    <span className="relative inline-flex h-11 w-11 shrink-0 sm:h-14 sm:w-14">
                       <span
                         className="logo-hover-ripple pointer-events-none absolute inset-0 z-0 rounded-full bg-sky-300/40"
                         aria-hidden
                       />
                       <span
-                        className={`logo-mark-wiggle relative z-[1] inline-flex shrink-0 rounded-full shadow-lg transition-[filter,box-shadow] motion-reduce:shadow-md motion-reduce:transition-none motion-reduce:group-hover/logo:brightness-100 motion-reduce:group-hover/logo:saturate-100 motion-safe:group-hover/logo:shadow-2xl motion-safe:group-hover/logo:shadow-sky-400/45 ${logoBlockTransition} group-hover/logo:brightness-110 group-hover/logo:saturate-125`}
+                        className={`logo-mark-wiggle relative z-[1] inline-flex h-full w-full shrink-0 rounded-full shadow-md transition-[filter,box-shadow] motion-reduce:shadow-md motion-reduce:transition-none motion-reduce:group-hover/logo:brightness-100 motion-reduce:group-hover/logo:saturate-100 motion-safe:group-hover/logo:shadow-xl motion-safe:group-hover/logo:shadow-sky-400/45 ${logoBlockTransition} group-hover/logo:brightness-110 group-hover/logo:saturate-125`}
                       >
                         <AnimatedLogoMark />
                       </span>
                     </span>
-                    <span className="flex min-w-0 flex-1 flex-col justify-center gap-0.5 sm:gap-1">
-                      <span className="block text-[0.6rem] font-semibold uppercase leading-tight tracking-[0.14em] text-gray-500 sm:text-[0.65rem] sm:tracking-[0.22em]">
+                    <span className="flex min-w-0 flex-1 flex-col justify-center gap-0.5">
+                      <span className="block text-[10px] font-semibold uppercase leading-tight tracking-[0.14em] text-slate-500 sm:text-[0.65rem] sm:tracking-[0.22em]">
                         Tập đoàn Hải Châu
                       </span>
-                      <span className="line-clamp-1 text-[0.72rem] font-bold leading-snug tracking-tight text-gray-900 sm:line-clamp-none sm:text-lg md:text-xl">
+                      <span className="line-clamp-1 text-[13px] font-extrabold leading-snug tracking-tight text-[#0c2340] sm:line-clamp-none sm:text-lg md:text-xl">
                         CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN
                       </span>
                     </span>
@@ -571,9 +571,9 @@ export default function Header({ categoryTree }: HeaderProps) {
                     aria-expanded={mobileNavOpen}
                     aria-controls="mobile-nav-drawer"
                     onClick={() => setMobileNavOpen(true)}
-                    className="inline-flex h-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-xl border border-gray-200 bg-white text-gray-800 shadow-sm transition hover:bg-gray-50 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
+                    className="inline-flex h-10 w-10 min-h-[40px] min-w-[40px] items-center justify-center rounded-xl border border-slate-200/90 bg-white text-[#0c2340] shadow-2xs transition hover:bg-slate-50 active:scale-95 focus-visible:outline-none"
                   >
-                    <IconMenu className="h-6 w-6" />
+                    <IconMenu className="h-5 w-5" />
                   </button>
                 </div>
               </div>
@@ -675,7 +675,7 @@ export default function Header({ categoryTree }: HeaderProps) {
                   </div>
                 </form>
 
-                {/* Mobile: ô tìm kiếm full width — headermoi.md */}
+                {/* Mobile: ô tìm kiếm full width nhỏ gọn, tinh tế */}
                 <form
                   onSubmit={handleSearch}
                   className="relative w-full md:hidden"
@@ -689,7 +689,7 @@ export default function Header({ categoryTree }: HeaderProps) {
                   }}
                 >
                   <svg
-                    className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400"
+                    className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -705,8 +705,8 @@ export default function Header({ categoryTree }: HeaderProps) {
                     type="search"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Tìm kiếm..."
-                    className="w-full rounded-full border border-gray-200 bg-gray-50 py-3 pl-12 pr-4 text-sm text-gray-900 placeholder:text-gray-400 transition-colors focus:border-blue-500 focus:outline-none"
+                    placeholder="Tìm kiếm dịch vụ, tin tức..."
+                    className="w-full rounded-xl border border-slate-200/90 bg-slate-50/90 py-2.5 pl-10 pr-4 text-xs text-slate-900 placeholder:text-slate-400 transition-all focus:border-[#1cd0b4] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1cd0b4]/20"
                   />
                 </form>
               </div>
