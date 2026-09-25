@@ -78,13 +78,12 @@ export default function ArticleContent({ content }: ArticleContentProps) {
   return (
     <div
       ref={ref}
-      style={{ fontFamily: "Arial, Helvetica, sans-serif" }}
       className={[
         "prose prose-base max-w-none text-left break-words",
-        "leading-[1.6]",
-        "prose-headings:font-semibold prose-headings:tracking-tight",
+        "leading-[1.7]",
+        "prose-headings:font-bold prose-headings:tracking-tight",
         "prose-h2:mt-10 prose-h2:mb-4 prose-h3:mt-8 prose-h3:mb-3",
-        "prose-headings:text-gray-900 prose-p:text-gray-900 prose-p:font-normal prose-strong:text-gray-900 prose-strong:font-semibold",
+        "prose-headings:text-[#0c2340] prose-p:text-[#0c2340]/90 prose-p:font-normal prose-strong:text-[#0c2340] prose-strong:font-semibold",
         "prose-p:my-4",
         "prose-a:text-gray-900 prose-a:underline prose-a:decoration-gray-300 hover:prose-a:decoration-gray-500",
         "prose-blockquote:border-l-gray-300 prose-blockquote:text-gray-900",

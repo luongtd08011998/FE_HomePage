@@ -13,7 +13,7 @@ export default function RelatedArticlesBlock({ articles }: { articles: Article[]
 
   return (
     <div className="mb-6 rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
-      <h3 className="mb-4 text-xl font-bold text-gray-900">Bài viết liên quan</h3>
+      <h3 className="mb-4 text-xl font-bold text-[#0c2340]">Bài viết liên quan</h3>
       <div className="space-y-4">
         {articles.map((article) => (
           <Link
@@ -31,7 +31,7 @@ export default function RelatedArticlesBlock({ articles }: { articles: Article[]
               />
             </div>
             <div className="min-w-0 flex-1">
-              <h4 className="mb-1 line-clamp-2 text-sm font-medium text-gray-900 transition-colors group-hover:text-blue-600">
+              <h4 className="mb-1 line-clamp-2 text-base font-semibold leading-snug text-[#0c2340] transition-colors group-hover:text-teal-700">
                 {article.title}
               </h4>
               <p className="text-xs text-gray-500">

@@ -3,27 +3,36 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0c2340;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: var(--font-montserrat), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+}
+
+/* Đồng bộ font cho thư viện Ant Design */
+.ant-typography,
+.ant-btn,
+.ant-input,
+.ant-select,
+.ant-table,
+.ant-modal,
+.ant-card,
+.ant-tag,
+.ant-form,
+.ant-alert,
+.ant-message,
+.ant-notification {
+  font-family: var(--font-sans) !important;
 }
 
 /* Bảng tra cứu hóa đơn QLKH: căn chỉnh header/cell đồng bộ */

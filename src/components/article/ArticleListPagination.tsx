@@ -6,7 +6,7 @@ type ArticleListPaginationProps = {
   buildUrl: (page: number) => string;
 };
 
-/** Phân trang dạng nút — đồng bộ giao diện danh sách bài viết. */
+/** Phân trang dạng nút bo tròn (Pill) phong cách Lacroix */
 export default function ArticleListPagination({
   current,
   lastPage,
@@ -15,21 +15,24 @@ export default function ArticleListPagination({
   if (lastPage <= 1) return null;
 
   return (
-    <div className="flex flex-wrap justify-center gap-3">
+    <div className="flex flex-wrap items-center justify-center gap-3">
       {current > 1 && (
         <Link
           href={buildUrl(current - 1)}
-          className="rounded-full border-2 border-blue-500 bg-white px-6 py-2.5 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50 motion-safe:active:scale-[0.98]"
+          className="rounded-full border border-slate-700 bg-transparent px-6 py-2.5 text-sm font-bold text-[#0c2340] shadow-sm transition hover:bg-white active:scale-95"
         >
-          ← Trước
+          ← Trang trước
         </Link>
       )}
+      <span className="px-3 text-sm font-semibold text-slate-700">
+        Trang {current} / {lastPage}
+      </span>
       {current < lastPage && (
         <Link
           href={buildUrl(current + 1)}
-          className="rounded-full border-2 border-blue-500 bg-white px-6 py-2.5 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50 motion-safe:active:scale-[0.98]"
+          className="rounded-full bg-[#1cd0b4] px-6 py-2.5 text-sm font-bold text-[#0c2340] shadow-sm transition hover:bg-[#18bda4] active:scale-95"
         >
-          Tiếp →
+          Trang sau →
         </Link>
       )}
     </div>

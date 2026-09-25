@@ -1,5 +1,24 @@
-import Image from "next/image";
+"use client";
+
 import Link from "next/link";
+import AppDownloadBadges from "@/components/common/AppDownloadBadges";
+
+function IconArrowUp({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M12 19V5M5 12l7-7 7 7" />
+    </svg>
+  );
+}
 
 function IconMapPin({ className }: { className?: string }) {
   return (
@@ -83,107 +102,151 @@ const MAP_URL = "https://maps.app.goo.gl/nY1ZkzVAGcV9LwKc9";
 
 const menuLinks = [
   { label: "Trang chủ", href: "/" },
-  { label: "Tin tức", href: "/category/tin-tuc" },
-  { label: "Liên hệ", href: "/lien-he" },
+  { label: "Tin tức & Sự kiện", href: "/news" },
   { label: "Tra cứu hóa đơn", href: "/category/tra-cuu-hoa-don" },
+  { label: "Đăng ký lắp đặt", href: "/category/dang-ky-lap-dat-truc-tuyen" },
 ] as const;
 
 const linkRow =
-  "group flex min-h-[44px] items-center gap-2 rounded-lg py-1.5 text-left text-sm text-blue-100 transition-colors hover:text-white sm:min-h-0 sm:py-0 motion-safe:transition-transform motion-safe:hover:translate-x-1";
+  "group inline-flex min-h-[40px] items-center gap-2 py-1 text-left text-sm text-white/90 transition-all duration-300 ease-out hover:text-[#1cd0b4] hover:translate-x-1.5 sm:min-h-0";
 
 export default function Footer() {
+  const scrollToTop = () => {
+    if (typeof window !== "undefined") {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
-    <footer className="mt-auto bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white">
-      <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 sm:pt-12 lg:px-8 pb-[max(2.5rem,env(safe-area-inset-bottom,0px))]">
-        <div className="mb-8 grid grid-cols-1 gap-10 sm:gap-8 lg:grid-cols-12 lg:gap-10">
-          <div className="border-b border-white/15 pb-8 text-center sm:border-0 sm:pb-0 lg:col-span-4">
-            <div className="mb-6 flex flex-col items-center gap-4">
-              {/* Logo */}
-              <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-white shadow-lg ring-2 ring-white/40 motion-safe:transition-transform motion-safe:duration-500 motion-safe:hover:rotate-12 motion-reduce:hover:rotate-0 sm:h-[4.5rem] sm:w-[4.5rem]">
-                <Image
-                  src="/logocty1.jpg"
-                  alt="Logo Công ty TNHH Cấp Nước Tóc Tiên"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 640px) 48px, 72px"
-                />
-              </div>
-
-              {/* Tên công ty */}
-              <div className="text-center">
-                <p className="mb-2 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-blue-200/90 sm:mb-3 sm:text-[0.7rem] sm:tracking-[0.2em]">
-                  Tập đoàn Hải Châu
-                </p>
-                <h3 className="text-sm font-semibold leading-snug tracking-tight sm:text-lg md:text-xl">
-                  CÔNG TY TNHH
-                </h3>
-                <h3 className="text-sm font-semibold leading-snug tracking-tight sm:text-lg md:text-xl">
-                  CẤP NƯỚC TÓC TIÊN
-                </h3>
-              </div>
-            </div>
-          </div>
-
-          <div className="lg:col-span-4">
-            <h4 className="mb-4 border-b border-white/20 pb-3 text-base font-semibold sm:mb-6 sm:text-lg">
+    <footer className="mt-auto bg-[#0c2440] text-white">
+      <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8 pb-[max(2rem,env(safe-area-inset-bottom,0px))]">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8 lg:gap-12">
+          {/* Cột 1: Thông tin liên hệ */}
+          <div className="md:col-span-6 lg:col-span-5">
+            <h4 className="mb-4 border-b border-white/15 pb-3 text-base font-bold sm:mb-6 sm:text-lg">
               Thông tin liên hệ
             </h4>
-            <div className="space-y-1 sm:space-y-4">
+            <div className="space-y-3.5 sm:space-y-4">
               <a
                 href={MAP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`${linkRow} items-start`}
+                className="group flex items-start gap-2.5 text-sm text-white/90 transition-all duration-300 ease-out hover:text-[#1cd0b4] hover:translate-x-1"
               >
-                <IconMapPin className="mt-0.5 h-5 w-5 shrink-0 text-sky-200 transition-colors group-hover:text-amber-200" />
+                <IconMapPin className="mt-0.5 h-5 w-5 shrink-0 text-[#1cd0b4] transition-all duration-300 ease-out group-hover:scale-110" />
                 <span className="min-w-0 break-words text-pretty">
                   {ADDRESS}
                 </span>
               </a>
               <a
                 href="mailto:office@toctienltd.vn"
-                className={`${linkRow} break-all sm:break-normal`}
+                className="group flex items-center gap-2.5 text-sm text-white/90 transition-all duration-300 ease-out hover:text-[#1cd0b4] hover:translate-x-1"
               >
-                <IconMail className="h-5 w-5 shrink-0 text-sky-200 transition-colors group-hover:text-amber-200" />
+                <IconMail className="h-5 w-5 shrink-0 text-[#1cd0b4] transition-all duration-300 ease-out group-hover:scale-110" />
                 <span className="min-w-0">office@toctienltd.vn</span>
               </a>
-              <div className="flex min-h-[44px] items-start gap-2 rounded-lg py-1.5 sm:min-h-0 sm:gap-2 sm:py-0">
+              <div className="flex items-start gap-2.5 text-sm text-white/90">
                 <IconPhone
-                  className="mt-0.5 h-5 w-5 shrink-0 text-sky-200"
+                  className="mt-0.5 h-5 w-5 shrink-0 text-[#1cd0b4]"
                   aria-hidden
                 />
-                <div className="min-w-0 flex-1 space-y-1 text-sm text-blue-100">
+                <div className="min-w-0 flex-1">
                   <a
                     href="tel:02543894894"
-                    className="group/phone block font-medium text-white underline-offset-2 transition hover:underline"
+                    className="group inline-flex items-center gap-1 font-medium text-white/90 transition-all duration-300 ease-out hover:text-[#1cd0b4] hover:translate-x-1"
                   >
-                    Điện thoại:{" "}
-                    <span className="tabular-nums">
+                    <span>Điện thoại:</span>{" "}
+                    <span className="tabular-nums font-semibold">
                       0254 3 894 894 - 0865 3 379 119
                     </span>
                   </a>
                 </div>
               </div>
-              <p className="flex flex-wrap items-center gap-x-2 gap-y-1 py-2 text-sm text-blue-100 sm:py-0">
-                <span className="font-medium text-white/90">MST:</span>
+              <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-white/80">
+                <span className="font-medium text-white">MST:</span>
                 <span className="tabular-nums">3500815711</span>
               </p>
+
+              {/* Nút liên hệ dạng pill tương tự Lacroix */}
+              <div className="pt-2">
+                <a
+                  href="tel:02543894894"
+                  className="inline-flex items-center gap-2 rounded-full bg-[#1cd0b4] px-6 py-2.5 text-xs font-bold text-[#0c2440] shadow-sm transition-all duration-300 ease-out hover:bg-white hover:text-[#0c2440] hover:scale-105 active:scale-95"
+                >
+                  <svg
+                    className="h-3.5 w-3.5 -rotate-45"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2.5}
+                      d="M5 12h14M12 5l7 7-7 7"
+                    />
+                  </svg>
+                  Liên hệ ngay
+                </a>
+              </div>
             </div>
           </div>
 
-          <div className="lg:col-span-4">
-            <h4 className="mb-4 border-b border-white/20 pb-3 text-base font-semibold sm:mb-6 sm:text-lg">
-              Menu
+          {/* Cột 2: Menu liên kết */}
+          <div className="md:col-span-6 lg:col-span-3">
+            <h4 className="mb-4 border-b border-white/15 pb-3 text-base font-bold sm:mb-6 sm:text-lg">
+              Liên kết nhanh
             </h4>
-            <div className="grid grid-cols-2 gap-x-3 gap-y-1 sm:gap-2">
+            <div className="grid grid-cols-1 gap-y-2.5 sm:gap-y-3">
               {menuLinks.map((item) => (
                 <Link key={item.href} href={item.href} className={linkRow}>
-                  <IconChevronRight className="h-4 w-4 shrink-0 transition-transform group-hover:translate-x-0.5" />
+                  <IconChevronRight className="h-4 w-4 shrink-0 text-[#1cd0b4] transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:scale-110" />
                   <span className="leading-snug">{item.label}</span>
                 </Link>
               ))}
             </div>
           </div>
+
+          {/* Cột 3: Tải ứng dụng Android & iOS */}
+          <div className="md:col-span-12 lg:col-span-4">
+            <h4 className="mb-4 border-b border-white/15 pb-3 text-base font-bold sm:mb-6 sm:text-lg">
+              Ứng dụng di động
+            </h4>
+            <p className="text-sm text-white/80 leading-relaxed mb-4">
+              Cài đặt ứng dụng CSKH Cấp Nước Tóc Tiên để tra cứu hóa đơn, chỉ số tiêu thụ và nhận thông báo tức thì trên điện thoại.
+            </p>
+
+            {/* Badges tải app */}
+            <AppDownloadBadges variant="footer" />
+
+            {/* Nút cuộn lên đầu trang */}
+            <button
+              type="button"
+              onClick={scrollToTop}
+              title="Cuộn lên đầu trang"
+              className="group mt-4 flex w-full items-center gap-2.5 rounded-xl border border-white/15 bg-white/5 p-2.5 backdrop-blur-xs transition-all duration-300 hover:border-[#1cd0b4] hover:bg-white/10 active:scale-[0.98] cursor-pointer text-left"
+            >
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#1cd0b4]/20 text-[#1cd0b4] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:bg-[#1cd0b4] group-hover:text-[#0c2440]">
+                <IconArrowUp className="h-5 w-5" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xs font-bold text-white group-hover:text-[#1cd0b4] transition-colors">
+                  Cuộn lên đầu trang
+                </span>
+                <span className="text-[11px] text-white/60 leading-tight">
+                  Quay lại thanh điều hướng và menu chính
+                </span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Dòng bản quyền dưới chân trang */}
+        <div className="mt-12 border-t border-white/10 pt-6 text-center text-xs text-white/60">
+          <p>© {new Date().getFullYear()} CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN. Tất cả quyền được bảo lưu.</p>
         </div>
       </div>
     </footer>

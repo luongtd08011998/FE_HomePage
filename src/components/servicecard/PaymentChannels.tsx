@@ -54,9 +54,9 @@ export default function PaymentChannels() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-teal-400/30 bg-teal-500/10 px-4 py-2 text-teal-300 backdrop-blur">
-            <CreditCard className="h-4 w-4" aria-hidden />
-            <span className="text-xs font-semibold uppercase tracking-[0.18em]">
+          <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-[#1cd0b4] px-5 py-2 text-[#0c2340] shadow-sm">
+            <CreditCard className="h-4 w-4 text-[#0c2340]" aria-hidden />
+            <span className="text-xs font-bold uppercase tracking-[0.16em]">
               Thanh toán trực tuyến
             </span>
           </div>
@@ -87,17 +87,13 @@ export default function PaymentChannels() {
               className="relative group cursor-pointer"
             >
               <div
-                className="relative overflow-hidden rounded-xl p-3 h-24 flex flex-col items-center justify-center border border-white/10 transition-all duration-300 group-hover:border-white/20"
-                style={{
-                  background: "rgba(255,255,255,0.05)",
-                  backdropFilter: "blur(8px)",
-                }}
+                className="relative overflow-hidden rounded-2xl p-3 h-24 flex flex-col items-center justify-center border border-slate-200/90 bg-white shadow-sm transition-all duration-300 group-hover:border-[#1cd0b4] group-hover:shadow-md"
               >
                 {/* Hover glow */}
                 <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
                   style={{
-                    background: `linear-gradient(135deg, ${bank.color}14 0%, ${bank.color}22 100%)`,
+                    background: `linear-gradient(135deg, ${bank.color}14 0%, ${bank.color}25 100%)`,
                   }}
                 />
 
@@ -120,7 +116,7 @@ export default function PaymentChannels() {
                     className="h-px w-7 mx-auto rounded-full"
                     style={{
                       background: `linear-gradient(90deg, transparent, ${bank.color}, transparent)`,
-                      opacity: 0.45,
+                      opacity: 0.6,
                     }}
                   />
                 </div>
@@ -129,13 +125,12 @@ export default function PaymentChannels() {
                 <div
                   className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 group-hover:-translate-y-1 z-20"
                   style={{
-                    background: "rgba(15, 23, 42, 0.96)",
+                    background: "#0c2340",
                     color: "white",
                     fontSize: "0.72rem",
-                    fontWeight: 500,
-                    boxShadow: "0 4px 16px rgba(0,0,0,0.35)",
-                    backdropFilter: "blur(10px)",
-                    border: "1px solid rgba(255,255,255,0.08)",
+                    fontWeight: 600,
+                    boxShadow: "0 4px 16px rgba(12, 35, 64, 0.25)",
+                    border: "1px solid rgba(255,255,255,0.1)",
                   }}
                 >
                   {bank.name}
@@ -146,7 +141,7 @@ export default function PaymentChannels() {
                       height: 0,
                       borderLeft: "4px solid transparent",
                       borderRight: "4px solid transparent",
-                      borderTop: "4px solid rgba(15, 23, 42, 0.96)",
+                      borderTop: "4px solid #0c2340",
                     }}
                   />
                 </div>
@@ -170,26 +165,17 @@ export default function PaymentChannels() {
             className="relative group cursor-pointer"
           >
             <div
-              className="relative overflow-hidden rounded-xl p-3 h-24 flex flex-col items-center justify-center border border-white/10 transition-all duration-300 group-hover:border-white/20"
-              style={{
-                background: "rgba(255,255,255,0.05)",
-                backdropFilter: "blur(8px)",
-              }}
+              className="relative overflow-hidden rounded-2xl p-3 h-24 flex flex-col items-center justify-center border border-slate-200/90 bg-white shadow-sm transition-all duration-300 group-hover:border-[#1cd0b4] group-hover:shadow-md"
             >
               <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"
-                style={{
-                  background:
-                    "linear-gradient(135deg, rgba(148,163,184,0.10) 0%, rgba(148,163,184,0.16) 100%)",
-                }}
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl bg-slate-50"
               />
 
               <div className="relative z-10 text-center">
                 <div
-                  className="font-bold tracking-tight group-hover:scale-110 transition-transform duration-300"
+                  className="font-bold tracking-tight text-slate-500 group-hover:scale-110 transition-transform duration-300"
                   style={{
                     fontSize: "1.05rem",
-                    color: "#cbd5e1",
                     letterSpacing: "-0.01em",
                     marginBottom: "0.2rem",
                   }}
@@ -197,25 +183,19 @@ export default function PaymentChannels() {
                   ...+
                 </div>
                 <div
-                  className="h-px w-7 mx-auto rounded-full"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, transparent, rgba(203,213,225,0.85), transparent)",
-                    opacity: 0.45,
-                  }}
+                  className="h-px w-7 mx-auto rounded-full bg-slate-300"
                 />
               </div>
 
               <div
                 className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 group-hover:-translate-y-1 z-20"
                 style={{
-                  background: "rgba(15, 23, 42, 0.96)",
+                  background: "#0c2340",
                   color: "white",
                   fontSize: "0.72rem",
-                  fontWeight: 500,
-                  boxShadow: "0 4px 16px rgba(0,0,0,0.35)",
-                  backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(255,255,255,0.08)",
+                  fontWeight: 600,
+                  boxShadow: "0 4px 16px rgba(12, 35, 64, 0.25)",
+                  border: "1px solid rgba(255,255,255,0.1)",
                 }}
               >
                 Nhiều ngân hàng khác
@@ -226,7 +206,7 @@ export default function PaymentChannels() {
                     height: 0,
                     borderLeft: "4px solid transparent",
                     borderRight: "4px solid transparent",
-                    borderTop: "4px solid rgba(15, 23, 42, 0.96)",
+                    borderTop: "4px solid #0c2340",
                   }}
                 />
               </div>
@@ -236,7 +216,7 @@ export default function PaymentChannels() {
 
         {/* Hướng dẫn 3 bước */}
         <motion.div
-          className="mt-6 grid grid-cols-1 gap-4 rounded-2xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur sm:grid-cols-3 sm:gap-5 sm:p-6"
+          className="mt-8 grid grid-cols-1 gap-4 rounded-3xl border border-slate-200/80 bg-[#ebf4f6] p-5 shadow-sm sm:grid-cols-3 sm:gap-6 sm:p-6"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1, duration: 0.5 }}
@@ -246,12 +226,14 @@ export default function PaymentChannels() {
             "Chọn mục Thanh toán hóa đơn",
             'Tìm "Cấp nước Tóc Tiên" và nhập mã KH',
           ].map((t) => (
-            <div key={t} className="flex items-start gap-3">
-              <CheckCircle2
-                className="mt-0.5 h-5 w-5 shrink-0 text-teal-300"
-                aria-hidden
-              />
-              <p className="text-sm font-medium leading-relaxed text-slate-200">
+            <div key={t} className="flex items-center gap-3">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200/60">
+                <CheckCircle2
+                  className="h-5 w-5 text-teal-600"
+                  aria-hidden
+                />
+              </div>
+              <p className="text-sm font-semibold leading-relaxed text-[#0c2340]">
                 {t}
               </p>
             </div>

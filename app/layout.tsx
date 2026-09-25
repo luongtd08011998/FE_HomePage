@@ -1,19 +1,15 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Geist } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import HeaderWrapper from "@/components/HeaderWrapper";
 import Footer from "@/components/Footer";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const cormorantGaramond = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-cormorant",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  subsets: ["latin", "vietnamese"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -35,9 +31,9 @@ export default function RootLayout({
   return (
     <html
       lang="vi"
-      className={`${geistSans.variable} ${cormorantGaramond.variable} h-full antialiased`}
+      className={`${montserrat.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-gray-50">
+      <body className="min-h-full flex flex-col bg-white text-[#0c2340]">
         <AntdRegistry>
           <HeaderWrapper />
           <main className="flex min-h-0 flex-1 flex-col">{children}</main>

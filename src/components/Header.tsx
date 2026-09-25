@@ -281,19 +281,15 @@ function AnimatedLogoMark() {
   );
 }
 
-/** Nền gradient + lưới — dùng cho khối logo và khối nav sticky. */
+/** Nền nav sticky màu xanh navy #0c2440 đồng bộ với Footer và thiết kế Lacroix. */
 function HeaderBackdrop() {
   return (
     <div
       aria-hidden
       className="absolute inset-0 overflow-hidden pointer-events-none"
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-sky-700 via-blue-600 to-sky-400" />
-      <div className="absolute inset-0 bg-gradient-to-r from-slate-950/40 via-slate-950/25 to-slate-950/20" />
-      <div className="absolute -top-24 -left-24 h-80 w-80 rounded-full bg-sky-200/40 blur-3xl animate-headerFloat" />
-      <div className="absolute -bottom-28 -right-28 h-96 w-96 rounded-full bg-blue-200/30 blur-3xl animate-headerFloat2" />
-      <div className="absolute inset-0 bg-gradient-to-b from-white/22 via-white/8 to-transparent" />
-      <div className="absolute inset-0 opacity-[0.12] [background-image:linear-gradient(to_right,rgba(255,255,255,0.28)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.18)_1px,transparent_1px)] [background-size:40px_40px]" />
+      <div className="absolute inset-0 bg-[#0c2440]" />
+      <div className="absolute inset-0 opacity-[0.05] [background-image:linear-gradient(to_right,rgba(255,255,255,0.2)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.12)_1px,transparent_1px)] [background-size:40px_40px]" />
     </div>
   );
 }
@@ -326,15 +322,15 @@ function NavDropdown({
                 className={[
                   "group/child flex items-center justify-between px-4 py-2.5 text-sm font-medium tracking-tight",
                   "transition-[color,background-color,transform] duration-200 ease-out",
-                  "hover:bg-blue-50/90 hover:text-blue-700 hover:translate-x-[2px]",
-                  "focus-visible:outline-none focus-visible:bg-blue-50/90 focus-visible:text-blue-700",
-                  isActive ? "bg-blue-50 text-blue-700 font-semibold" : "text-gray-800",
+                  "hover:bg-[#ebf4f6] hover:text-teal-700 hover:translate-x-[2px]",
+                  "focus-visible:outline-none focus-visible:bg-[#ebf4f6] focus-visible:text-teal-700",
+                  isActive ? "bg-[#ebf4f6] text-teal-800 font-semibold" : "text-[#0c2340]",
                 ].join(" ")}
               >
                 <span className="flex items-center gap-2">
                   <span
                     aria-hidden
-                    className={`absolute bottom-1.5 left-0 top-1.5 w-1 rounded-r bg-blue-600 transition-opacity duration-200 ${
+                    className={`absolute bottom-1.5 left-0 top-1.5 w-1 rounded-r bg-[#1cd0b4] transition-opacity duration-200 ${
                       isActive ? "opacity-100" : "opacity-0 group-hover/child:opacity-100"
                     }`}
                   />
@@ -370,13 +366,13 @@ function NavDropdown({
                           className={[
                             "group/grandchild relative block px-4 py-2.5 text-sm font-medium tracking-tight",
                             "transition-[color,background-color,transform] duration-200 ease-out",
-                            "hover:bg-blue-50/90 hover:text-blue-700 hover:translate-x-[2px]",
-                            isActive ? "bg-blue-50 text-blue-700 font-semibold" : "text-gray-800",
+                            "hover:bg-[#ebf4f6] hover:text-teal-700 hover:translate-x-[2px]",
+                            gcActive ? "bg-[#ebf4f6] text-teal-800 font-semibold" : "text-[#0c2340]",
                           ].join(" ")}
                         >
                           <span
                             aria-hidden
-                            className={`absolute bottom-1.5 left-0 top-1.5 w-1 rounded-r bg-blue-600 transition-opacity duration-200 ${
+                            className={`absolute bottom-1.5 left-0 top-1.5 w-1 rounded-r bg-[#1cd0b4] transition-opacity duration-200 ${
                               gcActive ? "opacity-100" : "opacity-0 group-hover/grandchild:opacity-100"
                             }`}
                           />
@@ -732,14 +728,14 @@ export default function Header({ categoryTree }: HeaderProps) {
                 href="/"
                 className={`nav-bounce-hover group/nav-item relative flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2 py-1.5 transition-colors sm:gap-2 sm:rounded-xl sm:px-2.5 sm:py-2 ${navMenuTransition} ${
                   pathname === "/"
-                    ? "bg-white/25 text-white"
-                    : "text-white/95 hover:bg-white/18"
+                    ? "bg-white/20 text-white"
+                    : "text-white/95 hover:bg-white/12"
                 }`}
               >
                 <IconHome className={navIconClass} />
                 <NavLabelText>Trang chủ</NavLabelText>
                 {pathname === "/" && (
-                  <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-cyan-200 shadow-[0_0_12px_rgba(165,243,252,0.9)] sm:left-3 sm:right-3" />
+                  <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-[#1cd0b4] shadow-[0_0_12px_rgba(28,208,180,0.9)] sm:left-3 sm:right-3" />
                 )}
               </Link>
 
@@ -773,13 +769,13 @@ export default function Header({ categoryTree }: HeaderProps) {
                       href={rootHref}
                       className={`nav-bounce-hover group/nav-item relative flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2 py-1.5 transition-colors sm:gap-2 sm:rounded-xl sm:px-2.5 sm:py-2 ${navMenuTransition} ${
                         active
-                          ? "bg-white/25 text-white"
-                          : "text-white/95 hover:bg-white/18"
+                          ? "bg-white/20 text-white"
+                          : "text-white/95 hover:bg-white/12"
                       }`}
                     >
                       <NavLabelText>{root.name}</NavLabelText>
                       {active && (
-                        <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-cyan-200 shadow-[0_0_12px_rgba(165,243,252,0.9)] sm:left-3 sm:right-3" />
+                        <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-[#1cd0b4] shadow-[0_0_12px_rgba(28,208,180,0.9)] sm:left-3 sm:right-3" />
                       )}
                     </Link>
                   );
@@ -791,13 +787,13 @@ export default function Header({ categoryTree }: HeaderProps) {
                       href={rootHref}
                       className={`nav-bounce-hover group/nav-item relative flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2 py-1.5 transition-colors sm:gap-2 sm:rounded-xl sm:px-2.5 sm:py-2 ${navMenuTransition} ${
                         rootActive
-                          ? "bg-white/25 text-white"
-                          : "text-white/95 hover:bg-white/18"
+                          ? "bg-white/20 text-white"
+                          : "text-white/95 hover:bg-white/12"
                       }`}
                     >
                       <NavLabelText>{root.name}</NavLabelText>
                       <svg
-                        className={`h-3.5 w-3.5 shrink-0 text-white/90 transition-all ${navMenuTransition} group-hover/nav-item:text-amber-200 group-hover:rotate-180`}
+                        className={`h-3.5 w-3.5 shrink-0 text-white/90 transition-all ${navMenuTransition} group-hover/nav-item:text-[#1cd0b4] group-hover:rotate-180`}
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -810,7 +806,7 @@ export default function Header({ categoryTree }: HeaderProps) {
                         />
                       </svg>
                       {rootActive && (
-                        <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-cyan-200 shadow-[0_0_12px_rgba(165,243,252,0.9)] sm:left-3 sm:right-3" />
+                        <span className="absolute bottom-1 left-2.5 right-2.5 h-0.5 rounded-full bg-[#1cd0b4] shadow-[0_0_12px_rgba(28,208,180,0.9)] sm:left-3 sm:right-3" />
                       )}
                     </Link>
 
@@ -818,8 +814,6 @@ export default function Header({ categoryTree }: HeaderProps) {
                   </div>
                 );
               })}
-
-
             </nav>
           </div>
         </div>
@@ -840,7 +834,7 @@ export default function Header({ categoryTree }: HeaderProps) {
               role="dialog"
               aria-modal="true"
               aria-labelledby="mobile-nav-title"
-              className="fixed inset-y-0 right-0 z-[210] flex w-full max-w-[min(100%,20rem)] flex-col bg-gradient-to-b from-sky-800 via-blue-900 to-slate-950 shadow-2xl lg:hidden"
+              className="fixed inset-y-0 right-0 z-[210] flex w-full max-w-[min(100%,20rem)] flex-col bg-[#0c2440] shadow-2xl lg:hidden"
               style={{
                 paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))",
               }}
@@ -1002,7 +996,20 @@ export default function Header({ categoryTree }: HeaderProps) {
                   );
                 })}
 
-
+                {/* Nút tải ứng dụng trên mobile drawer */}
+                <div className="mt-4 px-1">
+                  <Link
+                    href="/tai-app"
+                    onClick={() => setMobileNavOpen(false)}
+                    className="flex items-center justify-center gap-2 rounded-xl bg-[#1cd0b4] px-4 py-3 text-sm font-bold text-[#0c2440] shadow-md transition active:scale-95"
+                  >
+                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
+                      <rect x="5" y="2" width="14" height="20" rx="3" />
+                      <path d="M12 18h.01" />
+                    </svg>
+                    <span>Tải App Cấp Nước Tóc Tiên</span>
+                  </Link>
+                </div>
               </nav>
             </div>
           </>,

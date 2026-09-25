@@ -34,18 +34,18 @@ function IconCalendar({ className }: { className?: string }) {
 }
 
 const rowClass =
-  "group/homeart relative block rounded-xl px-2.5 py-2 transition-[transform,background-color] duration-200 ease-out hover:-translate-y-0.5 hover:bg-white/10";
+  "group/homeart relative block rounded-xl px-2.5 py-2 transition-[transform,background-color] duration-200 ease-out hover:-translate-y-0.5 hover:bg-[#ebf4f6]";
 
 const headerStyles = {
-  featured: "bg-gradient-to-r from-amber-600 to-orange-600",
-  mostViewed: "bg-gradient-to-r from-sky-600 to-cyan-600",
-  maintenance: "bg-gradient-to-r from-sky-600 to-cyan-600",
+  featured: "bg-[#0c2340] text-white",
+  mostViewed: "bg-[#0c2340] text-white",
+  maintenance: "bg-[#0c2340] text-white",
 } as const;
 
 const accentIcon = {
-  featured: "text-amber-300 group-hover/homeart:text-amber-200",
-  mostViewed: "text-cyan-300 group-hover/homeart:text-cyan-200",
-  maintenance: "text-cyan-300 group-hover/homeart:text-cyan-200",
+  featured: "text-[#1cd0b4] group-hover/homeart:text-teal-600",
+  mostViewed: "text-[#1cd0b4] group-hover/homeart:text-teal-600",
+  maintenance: "text-[#1cd0b4] group-hover/homeart:text-teal-600",
 } as const;
 
 export type HomeArticleSidebarMode = "featured" | "mostViewed" | "maintenance";
@@ -71,16 +71,16 @@ export default function HomeArticleSidebarSection({
   const displayViews = showViews ?? mode === "mostViewed";
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-2xl border border-white/15 bg-white/10 shadow-lg shadow-blue-900/25 backdrop-blur-xl">
+    <div className="flex flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm hover:shadow-md transition-shadow">
       <div
-        className={`flex shrink-0 items-center gap-2 px-4 py-2.5 text-sm font-semibold text-white sm:px-5 sm:text-base ${headerStyles[mode]}`}
+        className={`flex shrink-0 items-center gap-2 px-4 py-3 text-sm font-bold text-white sm:px-5 sm:text-base ${headerStyles[mode]}`}
       >
         {mode === "featured" ? (
-          <IconStar className="h-4 w-4 shrink-0 text-amber-100" />
+          <IconStar className="h-4 w-4 shrink-0 text-[#1cd0b4]" />
         ) : mode === "maintenance" ? (
-          <IconCalendar className="h-4 w-4 shrink-0 text-cyan-100" />
+          <IconCalendar className="h-4 w-4 shrink-0 text-[#1cd0b4]" />
         ) : (
-          <IconEye className="h-4 w-4 shrink-0 text-cyan-100" />
+          <IconEye className="h-4 w-4 shrink-0 text-[#1cd0b4]" />
         )}
         <span className="tracking-tight">{title}</span>
       </div>
@@ -89,7 +89,7 @@ export default function HomeArticleSidebarSection({
         {list.length === 0 ? (
           <p className="py-4 text-center text-sm text-slate-400">Chưa có bài viết.</p>
         ) : (
-          <ul className="divide-y divide-white/10">
+          <ul className="divide-y divide-slate-100">
             {list.map((article) => (
               <li key={article.id}>
                 <Link href={`/news/${article.slug}`} className={rowClass}>
@@ -103,12 +103,12 @@ export default function HomeArticleSidebarSection({
                         <IconEye className="h-3.5 w-3.5" />
                       )}
                     </span>
-                    <p className="min-w-0 flex-1 text-left text-sm text-slate-200 line-clamp-2 group-hover/homeart:text-white">
+                    <p className="min-w-0 flex-1 text-left text-sm font-semibold text-[#0c2340] line-clamp-2 transition-colors group-hover/homeart:text-teal-700">
                       {article.title}
                     </p>
                   </div>
                   {displayViews ? (
-                    <p className="mt-1 pl-6 text-xs text-slate-500 tabular-nums group-hover/homeart:text-slate-400">
+                    <p className="mt-1 pl-6 text-xs font-medium text-slate-400 tabular-nums group-hover/homeart:text-slate-600">
                       {(article.views ?? 0).toLocaleString("vi-VN")} lượt xem
                     </p>
                   ) : null}

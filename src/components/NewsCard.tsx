@@ -2,20 +2,10 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Tag } from "antd";
-import { CARD_HOVER_CLASS } from "@/lib/cardHover";
 import type { Article } from "@/types";
 
 interface NewsCardProps {
   article: Article;
-}
-
-function makeExcerpt(html: string, maxLen = 120): string {
-  const text = html
-    .replace(/<[^>]+>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-  return text.length > maxLen ? text.slice(0, maxLen) + "…" : text;
 }
 
 function resolveThumb(thumbnail: string): string {
@@ -26,57 +16,50 @@ function resolveThumb(thumbnail: string): string {
 
 export default function NewsCard({ article }: NewsCardProps) {
   return (
-    <article
-      className={`group rounded-xl border border-gray-100 shadow-sm overflow-hidden bg-white h-full flex flex-col ${CARD_HOVER_CLASS}`}
-    >
-      <Link href={`/news/${article.slug}`} className="block">
-        <div className="relative aspect-video overflow-hidden">
+    <article className="group flex h-full flex-col rounded-[28px] bg-[#ebf4f6] p-4 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-teal-950/10 sm:p-5">
+      <Link href={`/news/${article.slug}`} className="flex h-full flex-col">
+        {/* Ảnh lọt lòng bo tròn lớn phong cách Lacroix */}
+        <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px] bg-slate-200">
           <Image
             src={resolveThumb(article.thumbnail)}
             alt={article.title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         </div>
-        <div className="p-4 pb-2">
-          <div className="mb-2">
-            {article.category ? (
-              <Tag color="blue">{article.category.name}</Tag>
-            ) : (
-              <Tag>Chưa phân loại</Tag>
-            )}
-          </div>
-          <h3 className="font-semibold text-gray-900 text-base leading-snug line-clamp-2 group-hover:text-blue-600 transition-colors">
+
+        {/* Tiêu đề */}
+        <div className="mt-5 flex-1">
+          <h3 className="line-clamp-3 text-lg font-bold leading-snug text-[#0c2340] transition-colors group-hover:text-teal-700 sm:text-xl">
             {article.title}
           </h3>
-          {article.content && (
-            <p className="text-sm text-gray-500 mt-2 line-clamp-2">
-              {makeExcerpt(article.content)}
-            </p>
-          )}
+        </div>
+
+        {/* Huy hiệu teal pill chuẩn Lacroix */}
+        <div className="mt-6 flex flex-wrap items-center gap-2 pt-2">
+          <span className="inline-flex items-center rounded-full bg-[#1cd0b4] px-3.5 py-1.5 text-[0.7rem] font-bold uppercase tracking-wider text-[#0c2340] transition-transform duration-200 group-hover:scale-105">
+            {article.category?.name ?? "Tin tức"}
+          </span>
+
+          {article.tags && article.tags.length > 0
+            ? article.tags.slice(0, 2).map((tag) =>
+                tag ? (
+                  <span
+                    key={tag.id}
+                    className="inline-flex items-center rounded-full bg-[#1cd0b4] px-3.5 py-1.5 text-[0.7rem] font-bold uppercase tracking-wider text-[#0c2340]"
+                  >
+                    #{tag.name}
+                  </span>
+                ) : null,
+              )
+            : null}
+
+          <span className="ml-auto text-xs text-slate-500">
+            {new Date(article.createdAt).toLocaleDateString("vi-VN")}
+          </span>
         </div>
       </Link>
-      <div className="px-4 pb-4 flex flex-col gap-2 mt-auto">
-        {article.tags && article.tags.length > 0 && (
-          <div className="flex flex-wrap gap-1">
-            {article.tags.map((tag) =>
-              tag ? (
-                <Link
-                  key={tag.id}
-                  href={`/tag/${tag.id}`}
-                  className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 hover:bg-blue-100 hover:text-blue-600 transition-colors"
-                >
-                  #{tag.name ?? "—"}
-                </Link>
-              ) : null,
-            )}
-          </div>
-        )}
-        <p className="text-xs text-gray-400">
-          {new Date(article.createdAt).toLocaleDateString("vi-VN")}
-        </p>
-      </div>
     </article>
   );
 }

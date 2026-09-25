@@ -8,7 +8,6 @@ import ArticleViewTracker from "@/components/article/ArticleViewTracker";
 import ReadingProgressBar from "@/components/article/ReadingProgressBar";
 import { articleService } from "@/services/article";
 import { categoryService } from "@/services/category";
-import { estimateReadMinutes } from "@/lib/articleText";
 import { publicMediaUrl } from "@/lib/publicMediaUrl";
 import type { CategoryNode } from "@/types";
 
@@ -39,13 +38,7 @@ function IconChevron({ className }: { className?: string }) {
   );
 }
 
-function IconClock({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-    </svg>
-  );
-}
+
 
 function IconUser({ className }: { className?: string }) {
   return (
@@ -129,7 +122,6 @@ export default async function ArticleDetailPage({ params }: Props) {
     // no related articles
   }
 
-  const readMinutes = estimateReadMinutes(article.content);
   const published = new Date(article.createdAt).toLocaleDateString("vi-VN", {
     year: "numeric",
     month: "long",
@@ -149,33 +141,15 @@ export default async function ArticleDetailPage({ params }: Props) {
               </span>
             </div>
 
-            <h1 className="mb-6 text-xl font-bold leading-snug tracking-tight text-[#0c4a6e] sm:text-2xl lg:text-3xl">
+            <h1 className="mb-6 text-2xl font-bold leading-snug tracking-tight text-[#0c2340] sm:text-3xl lg:text-4xl">
               {article.title}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-6 border-b border-amber-900/10 pb-8">
-              <div className="flex items-center gap-3">
-                <div className="grid h-12 w-12 place-items-center rounded-full border-2 border-amber-200 bg-white text-sm font-semibold text-amber-900 shadow-sm">
-                  {(article.author?.name ?? "B")[0]?.toUpperCase()}
-                </div>
-                <div>
-                  <div className="text-sm font-semibold text-amber-950">
-                    {article.author?.name ?? "Ban biên tập"}
-                  </div>
-                  <div className="text-xs text-amber-700">Cập nhật tin tức</div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-4 text-sm text-amber-700">
-                <span className="flex items-center gap-1.5">
-                  <IconCalendar className="h-4 w-4" />
-                  {published}
-                </span>
-                <span className="flex items-center gap-1.5">
-                  <IconClock className="h-4 w-4" />
-                  {readMinutes} phút đọc
-                </span>
-              </div>
+            <div className="flex items-center gap-4 border-b border-amber-900/10 pb-6 text-sm text-amber-900/70">
+              <span className="flex items-center gap-1.5 font-medium">
+                <IconCalendar className="h-4 w-4" />
+                {published}
+              </span>
             </div>
           </div>
 
@@ -220,8 +194,12 @@ export default async function ArticleDetailPage({ params }: Props) {
                   <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-amber-950 transition-colors group-hover:text-amber-700">
                     {a.title}
                   </h3>
-                  <p className="text-sm text-amber-700">
-                    {estimateReadMinutes(a.content)} phút đọc
+                  <p className="text-xs text-amber-800/80">
+                    {new Date(a.createdAt).toLocaleDateString("vi-VN", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
                   </p>
                 </Link>
               ))}

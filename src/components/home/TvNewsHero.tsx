@@ -156,15 +156,15 @@ export default function TvNewsHero({ articles = [] }: TvNewsHeroProps) {
                 initial={{ opacity: 0, x: -12 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.2, duration: 0.45 }}
-                className="mb-3 inline-flex items-center gap-2 rounded-full border border-teal-400/40 bg-teal-500/20 px-3 py-1.5 backdrop-blur-md sm:mb-4 sm:px-4 sm:py-2"
+                className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#1cd0b4]/40 bg-[#1cd0b4]/20 px-3 py-1.5 backdrop-blur-md sm:mb-4 sm:px-4 sm:py-2"
               >
-                <Tag className="h-3.5 w-3.5 text-teal-400 sm:h-4 sm:w-4" />
-                <span className="text-[0.7rem] font-medium tracking-wider text-teal-300 sm:text-xs">
+                <Tag className="h-3.5 w-3.5 text-[#1cd0b4] sm:h-4 sm:w-4" />
+                <span className="text-[0.7rem] font-bold tracking-wider text-[#1cd0b4] uppercase sm:text-xs">
                   {current.category}
                 </span>
               </motion.div>
               <h2
-                className="mb-2 font-[family-name:var(--font-cormorant)] text-2xl font-normal leading-tight tracking-tight text-white sm:text-3xl md:text-4xl"
+                className="mb-2 text-2xl font-bold leading-tight tracking-tight text-white sm:text-3xl md:text-4xl"
                 style={{ textShadow: "0 4px 20px rgba(0,0,0,0.5)" }}
               >
                 {current.title}
@@ -190,11 +190,11 @@ export default function TvNewsHero({ articles = [] }: TvNewsHeroProps) {
               height: 10,
               background:
                 index === currentIndex
-                  ? "linear-gradient(90deg, #14b8a6 0%, #06b6d4 100%)"
+                  ? "#1cd0b4"
                   : "rgba(255, 255, 255, 0.25)",
               boxShadow:
                 index === currentIndex
-                  ? "0 0 16px rgba(20, 184, 166, 0.45)"
+                  ? "0 0 16px rgba(28, 208, 180, 0.55)"
                   : undefined,
             }}
             aria-label={`Chọn slide ${index + 1}`}
@@ -216,7 +216,7 @@ export default function TvNewsHero({ articles = [] }: TvNewsHeroProps) {
               whileTap={{ scale: 0.98 }}
               className={`relative aspect-video overflow-hidden rounded-lg border-2 transition-opacity ${
                 index === currentIndex
-                  ? "border-teal-400 opacity-100 ring-2 ring-teal-400/50"
+                  ? "border-[#1cd0b4] opacity-100 ring-2 ring-[#1cd0b4]/50"
                   : "border-transparent opacity-60 hover:opacity-90"
               }`}
             >

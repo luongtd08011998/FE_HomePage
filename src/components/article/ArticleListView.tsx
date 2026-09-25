@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { Article, Category } from "@/types";
 import { articleExcerpt, estimateReadMinutes } from "@/lib/articleText";
@@ -28,10 +29,18 @@ function IconList({ className }: { className?: string }) {
   );
 }
 
-function IconUser({ className }: { className?: string }) {
+function IconChevronDown({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+    </svg>
+  );
+}
+
+function IconArrowUpRight({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7M17 7V17" />
     </svg>
   );
 }
@@ -52,22 +61,6 @@ function IconClock({ className }: { className?: string }) {
   );
 }
 
-function IconChevronRight({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-    </svg>
-  );
-}
-
-function IconTrendingUp({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-    </svg>
-  );
-}
-
 function formatArticleDate(iso: string) {
   return new Date(iso).toLocaleDateString("vi-VN", {
     day: "2-digit",
@@ -76,64 +69,62 @@ function formatArticleDate(iso: string) {
   });
 }
 
+/** Thẻ bài viết chuẩn phong cách Lacroix Environment (nền pastel dịu, bo góc lớn, ảnh lọt lòng, badge teal) */
 function ArticleGridCard({ article }: { article: Article }) {
-  const excerpt = articleExcerpt(article.content, 160);
   const readMin = estimateReadMinutes(article.content);
   const href = `/news/${article.slug}`;
 
   return (
     <Link
       href={href}
-      className="group flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all duration-300 motion-safe:hover:-translate-y-2 motion-safe:hover:shadow-xl motion-reduce:hover:translate-y-0"
+      className="group flex flex-col h-full rounded-[28px] bg-[#ebf4f6] p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-teal-950/10"
     >
-      <div className="relative h-48 overflow-hidden">
+      {/* Ảnh lọt lòng với góc bo mềm mại */}
+      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[20px] bg-slate-200">
         <Image
           src={resolveThumb(article.thumbnail)}
           alt={article.title}
           fill
-          className="object-cover transition-transform duration-500 group-hover:scale-110 motion-reduce:group-hover:scale-100"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
-        <div className="absolute left-4 top-4">
-          <span className="rounded-full bg-blue-500 px-3 py-1 text-sm font-medium text-white shadow-lg">
-            {article.category?.name ?? "Tin tức"}
-          </span>
-        </div>
       </div>
-      <div className="flex flex-1 flex-col p-6">
-        <h3 className="mb-3 line-clamp-2 text-xl font-semibold leading-tight text-gray-900 transition-colors group-hover:text-blue-600">
+
+      {/* Tiêu đề bài viết màu xanh thẫm đậm nét */}
+      <div className="mt-5 flex-1">
+        <h3 className="line-clamp-3 text-lg sm:text-xl font-bold leading-snug text-[#0c2340] transition-colors group-hover:text-teal-700">
           {article.title}
         </h3>
-        {excerpt ? (
-          <p className="mb-4 line-clamp-2 flex-1 leading-relaxed text-gray-600">{excerpt}</p>
-        ) : (
-          <div className="mb-4 flex-1" />
-        )}
-        <div className="mt-auto flex items-center justify-between border-t border-gray-100 pt-4 text-sm text-gray-500">
-          <div className="flex items-center gap-2">
-            <IconUser className="h-4 w-4 shrink-0" />
-            <span className="line-clamp-1">{article.author?.name ?? "Ban biên tập"}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <IconCalendar className="h-4 w-4 shrink-0" />
-            <span>{formatArticleDate(article.createdAt)}</span>
-          </div>
-        </div>
-        <div className="mt-3 flex items-center justify-between text-sm text-gray-500">
-          <div className="flex items-center gap-2">
-            <IconClock className="h-4 w-4 shrink-0" />
-            <span>{readMin} phút</span>
-          </div>
-          <span className="flex items-center gap-1 font-medium text-blue-500 transition-transform motion-safe:group-hover:translate-x-1">
-            Đọc tiếp
-            <IconChevronRight className="h-4 w-4" />
+      </div>
+
+      {/* Huy hiệu phân loại màu xanh ngọc (Teal / Turquoise pill) chuẩn Lacroix */}
+      <div className="mt-6 flex flex-wrap items-center gap-2 pt-2">
+        <span className="inline-flex items-center rounded-full bg-[#1cd0b4] px-3.5 py-1.5 text-[0.7rem] sm:text-xs font-bold uppercase tracking-wider text-[#0c2340] transition-transform duration-200 group-hover:scale-105">
+          {article.category?.name ?? "Tin tức"}
+        </span>
+
+        {article.tags && article.tags.length > 0
+          ? article.tags.slice(0, 2).map((t) => (
+              <span
+                key={t.id}
+                className="inline-flex items-center rounded-full bg-[#1cd0b4] px-3.5 py-1.5 text-[0.7rem] sm:text-xs font-bold uppercase tracking-wider text-[#0c2340]"
+              >
+                {t.name}
+              </span>
+            ))
+          : null}
+
+        {readMin > 0 ? (
+          <span className="ml-auto text-xs font-medium text-slate-500 tabular-nums">
+            {readMin} phút đọc
           </span>
-        </div>
+        ) : null}
       </div>
     </Link>
   );
 }
 
+/** Dạng danh sách hàng ngang đồng bộ bảng màu Lacroix */
 function ArticleListRow({ article }: { article: Article }) {
   const excerpt = articleExcerpt(article.content, 220);
   const readMin = estimateReadMinutes(article.content);
@@ -142,45 +133,43 @@ function ArticleListRow({ article }: { article: Article }) {
   return (
     <Link
       href={href}
-      className="group block overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm transition-all motion-safe:hover:translate-x-1 motion-safe:hover:shadow-lg motion-reduce:hover:translate-x-0"
+      className="group block rounded-[28px] bg-[#ebf4f6] p-4 sm:p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-teal-950/10"
     >
-      <div className="flex flex-col gap-4 p-4 sm:flex-row sm:items-stretch sm:gap-6 sm:p-6">
-        <div className="relative mx-auto h-40 w-full shrink-0 overflow-hidden rounded-xl sm:mx-0 sm:h-32 sm:w-48">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+        <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-[20px] bg-slate-200 sm:w-56 md:w-64">
           <Image
             src={resolveThumb(article.thumbnail)}
             alt={article.title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110 motion-reduce:group-hover:scale-100"
-            sizes="(max-width: 640px) 100vw, 192px"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 640px) 100vw, 256px"
           />
         </div>
-        <div className="min-w-0 flex-1">
-          <div className="mb-2 flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
+        <div className="flex min-w-0 flex-1 flex-col justify-between self-stretch py-1">
+          <div>
+            <h3 className="mb-2 text-lg font-bold leading-snug text-[#0c2340] transition-colors group-hover:text-teal-700 sm:text-xl">
+              {article.title}
+            </h3>
+            {excerpt ? (
+              <p className="line-clamp-2 text-sm leading-relaxed text-slate-600">
+                {excerpt}
+              </p>
+            ) : null}
+          </div>
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center rounded-full bg-[#1cd0b4] px-3.5 py-1 text-[0.7rem] sm:text-xs font-bold uppercase tracking-wider text-[#0c2340]">
               {article.category?.name ?? "Tin tức"}
             </span>
-            <span className="text-gray-400" aria-hidden>
-              •
+            <span className="flex items-center gap-1 text-xs text-slate-500">
+              <IconCalendar className="h-3.5 w-3.5" />
+              {formatArticleDate(article.createdAt)}
             </span>
-            <span className="text-sm text-gray-500">{readMin} phút đọc</span>
+            <span className="text-xs text-slate-400">•</span>
+            <span className="flex items-center gap-1 text-xs text-slate-500">
+              <IconClock className="h-3.5 w-3.5" />
+              {readMin} phút đọc
+            </span>
           </div>
-          <h3 className="mb-2 text-xl font-semibold text-gray-900 transition-colors group-hover:text-blue-600 sm:text-2xl">
-            {article.title}
-          </h3>
-          {excerpt ? <p className="mb-4 line-clamp-2 text-gray-600">{excerpt}</p> : null}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 sm:gap-6">
-            <div className="flex items-center gap-2">
-              <IconUser className="h-4 w-4 shrink-0" />
-              <span>{article.author?.name ?? "Ban biên tập"}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <IconCalendar className="h-4 w-4 shrink-0" />
-              <span>{formatArticleDate(article.createdAt)}</span>
-            </div>
-          </div>
-        </div>
-        <div className="hidden shrink-0 items-center self-center sm:flex">
-          <IconChevronRight className="h-6 w-6 text-gray-400 transition-all group-hover:translate-x-1 group-hover:text-blue-500" />
         </div>
       </div>
     </Link>
@@ -209,7 +198,9 @@ export default function ArticleListView({
   showCategoryTabs = true,
   children,
 }: ArticleListViewProps) {
+  const router = useRouter();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [selectedCat, setSelectedCat] = useState<string>(activeCategorySlug ?? "");
 
   const sortedCategories = useMemo(
     () => [...categories].sort((a, b) => a.name.localeCompare(b.name, "vi")),
@@ -218,111 +209,159 @@ export default function ArticleListView({
 
   const allActive = activeCategorySlug == null || activeCategorySlug === "";
 
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <div className="bg-gradient-to-r from-blue-500 to-blue-600 py-10 md:py-14">
-        <div className="mx-auto max-w-7xl px-4 md:px-6">
-          <h1 className="mb-3 text-3xl font-bold tracking-tight text-white md:text-4xl lg:text-5xl">{heroTitle}</h1>
-          <p className="max-w-2xl text-base leading-relaxed text-blue-100 md:text-lg">{heroDescription}</p>
-        </div>
-      </div>
+  function handleFilterApply() {
+    if (!selectedCat) {
+      router.push("/news");
+    } else {
+      router.push(`/category/${selectedCat}`);
+    }
+  }
 
-      <div className="mx-auto max-w-7xl px-4 py-8 md:px-6">
-        <div className="mb-8">
-          <div className="mb-6 flex items-center justify-between gap-4">
-            {showCategoryTabs && sortedCategories.length > 0 ? (
-              <div className="flex min-w-0 flex-1 items-center gap-3 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+  function handleCategoryChange(slug: string) {
+    setSelectedCat(slug);
+    if (!slug) {
+      router.push("/news");
+    } else {
+      router.push(`/category/${slug}`);
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-[#fcfdfe]">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+        {/* BREADCRUMB PHONG CÁCH LACROIX */}
+        <nav aria-label="Breadcrumb" className="mb-4 flex items-center gap-2 text-sm text-slate-500">
+          <Link href="/" className="transition-colors hover:text-teal-600">
+            Trang chủ
+          </Link>
+          <span className="text-slate-400">-</span>
+          <span className="font-semibold text-slate-800">{heroTitle}</span>
+        </nav>
+
+        {/* TIÊU ĐỀ TRANG */}
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-[#0c2340] sm:text-4xl md:text-5xl">
+            {heroTitle}
+          </h1>
+        </div>
+
+        {/* KHỐI LỌC BÀI VIẾT (FILTER BAR PHONG CÁCH LACROIX) */}
+        {showCategoryTabs && (
+          <div className="mt-8 rounded-2xl bg-[#edf4f8] p-4 sm:rounded-3xl sm:p-5">
+            <div className="flex flex-wrap items-center gap-3">
+              {/* Dropdown danh mục dạng viên thuốc (Pill Select) */}
+              <div className="relative min-w-[200px] flex-1 sm:flex-initial">
+                <select
+                  value={selectedCat}
+                  onChange={(e) => handleCategoryChange(e.target.value)}
+                  className="w-full cursor-pointer appearance-none rounded-full border border-slate-700 bg-white px-5 py-2.5 pr-10 text-sm font-medium text-slate-800 shadow-sm transition hover:border-slate-900 focus:border-teal-500 focus:outline-none"
+                >
+                  <option value="">Tất cả chuyên mục</option>
+                  {sortedCategories.map((c) => (
+                    <option key={c.id} value={c.slug}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-700">
+                  <IconChevronDown className="h-4 w-4" />
+                </div>
+              </div>
+
+              {/* Nút Lọc bài viết (Turquoise Pill Button) */}
+              <button
+                type="button"
+                onClick={handleFilterApply}
+                className="rounded-full bg-[#1cd0b4] px-6 py-2.5 text-sm font-bold text-[#0c2340] shadow-sm transition hover:bg-[#18bda4] active:scale-95"
+              >
+                Lọc bài viết
+              </button>
+
+              {/* Nút Đặt lại (Reset button với mũi tên chéo lên góc) */}
               <Link
                 href="/news"
-                className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-medium transition-all ${
-                  allActive
-                    ? "bg-blue-500 text-white shadow-lg shadow-blue-500/30"
-                    : "border border-gray-200 bg-white text-gray-600 hover:bg-gray-100"
-                }`}
+                onClick={() => setSelectedCat("")}
+                className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-transparent px-5 py-2.5 text-sm font-medium text-slate-800 transition hover:bg-white active:scale-95"
               >
-                Tất cả
+                <IconArrowUpRight className="h-4 w-4 text-slate-800" />
+                <span>Đặt lại</span>
               </Link>
-              {sortedCategories.map((cat) => {
-                const active = activeCategorySlug === cat.slug;
-                return (
-                  <Link
-                    key={cat.id}
-                    href={`/category/${cat.slug}`}
-                    className={`flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-medium transition-all ${
-                      active
-                        ? "bg-blue-500 text-white shadow-lg shadow-blue-500/30"
-                        : "border border-gray-200 bg-white text-gray-600 hover:bg-gray-100"
-                    }`}
-                  >
-                    {cat.name}
-                  </Link>
-                );
-              })}
+
+              {/* Chuyển đổi Dạng lưới / Dạng danh sách */}
+              <div className="ml-auto hidden items-center gap-1 rounded-full border border-slate-300 bg-white p-1 sm:flex">
+                <button
+                  type="button"
+                  onClick={() => setViewMode("grid")}
+                  className={`rounded-full p-2 transition-colors ${
+                    viewMode === "grid"
+                      ? "bg-[#0c2340] text-white"
+                      : "text-slate-600 hover:bg-slate-100"
+                  }`}
+                  title="Dạng lưới"
+                  aria-label="Dạng lưới"
+                >
+                  <IconGrid className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewMode("list")}
+                  className={`rounded-full p-2 transition-colors ${
+                    viewMode === "list"
+                      ? "bg-[#0c2340] text-white"
+                      : "text-slate-600 hover:bg-slate-100"
+                  }`}
+                  title="Dạng danh sách"
+                  aria-label="Dạng danh sách"
+                >
+                  <IconList className="h-4 w-4" />
+                </button>
               </div>
-            ) : null}
-            <div className="flex shrink-0 items-center gap-2 self-start rounded-xl border-2 border-gray-200 bg-white p-1">
-              <button
-                type="button"
-                onClick={() => setViewMode("grid")}
-                className={`rounded-lg p-2 transition-colors motion-safe:active:scale-95 ${
-                  viewMode === "grid" ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-100"
-                }`}
-                aria-label="Dạng lưới"
-              >
-                <IconGrid className="h-5 w-5" />
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewMode("list")}
-                className={`rounded-lg p-2 transition-colors motion-safe:active:scale-95 ${
-                  viewMode === "list" ? "bg-blue-500 text-white" : "text-gray-600 hover:bg-gray-100"
-                }`}
-                aria-label="Dạng danh sách"
-              >
-                <IconList className="h-5 w-5" />
-              </button>
             </div>
           </div>
+        )}
 
-        <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
-          <p className="text-gray-600">
+        {/* SỐ LƯỢNG KẾT QUẢ */}
+        <div className="mb-6 mt-8 flex items-center justify-between">
+          <p className="text-sm font-medium text-slate-600">
             Hiển thị{" "}
-            <span className="font-medium text-gray-900">
+            <span className="font-bold text-[#0c2340]">
               {articles.length}
               {totalCount > articles.length ? ` / ${totalCount}` : ""}
             </span>{" "}
             bài viết
           </p>
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <IconTrendingUp className="h-4 w-4 shrink-0" />
-            <span>Mới nhất</span>
-          </div>
         </div>
 
+        {/* DANH SÁCH BÀI VIẾT (3 CỘT DẠNG THẺ LACROIX) */}
         {articles.length === 0 ? (
-          <div className="py-16 text-center">
-            <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-gray-100">
-              <IconList className="h-12 w-12 text-gray-400" />
-            </div>
-            <h3 className="mb-2 text-xl font-semibold text-gray-900">Không có bài viết</h3>
-            <p className="text-gray-500">Thử chọn danh mục khác.</p>
+          <div className="my-12 rounded-[28px] bg-[#ebf4f6] p-12 text-center">
+            <h3 className="mb-2 text-xl font-bold text-[#0c2340]">Không có bài viết</h3>
+            <p className="text-slate-500">Chưa có bài viết nào trong mục này. Vui lòng chọn danh mục khác.</p>
+            <Link
+              href="/news"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-[#1cd0b4] px-6 py-2.5 text-sm font-bold text-[#0c2340] transition hover:bg-[#18bda4]"
+            >
+              Xem tất cả bài viết
+            </Link>
           </div>
         ) : viewMode === "grid" ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 sm:gap-8">
             {articles.map((article) => (
               <ArticleGridCard key={article.id} article={article} />
             ))}
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-4 sm:space-y-6">
             {articles.map((article) => (
               <ArticleListRow key={article.id} article={article} />
             ))}
           </div>
         )}
 
-        {articles.length > 0 ? <div className="mt-10">{children}</div> : null}
-        </div>
+        {/* PHÂN TRANG */}
+        {articles.length > 0 && children ? (
+          <div className="mt-12 sm:mt-16">{children}</div>
+        ) : null}
       </div>
     </div>
   );
