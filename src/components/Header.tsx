@@ -984,28 +984,6 @@ export default function Header({ categoryTree }: HeaderProps) {
                         </summary>
 
                         <div className="bg-slate-50/70 border-t border-[#0c2340]/15">
-                          {/* Liên kết xem toàn bộ danh mục cha */}
-                          <Link
-                            href={rootHref}
-                            onClick={() => setMobileNavOpen(false)}
-                            className="flex items-center justify-between border-b border-[#0c2340]/10 py-3 pl-8 pr-5 text-xs font-semibold uppercase tracking-wider text-[#0c2340]/75 transition-colors hover:bg-slate-100/80 hover:text-[#0c2340]"
-                          >
-                            <span>Tất cả {root.name}</span>
-                            <svg
-                              className="h-3.5 w-3.5 text-[#0c2340]/50"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth={2}
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M9 5l7 7-7 7"
-                              />
-                            </svg>
-                          </Link>
-
                           {/* Danh mục cấp con */}
                           {children.map((child) => {
                             const childHref = child.slug === "lien-he"
