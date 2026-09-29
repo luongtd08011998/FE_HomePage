@@ -83,8 +83,85 @@ export default function ServiceCards() {
         <div className="absolute -right-10 bottom-20 h-72 w-72 rounded-full bg-sky-100/30 blur-3xl" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 pt-8 pb-14 sm:px-6 sm:pt-10 sm:pb-20">
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
+      <div className="relative mx-auto max-w-7xl px-4 pt-5 pb-8 sm:px-6 sm:pt-10 sm:pb-20">
+        {/* Mobile View (< md): 3 thẻ hàng ngang nhỏ gọn, tiết kiệm không gian màn hình */}
+        <div className="grid grid-cols-1 gap-2.5 md:hidden">
+          {/* Card 1: Hotline */}
+          <div className="flex items-center justify-between gap-3 rounded-2xl border border-slate-200/80 bg-[#ebf4f6] p-3 shadow-2xs transition active:scale-[0.99]">
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#0c2340] shadow-xs ring-1 ring-slate-200/60">
+                <IconPhone className="h-5 w-5 text-teal-600" />
+              </div>
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Hotline CSKH</span>
+                  <span className="h-1 w-1 rounded-full bg-teal-500" />
+                  <span className="text-[11px] font-bold tabular-nums text-teal-700">0254 3 894 894</span>
+                </div>
+                <h2 className="text-sm font-bold uppercase tracking-wide text-[#0c2340] truncate">
+                  Hỗ trợ trực tuyến
+                </h2>
+                <p className="text-[11px] text-slate-500 truncate">Tư vấn, sửa chữa & tiếp nhận hệ thống nước</p>
+              </div>
+            </div>
+            <a
+              href="tel:02543894894"
+              className="inline-flex h-8 shrink-0 items-center gap-1 rounded-full bg-[#1cd0b4] px-3.5 text-xs font-bold text-[#0c2340] shadow-xs transition hover:bg-[#18bda4] active:scale-95"
+            >
+              <span>Gọi</span>
+              <span className="text-xs">→</span>
+            </a>
+          </div>
+
+          {/* Card 2: Tra cứu hóa đơn */}
+          <Link
+            href="/category/tra-cuu-hoa-don"
+            className="flex items-center justify-between gap-3 rounded-2xl border border-slate-200/80 bg-[#ebf4f6] p-3 shadow-2xs transition active:scale-[0.99]"
+          >
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#0c2340] shadow-xs ring-1 ring-slate-200/60">
+                <IconInvoice className="h-5 w-5 text-teal-600" />
+              </div>
+              <div className="min-w-0">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Tiện ích tra cứu</span>
+                <h2 className="text-sm font-bold uppercase tracking-wide text-[#0c2340] truncate">
+                  Tra cứu hóa đơn
+                </h2>
+                <p className="text-[11px] text-slate-500 truncate">Kiểm tra tiền nước nhanh theo mã KH</p>
+              </div>
+            </div>
+            <span className="inline-flex h-8 shrink-0 items-center gap-1 rounded-full bg-[#1cd0b4] px-3 text-xs font-bold text-[#0c2340] shadow-xs transition hover:bg-[#18bda4]">
+              <span>Tra cứu</span>
+              <span className="text-xs">→</span>
+            </span>
+          </Link>
+
+          {/* Card 3: Đăng ký lắp đặt */}
+          <Link
+            href="/category/dang-ky-lap-dat-truc-tuyen"
+            className="flex items-center justify-between gap-3 rounded-2xl border border-slate-200/80 bg-[#ebf4f6] p-3 shadow-2xs transition active:scale-[0.99]"
+          >
+            <div className="flex items-center gap-3 min-w-0">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-[#0c2340] shadow-xs ring-1 ring-slate-200/60">
+                <IconRegisterOnline className="h-5 w-5 text-teal-600" />
+              </div>
+              <div className="min-w-0">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Dịch vụ online</span>
+                <h2 className="text-sm font-bold uppercase tracking-wide text-[#0c2340] truncate">
+                  Đăng ký lắp đặt
+                </h2>
+                <p className="text-[11px] text-slate-500 truncate">Gửi hồ sơ lắp đồng hồ nước trực tuyến</p>
+              </div>
+            </div>
+            <span className="inline-flex h-8 shrink-0 items-center gap-1 rounded-full bg-[#1cd0b4] px-3 text-xs font-bold text-[#0c2340] shadow-xs transition hover:bg-[#18bda4]">
+              <span>Đăng ký</span>
+              <span className="text-xs">→</span>
+            </span>
+          </Link>
+        </div>
+
+        {/* Desktop View (md+): 3 cột đầy đủ ban đầu */}
+        <div className="hidden md:grid md:grid-cols-3 md:gap-6">
           <div className={cardShell}>
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-[#0c2340] shadow-sm ring-1 ring-slate-200/60">
               <IconPhone className="h-7 w-7 text-teal-600" />
@@ -151,7 +228,7 @@ export default function ServiceCards() {
           </Link>
         </div>
 
-        <div className="mt-12 sm:mt-16">
+        <div className="mt-7 sm:mt-16">
           <PaymentChannels />
         </div>
       </div>

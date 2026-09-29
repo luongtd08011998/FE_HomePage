@@ -122,59 +122,59 @@ export default function Footer() {
 
   return (
     <footer className="mt-auto bg-[#0c2440] text-white">
-      <div className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8 pb-[max(2rem,env(safe-area-inset-bottom,0px))]">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8 lg:gap-12">
+      <div className="mx-auto max-w-7xl px-4 pt-7 sm:pt-14 lg:px-8 pb-[max(1.5rem,env(safe-area-inset-bottom,0px))] sm:pb-[max(2rem,env(safe-area-inset-bottom,0px))]">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-12 md:gap-8 lg:gap-12">
           {/* Cột 1: Thông tin liên hệ */}
           <div className="md:col-span-6 lg:col-span-5">
-            <h4 className="mb-4 border-b border-white/15 pb-3 text-base font-bold sm:mb-6 sm:text-lg">
+            <h4 className="mb-2.5 border-b border-white/15 pb-2 text-sm font-bold sm:mb-6 sm:pb-3 sm:text-lg">
               Thông tin liên hệ
             </h4>
-            <div className="space-y-3.5 sm:space-y-4">
+            <div className="space-y-2.5 sm:space-y-4">
               <a
                 href={MAP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-start gap-2.5 text-sm text-white/90 transition-all duration-300 ease-out hover:text-[#1cd0b4] hover:translate-x-1"
+                className="group flex items-start gap-2 text-xs text-white/90 transition-all duration-300 ease-out hover:text-[#1cd0b4] sm:gap-2.5 sm:text-sm"
               >
-                <IconMapPin className="mt-0.5 h-5 w-5 shrink-0 text-[#1cd0b4] transition-all duration-300 ease-out group-hover:scale-110" />
-                <span className="min-w-0 break-words text-pretty">
+                <IconMapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#1cd0b4] transition-all duration-300 ease-out group-hover:scale-110 sm:h-5 sm:w-5" />
+                <span className="min-w-0 break-words text-pretty leading-relaxed">
                   {ADDRESS}
                 </span>
               </a>
               <a
                 href="mailto:office@toctienltd.vn"
-                className="group flex items-center gap-2.5 text-sm text-white/90 transition-all duration-300 ease-out hover:text-[#1cd0b4] hover:translate-x-1"
+                className="group flex items-center gap-2 text-xs text-white/90 transition-all duration-300 ease-out hover:text-[#1cd0b4] sm:gap-2.5 sm:text-sm"
               >
-                <IconMail className="h-5 w-5 shrink-0 text-[#1cd0b4] transition-all duration-300 ease-out group-hover:scale-110" />
+                <IconMail className="h-4 w-4 shrink-0 text-[#1cd0b4] transition-all duration-300 ease-out group-hover:scale-110 sm:h-5 sm:w-5" />
                 <span className="min-w-0">office@toctienltd.vn</span>
               </a>
-              <div className="flex items-start gap-2.5 text-sm text-white/90">
+              <div className="flex items-start gap-2 text-xs text-white/90 sm:gap-2.5 sm:text-sm">
                 <IconPhone
-                  className="mt-0.5 h-5 w-5 shrink-0 text-[#1cd0b4]"
+                  className="mt-0.5 h-4 w-4 shrink-0 text-[#1cd0b4] sm:h-5 sm:w-5"
                   aria-hidden
                 />
                 <div className="min-w-0 flex-1">
                   <a
                     href="tel:02543894894"
-                    className="group inline-flex items-center gap-1 font-medium text-white/90 transition-all duration-300 ease-out hover:text-[#1cd0b4] hover:translate-x-1"
+                    className="group inline-flex items-center gap-1 font-medium text-white/90 transition-all duration-300 ease-out hover:text-[#1cd0b4]"
                   >
-                    <span>Điện thoại:</span>{" "}
+                    <span className="text-white/70">Điện thoại:</span>{" "}
                     <span className="tabular-nums font-semibold">
                       0254 3 894 894 - 0865 3 379 119
                     </span>
                   </a>
                 </div>
               </div>
-              <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-white/80">
+              <p className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-white/80 sm:text-sm">
                 <span className="font-medium text-white">MST:</span>
                 <span className="tabular-nums">3500815711</span>
               </p>
 
-              {/* Nút liên hệ dạng pill tương tự Lacroix */}
-              <div className="pt-2">
+              {/* Nút liên hệ dạng pill */}
+              <div className="pt-1 sm:pt-2">
                 <a
                   href="tel:02543894894"
-                  className="inline-flex items-center gap-2 rounded-full bg-[#1cd0b4] px-6 py-2.5 text-xs font-bold text-[#0c2440] shadow-sm transition-all duration-300 ease-out hover:bg-white hover:text-[#0c2440] hover:scale-105 active:scale-95"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-[#1cd0b4] px-4 py-1.5 text-xs font-bold text-[#0c2440] shadow-sm transition-all duration-300 ease-out hover:bg-white hover:text-[#0c2440] hover:scale-105 active:scale-95 sm:px-6 sm:py-2.5"
                 >
                   <svg
                     className="h-3.5 w-3.5 -rotate-45"
@@ -195,16 +195,20 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Cột 2: Menu liên kết */}
+          {/* Cột 2: Menu liên kết (Trên mobile chia 2 cột tiết kiệm 50% chiều cao) */}
           <div className="md:col-span-6 lg:col-span-3">
-            <h4 className="mb-4 border-b border-white/15 pb-3 text-base font-bold sm:mb-6 sm:text-lg">
+            <h4 className="mb-2.5 border-b border-white/15 pb-2 text-sm font-bold sm:mb-6 sm:pb-3 sm:text-lg">
               Liên kết nhanh
             </h4>
-            <div className="grid grid-cols-1 gap-y-2.5 sm:gap-y-3">
+            <div className="grid grid-cols-2 gap-x-3 gap-y-2 sm:grid-cols-1 sm:gap-y-3">
               {menuLinks.map((item) => (
-                <Link key={item.href} href={item.href} className={linkRow}>
-                  <IconChevronRight className="h-4 w-4 shrink-0 text-[#1cd0b4] transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:scale-110" />
-                  <span className="leading-snug">{item.label}</span>
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="group inline-flex items-center gap-1.5 py-0.5 text-left text-xs text-white/90 transition-all duration-300 ease-out hover:text-[#1cd0b4] sm:min-h-0 sm:py-1 sm:text-sm sm:hover:translate-x-1.5"
+                >
+                  <IconChevronRight className="h-3.5 w-3.5 shrink-0 text-[#1cd0b4] transition-all duration-300 ease-out group-hover:translate-x-1 group-hover:scale-110 sm:h-4 sm:w-4" />
+                  <span className="leading-snug truncate">{item.label}</span>
                 </Link>
               ))}
             </div>
@@ -212,22 +216,33 @@ export default function Footer() {
 
           {/* Cột 3: Tải ứng dụng Android & iOS */}
           <div className="md:col-span-12 lg:col-span-4">
-            <h4 className="mb-4 border-b border-white/15 pb-3 text-base font-bold sm:mb-6 sm:text-lg">
+            <h4 className="mb-2.5 border-b border-white/15 pb-2 text-sm font-bold sm:mb-6 sm:pb-3 sm:text-lg">
               Ứng dụng di động
             </h4>
-            <p className="text-sm text-white/80 leading-relaxed mb-4">
+            <p className="hidden sm:block text-sm text-white/80 leading-relaxed mb-4">
               Cài đặt ứng dụng CSKH Cấp Nước Tóc Tiên để tra cứu hóa đơn, chỉ số tiêu thụ và nhận thông báo tức thì trên điện thoại.
             </p>
 
             {/* Badges tải app */}
             <AppDownloadBadges variant="footer" />
 
-            {/* Nút cuộn lên đầu trang */}
+            {/* Nút cuộn lên đầu trang: Thu gọn trên mobile */}
             <button
               type="button"
               onClick={scrollToTop}
               title="Cuộn lên đầu trang"
-              className="group mt-4 flex w-full items-center gap-2.5 rounded-xl border border-white/15 bg-white/5 p-2.5 backdrop-blur-xs transition-all duration-300 hover:border-[#1cd0b4] hover:bg-white/10 active:scale-[0.98] cursor-pointer text-left"
+              className="sm:hidden mt-2.5 flex w-full items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 py-2 px-3 text-xs font-semibold text-white/90 transition hover:bg-white/10 active:scale-[0.98]"
+            >
+              <IconArrowUp className="h-3.5 w-3.5 text-[#1cd0b4]" />
+              <span>Cuộn lên đầu trang</span>
+            </button>
+
+            {/* Nút cuộn lên đầu trang: Đầy đủ trên desktop */}
+            <button
+              type="button"
+              onClick={scrollToTop}
+              title="Cuộn lên đầu trang"
+              className="hidden sm:flex group mt-4 w-full items-center gap-2.5 rounded-xl border border-white/15 bg-white/5 p-2.5 backdrop-blur-xs transition-all duration-300 hover:border-[#1cd0b4] hover:bg-white/10 active:scale-[0.98] cursor-pointer text-left"
             >
               <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#1cd0b4]/20 text-[#1cd0b4] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:bg-[#1cd0b4] group-hover:text-[#0c2440]">
                 <IconArrowUp className="h-5 w-5" />
@@ -245,7 +260,7 @@ export default function Footer() {
         </div>
 
         {/* Dòng bản quyền dưới chân trang */}
-        <div className="mt-12 border-t border-white/10 pt-6 text-center text-xs text-white/60">
+        <div className="mt-6 border-t border-white/10 pt-4 text-center text-[11px] text-white/60 sm:mt-12 sm:pt-6 sm:text-xs">
           <p>© {new Date().getFullYear()} CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN. Tất cả quyền được bảo lưu.</p>
         </div>
       </div>

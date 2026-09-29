@@ -89,7 +89,7 @@ function salesInvoiceStatusDisplay(status: number): {
 } {
   switch (status) {
     case 1:
-      return { label: "Chờ xử lý", color: "orange" };
+      return { label: "Chờ xử lý", color: "#0c2340" };
     case 2:
       return { label: "Đã phát hành", color: "green" };
     default:
@@ -393,7 +393,7 @@ export default function TraCuuHoaDonClient() {
           const paid = record.paymentStatus === 2;
           return (
             <div className="flex justify-center">
-              <Tag color={paid ? "green" : "orange"} className="m-0">
+              <Tag color={paid ? "green" : "#0c2340"} className="m-0 font-medium">
                 {label ?? "—"}
               </Tag>
             </div>
@@ -567,7 +567,7 @@ export default function TraCuuHoaDonClient() {
     return (
       <div className="min-h-[70vh] flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-md bg-white rounded-2xl shadow-md border border-gray-100 p-8">
-          <div className="flex justify-center mb-4 text-orange-500">
+          <div className="flex justify-center mb-4 text-[#0c2340]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="w-14 h-14"
@@ -583,7 +583,7 @@ export default function TraCuuHoaDonClient() {
               />
             </svg>
           </div>
-          <h1 className="text-center text-blue-800 font-bold text-xl uppercase mb-2">
+          <h1 className="text-center text-[#0c2340] font-bold text-xl uppercase mb-2">
             Tra cứu hóa đơn điện tử
           </h1>
           <p className="text-center text-gray-500 text-sm mb-8">
@@ -624,7 +624,7 @@ export default function TraCuuHoaDonClient() {
               />
             </div>
             {loginError && (
-              <p className="text-red-500 text-sm text-center">{loginError}</p>
+              <p className="rounded-lg bg-[#ebf4f6] border border-[#1cd0b4]/40 p-2.5 text-center text-sm font-semibold text-[#0c2340]">{loginError}</p>
             )}
             <Button
               type="primary"
@@ -632,7 +632,7 @@ export default function TraCuuHoaDonClient() {
               size="large"
               block
               loading={loginLoading}
-              className="!bg-orange-500 hover:!bg-orange-600 !border-orange-500"
+              className="!bg-[#0c2340] hover:!bg-[#153a66] !border-[#0c2340] !text-white font-bold"
             >
               Đăng nhập
             </Button>
@@ -893,7 +893,7 @@ export default function TraCuuHoaDonClient() {
                 </div>
                 <div className="flex justify-between border-b border-dashed border-gray-200 pb-3">
                   <span className="text-gray-500">Kỳ thanh toán</span>
-                  <span className="font-semibold text-orange-600">
+                  <span className="font-semibold text-[#0c2340]">
                     {formatKyThanhToan(detailInvoice.yearMonth)}
                   </span>
                 </div>
@@ -950,9 +950,9 @@ export default function TraCuuHoaDonClient() {
                 <div className="text-center pt-2">
                   <Tag
                     color={
-                      detailInvoice.paymentStatus === 2 ? "green" : "orange"
+                      detailInvoice.paymentStatus === 2 ? "green" : "#0c2340"
                     }
-                    className="text-sm px-3 py-1"
+                    className="text-sm px-3 py-1 font-semibold"
                   >
                     {detailInvoice.paymentStatusLabel ?? "—"}
                   </Tag>

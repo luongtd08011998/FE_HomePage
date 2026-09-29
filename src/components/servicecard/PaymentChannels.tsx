@@ -49,22 +49,28 @@ export default function PaymentChannels() {
       <div className="mx-auto max-w-5xl">
         {/* Badge tiêu đề */}
         <motion.div
-          className="mb-8 text-center"
+          className="mb-4 sm:mb-8 text-center"
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-[#1cd0b4] px-5 py-2 text-[#0c2340] shadow-sm">
-            <CreditCard className="h-4 w-4 text-[#0c2340]" aria-hidden />
-            <span className="text-xs font-bold uppercase tracking-[0.16em]">
+          <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-[#1cd0b4] px-4 py-1.5 sm:px-5 sm:py-2 text-[#0c2340] shadow-sm">
+            <CreditCard className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#0c2340]" aria-hidden />
+            <span className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.16em]">
               Thanh toán trực tuyến
             </span>
           </div>
         </motion.div>
 
-        {/* Bank Cards Grid */}
+        {/* Gợi ý vuốt ngang trên mobile */}
+        <div className="mb-2 flex items-center justify-between px-1 text-[11px] text-slate-500 sm:hidden">
+          <span className="font-semibold text-slate-600">Ngân hàng & ví liên kết</span>
+          <span className="text-[10px] font-semibold text-teal-700">Vuốt ngang (10+) →</span>
+        </div>
+
+        {/* Bank Cards: Mobile cuộn ngang mượt mà 1 hàng, Desktop giữ lưới 10 cột */}
         <motion.div
-          className="grid grid-cols-3 gap-3 sm:grid-cols-5 lg:grid-cols-10 sm:gap-3"
+          className="flex gap-2.5 overflow-x-auto pb-2 pt-1 scrollbar-none snap-x -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-5 lg:grid-cols-10 sm:gap-3"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
@@ -84,14 +90,14 @@ export default function PaymentChannels() {
                 y: -4,
                 transition: { duration: 0.18 },
               }}
-              className="relative group cursor-pointer"
+              className="relative group cursor-pointer shrink-0 snap-start w-22 sm:w-auto"
             >
               <div
-                className="relative overflow-hidden rounded-2xl p-3 h-24 flex flex-col items-center justify-center border border-slate-200/90 bg-white shadow-sm transition-all duration-300 group-hover:border-[#1cd0b4] group-hover:shadow-md"
+                className="relative overflow-hidden rounded-xl sm:rounded-2xl p-2 sm:p-3 h-16 sm:h-24 flex flex-col items-center justify-center border border-slate-200/90 bg-white shadow-2xs sm:shadow-sm transition-all duration-300 group-hover:border-[#1cd0b4] group-hover:shadow-md"
               >
                 {/* Hover glow */}
                 <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl sm:rounded-2xl"
                   style={{
                     background: `linear-gradient(135deg, ${bank.color}14 0%, ${bank.color}25 100%)`,
                   }}
@@ -100,12 +106,11 @@ export default function PaymentChannels() {
                 {/* Tên viết tắt */}
                 <div className="relative z-10 text-center">
                   <div
-                    className="font-bold tracking-tight group-hover:scale-110 transition-transform duration-300"
+                    className="font-bold tracking-tight group-hover:scale-110 transition-transform duration-300 text-xs sm:text-[1.05rem]"
                     style={{
-                      fontSize: "1.05rem",
                       color: bank.color,
                       letterSpacing: "-0.01em",
-                      marginBottom: "0.2rem",
+                      marginBottom: "0.15rem",
                     }}
                   >
                     {bank.abbr}
@@ -113,7 +118,7 @@ export default function PaymentChannels() {
 
                   {/* Đường trang trí */}
                   <div
-                    className="h-px w-7 mx-auto rounded-full"
+                    className="h-px w-5 sm:w-7 mx-auto rounded-full"
                     style={{
                       background: `linear-gradient(90deg, transparent, ${bank.color}, transparent)`,
                       opacity: 0.6,
@@ -123,7 +128,7 @@ export default function PaymentChannels() {
 
                 {/* Tooltip tên đầy đủ */}
                 <div
-                  className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 group-hover:-translate-y-1 z-20"
+                  className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 group-hover:-translate-y-1 z-20 hidden sm:block"
                   style={{
                     background: "#0c2340",
                     color: "white",
@@ -162,33 +167,32 @@ export default function PaymentChannels() {
               y: -4,
               transition: { duration: 0.18 },
             }}
-            className="relative group cursor-pointer"
+            className="relative group cursor-pointer shrink-0 snap-start w-22 sm:w-auto"
           >
             <div
-              className="relative overflow-hidden rounded-2xl p-3 h-24 flex flex-col items-center justify-center border border-slate-200/90 bg-white shadow-sm transition-all duration-300 group-hover:border-[#1cd0b4] group-hover:shadow-md"
+              className="relative overflow-hidden rounded-xl sm:rounded-2xl p-2 sm:p-3 h-16 sm:h-24 flex flex-col items-center justify-center border border-slate-200/90 bg-white shadow-2xs sm:shadow-sm transition-all duration-300 group-hover:border-[#1cd0b4] group-hover:shadow-md"
             >
               <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl bg-slate-50"
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl sm:rounded-2xl bg-slate-50"
               />
 
               <div className="relative z-10 text-center">
                 <div
-                  className="font-bold tracking-tight text-slate-500 group-hover:scale-110 transition-transform duration-300"
+                  className="font-bold tracking-tight text-slate-500 group-hover:scale-110 transition-transform duration-300 text-xs sm:text-[1.05rem]"
                   style={{
-                    fontSize: "1.05rem",
                     letterSpacing: "-0.01em",
-                    marginBottom: "0.2rem",
+                    marginBottom: "0.15rem",
                   }}
                 >
                   ...+
                 </div>
                 <div
-                  className="h-px w-7 mx-auto rounded-full bg-slate-300"
+                  className="h-px w-5 sm:w-7 mx-auto rounded-full bg-slate-300"
                 />
               </div>
 
               <div
-                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 group-hover:-translate-y-1 z-20"
+                className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-300 group-hover:-translate-y-1 z-20 hidden sm:block"
                 style={{
                   background: "#0c2340",
                   color: "white",
@@ -214,30 +218,32 @@ export default function PaymentChannels() {
           </motion.div>
         </motion.div>
 
-        {/* Hướng dẫn 3 bước */}
+        {/* Hướng dẫn 3 bước: Gọn gàng trên mobile, đầy đủ trên desktop */}
         <motion.div
-          className="mt-8 grid grid-cols-1 gap-4 rounded-3xl border border-slate-200/80 bg-[#ebf4f6] p-5 shadow-sm sm:grid-cols-3 sm:gap-6 sm:p-6"
+          className="mt-4 sm:mt-8 rounded-2xl sm:rounded-3xl border border-slate-200/80 bg-[#ebf4f6] p-3.5 sm:p-6 shadow-2xs sm:shadow-sm"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1, duration: 0.5 }}
         >
-          {[
-            "Mở app ngân hàng / ví điện tử",
-            "Chọn mục Thanh toán hóa đơn",
-            'Tìm "Cấp nước Tóc Tiên" và nhập mã KH',
-          ].map((t) => (
-            <div key={t} className="flex items-center gap-3">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200/60">
-                <CheckCircle2
-                  className="h-5 w-5 text-teal-600"
-                  aria-hidden
-                />
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-6">
+            {[
+              "Mở app ngân hàng / ví điện tử",
+              "Chọn mục Thanh toán hóa đơn",
+              'Tìm "Cấp nước Tóc Tiên" và nhập mã KH',
+            ].map((t, idx) => (
+              <div
+                key={t}
+                className="flex items-center gap-2.5 sm:gap-3 py-1 sm:py-0 border-b border-slate-200/50 last:border-b-0 sm:border-b-0"
+              >
+                <div className="flex h-6 w-6 sm:h-8 sm:w-8 shrink-0 items-center justify-center rounded-full bg-white shadow-2xs ring-1 ring-slate-200/60 text-[11px] sm:text-xs font-bold text-teal-700">
+                  {idx + 1}
+                </div>
+                <p className="text-xs sm:text-sm font-semibold leading-snug sm:leading-relaxed text-[#0c2340]">
+                  {t}
+                </p>
               </div>
-              <p className="text-sm font-semibold leading-relaxed text-[#0c2340]">
-                {t}
-              </p>
-            </div>
-          ))}
+            ))}
+          </div>
         </motion.div>
 
         {/* Badge bảo mật */}

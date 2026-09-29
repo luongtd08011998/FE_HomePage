@@ -160,7 +160,7 @@ export default function ArticleActionBar({ shareUrl, title, slug }: ArticleActio
           type="button"
           onClick={toggleBookmark}
           className={`${iconBtn} ${
-            bookmarked ? "bg-amber-100 text-amber-700 hover:bg-amber-200" : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+            bookmarked ? "bg-[#1cd0b4] text-[#0c2340] hover:bg-[#18bda4]" : "bg-gray-200 text-gray-600 hover:bg-gray-300"
           }`}
           aria-label={bookmarked ? "Bỏ lưu bài viết" : "Lưu bài viết"}
         >

@@ -88,23 +88,23 @@ export default function AppDownloadBadges({
 }: AppDownloadBadgesProps) {
   if (variant === "footer") {
     return (
-      <div className={`flex flex-col sm:flex-row gap-2.5 ${className}`}>
+      <div className={`grid grid-cols-2 sm:flex sm:flex-row gap-2 sm:gap-2.5 ${className}`}>
         {/* Apple App Store */}
         <a
           href={appStoreUrl}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Tải ứng dụng Cấp Nước Tóc Tiên trên App Store cho iOS"
-          className="group relative flex items-center gap-3 rounded-xl border border-white/20 bg-white/10 px-3.5 py-2.5 text-white backdrop-blur-md transition-all duration-300 hover:border-[#1cd0b4] hover:bg-white/15 hover:shadow-lg hover:shadow-[#1cd0b4]/10 hover:-translate-y-0.5 active:scale-95"
+          className="group relative flex items-center gap-2 sm:gap-3 rounded-xl border border-white/20 bg-white/10 px-2.5 py-2 sm:px-3.5 sm:py-2.5 text-white backdrop-blur-md transition-all duration-300 hover:border-[#1cd0b4] hover:bg-white/15 hover:shadow-lg hover:shadow-[#1cd0b4]/10 hover:-translate-y-0.5 active:scale-95"
         >
-          <div className="flex h-7 w-7 shrink-0 items-center justify-center transition-transform duration-300 group-hover:scale-110">
-            <IconApple className="h-6 w-6 text-white" />
+          <div className="flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center transition-transform duration-300 group-hover:scale-110">
+            <IconApple className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
           </div>
-          <div className="flex flex-col text-left">
-            <span className="text-[10px] uppercase tracking-wider text-white/70 leading-none">
+          <div className="flex flex-col text-left min-w-0">
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-white/70 leading-none truncate">
               Tải về trên
             </span>
-            <span className="text-xs font-bold text-white tracking-tight leading-tight mt-0.5 group-hover:text-[#1cd0b4] transition-colors">
+            <span className="text-[11px] sm:text-xs font-bold text-white tracking-tight leading-tight mt-0.5 group-hover:text-[#1cd0b4] transition-colors truncate">
               App Store
             </span>
           </div>
@@ -116,16 +116,16 @@ export default function AppDownloadBadges({
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Tải ứng dụng Cấp Nước Tóc Tiên trên Google Play cho Android"
-          className="group relative flex items-center gap-3 rounded-xl border border-white/20 bg-white/10 px-3.5 py-2.5 text-white backdrop-blur-md transition-all duration-300 hover:border-[#1cd0b4] hover:bg-white/15 hover:shadow-lg hover:shadow-[#1cd0b4]/10 hover:-translate-y-0.5 active:scale-95"
+          className="group relative flex items-center gap-2 sm:gap-3 rounded-xl border border-white/20 bg-white/10 px-2.5 py-2 sm:px-3.5 sm:py-2.5 text-white backdrop-blur-md transition-all duration-300 hover:border-[#1cd0b4] hover:bg-white/15 hover:shadow-lg hover:shadow-[#1cd0b4]/10 hover:-translate-y-0.5 active:scale-95"
         >
-          <div className="flex h-7 w-7 shrink-0 items-center justify-center transition-transform duration-300 group-hover:scale-110">
-            <IconGooglePlay className="h-6 w-6" />
+          <div className="flex h-6 w-6 sm:h-7 sm:w-7 shrink-0 items-center justify-center transition-transform duration-300 group-hover:scale-110">
+            <IconGooglePlay className="h-5 w-5 sm:h-6 sm:w-6" />
           </div>
-          <div className="flex flex-col text-left">
-            <span className="text-[10px] uppercase tracking-wider text-white/70 leading-none">
+          <div className="flex flex-col text-left min-w-0">
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-white/70 leading-none truncate">
               Tải về từ
             </span>
-            <span className="text-xs font-bold text-white tracking-tight leading-tight mt-0.5 group-hover:text-[#1cd0b4] transition-colors">
+            <span className="text-[11px] sm:text-xs font-bold text-white tracking-tight leading-tight mt-0.5 group-hover:text-[#1cd0b4] transition-colors truncate">
               Google Play
             </span>
           </div>

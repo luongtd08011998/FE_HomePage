@@ -825,7 +825,7 @@ export default function Header({ categoryTree }: HeaderProps) {
           <>
             <div
               role="presentation"
-              className="fixed inset-0 z-[200] bg-black/50 backdrop-blur-[1px] lg:hidden"
+              className="fixed inset-0 z-[200] bg-black/45 backdrop-blur-[2px] transition-opacity duration-300 lg:hidden"
               onClick={() => setMobileNavOpen(false)}
               aria-hidden
             />
@@ -834,181 +834,301 @@ export default function Header({ categoryTree }: HeaderProps) {
               role="dialog"
               aria-modal="true"
               aria-labelledby="mobile-nav-title"
-              className="fixed inset-y-0 right-0 z-[210] flex w-full max-w-[min(100%,20rem)] flex-col bg-[#0c2440] shadow-2xl lg:hidden"
+              className="mobile-drawer-enter fixed inset-y-0 right-0 z-[210] flex w-full max-w-[min(100%,23rem)] sm:max-w-sm flex-col bg-white shadow-2xl lg:hidden"
               style={{
-                paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))",
+                paddingBottom: "max(1.25rem, env(safe-area-inset-bottom, 0px))",
               }}
             >
+              {/* Header drawer: Logo + Tiêu đề + Nút Đóng */}
               <div
-                className="flex shrink-0 items-center justify-between border-b border-white/10 px-4 py-3"
+                className="flex shrink-0 items-center justify-between border-b border-slate-200/90 bg-white px-5 py-3.5"
                 style={{
-                  paddingTop: "max(0.75rem, env(safe-area-inset-top, 0px))",
+                  paddingTop: "max(0.85rem, env(safe-area-inset-top, 0px))",
                 }}
               >
-                <h2
-                  id="mobile-nav-title"
-                  className="text-base font-bold tracking-tight text-white"
-                >
-                  Danh mục
-                </h2>
+                <div className="flex items-center gap-2.5">
+                  <span className="relative inline-flex h-8 w-8 shrink-0 overflow-hidden rounded-full shadow-xs">
+                    <Image
+                      src="/logocty1.jpg"
+                      alt="Cấp nước Tóc Tiên"
+                      width={32}
+                      height={32}
+                      className="h-full w-full object-cover"
+                    />
+                  </span>
+                  <div className="flex flex-col">
+                    <span
+                      id="mobile-nav-title"
+                      className="text-[13px] font-extrabold uppercase tracking-tight text-[#0c2340]"
+                    >
+                      Cấp Nước Tóc Tiên
+                    </span>
+                    <span className="text-[10px] font-semibold tracking-wider text-slate-500 uppercase">
+                      Menu Điều Hướng
+                    </span>
+                  </div>
+                </div>
                 <button
                   type="button"
                   aria-label="Đóng menu"
                   onClick={() => setMobileNavOpen(false)}
-                  className="inline-flex h-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-xl text-white/95 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/60"
+                  className="inline-flex h-9 w-9 min-h-[36px] min-w-[36px] items-center justify-center rounded-full text-slate-600 transition hover:bg-slate-100 hover:text-[#0c2340] active:scale-95 focus-visible:outline-none"
                 >
-                  <IconClose className="h-6 w-6" />
+                  <IconClose className="h-5 w-5" />
                 </button>
               </div>
+
+              {/* Navigation list: Chuẩn theo thiết kế thanh nav mobile */}
               <nav
-                className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain px-3 pb-4 pt-2"
+                className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain pb-6"
                 aria-label="Menu chính"
               >
-                <Link
-                  href="/"
-                  onClick={() => setMobileNavOpen(false)}
-                  className={`mb-1 flex min-h-[48px] items-center gap-3 rounded-xl px-3 py-3 text-base font-semibold transition active:bg-white/10 ${
-                    pathname === "/"
-                      ? "bg-white/20 text-white"
-                      : "text-white/95 hover:bg-white/12"
-                  }`}
-                >
-                  <IconHome className="h-5 w-5 shrink-0 text-cyan-100" />
-                  Trang chủ
-                </Link>
+                {/* Đường kẻ đầu tiên trên cùng */}
+                <div className="border-t border-[#0c2340]/30">
+                  {/* TRANG CHỦ */}
+                  <Link
+                    href="/"
+                    onClick={() => setMobileNavOpen(false)}
+                    className={`flex min-h-[50px] items-center justify-between border-b border-[#0c2340]/30 px-5 py-3.5 sm:px-6 transition-colors hover:bg-slate-50 active:bg-slate-100 ${
+                      pathname === "/"
+                        ? "bg-slate-50/90 font-bold text-[#0c2340]"
+                        : "font-semibold text-[#0c2340]"
+                    }`}
+                  >
+                    <span className="text-sm uppercase tracking-wider">
+                      Trang chủ
+                    </span>
+                    <svg
+                      className="h-4 w-4 shrink-0 text-[#0c2340]"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2.2}
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </Link>
 
-                {roots.map((root) => {
-                  const children = root.children ?? [];
-                  if (children.length === 0) {
+                  {/* Danh sách các chuyên mục roots */}
+                  {roots.map((root) => {
+                    const children = root.children ?? [];
                     const isLienHe = root.slug === "lien-he";
-                    const href = isLienHe
+                    const rootHref = isLienHe
                       ? "/lien-he"
                       : `/category/${root.slug}`;
                     const active = isLienHe
                       ? pathname === "/lien-he"
                       : pathname === `/category/${root.slug}`;
-                    return (
-                      <Link
-                        key={root.id}
-                        href={href}
-                        onClick={() => setMobileNavOpen(false)}
-                        className={`mb-1 flex min-h-[48px] items-center gap-3 rounded-xl px-3 py-3 text-base font-semibold transition active:bg-white/10 ${
-                          active
-                            ? "bg-white/20 text-white"
-                            : "text-white/95 hover:bg-white/12"
-                        }`}
-                      >
-                        <NavRootIcon
-                          slug={root.slug}
-                          className="h-5 w-5 shrink-0 text-cyan-100"
-                        />
-                        <span className="min-w-0 truncate">{root.name}</span>
-                      </Link>
-                    );
-                  }
 
-                  return (
-                    <details
-                      key={root.id}
-                      className="mobile-nav-details mb-2 overflow-hidden rounded-xl border border-white/15 bg-white/[0.07]"
-                    >
-                      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-3 py-3 text-base font-semibold text-white [&::-webkit-details-marker]:hidden">
-                        <span className="flex min-w-0 items-center gap-3">
-                          <NavRootIcon
-                            slug={root.slug}
-                            className="h-5 w-5 shrink-0 text-cyan-100"
-                          />
-                          <span className="truncate">{root.name}</span>
-                        </span>
-                        <svg
-                          className="chevron-icon h-5 w-5 shrink-0 text-white/70 transition-transform duration-200"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          aria-hidden
+                    if (children.length === 0) {
+                      return (
+                        <Link
+                          key={root.id}
+                          href={rootHref}
+                          onClick={() => setMobileNavOpen(false)}
+                          className={`flex min-h-[50px] items-center justify-between border-b border-[#0c2340]/30 px-5 py-3.5 sm:px-6 transition-colors hover:bg-slate-50 active:bg-slate-100 ${
+                            active
+                              ? "bg-slate-50/90 font-bold text-[#0c2340]"
+                              : "font-semibold text-[#0c2340]"
+                          }`}
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
-                      </summary>
-                      <div className="border-t border-white/10 bg-slate-950/35 py-1">
-                        {children.map((child) => {
-                          const href = child.slug === "lien-he"
+                          <span className="text-sm uppercase tracking-wider">
+                            {root.name}
+                          </span>
+                          <svg
+                            className="h-4 w-4 shrink-0 text-[#0c2340]"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2.2}
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </Link>
+                      );
+                    }
+
+                    return (
+                      <details
+                        key={root.id}
+                        className="mobile-nav-details group border-b border-[#0c2340]/30"
+                      >
+                        <summary className="flex min-h-[50px] cursor-pointer list-none items-center justify-between px-5 py-3.5 sm:px-6 transition-colors hover:bg-slate-50 active:bg-slate-100 select-none [&::-webkit-details-marker]:hidden">
+                          <span className="text-sm font-semibold uppercase tracking-wider text-[#0c2340]">
+                            {root.name}
+                          </span>
+                          <svg
+                            className="chevron-icon h-4 w-4 shrink-0 text-[#0c2340] transition-transform duration-200"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2.2}
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </summary>
+
+                        <div className="bg-slate-50/70 border-t border-[#0c2340]/15">
+                          {/* Liên kết xem toàn bộ danh mục cha */}
+                          <Link
+                            href={rootHref}
+                            onClick={() => setMobileNavOpen(false)}
+                            className="flex items-center justify-between border-b border-[#0c2340]/10 py-3 pl-8 pr-5 text-xs font-semibold uppercase tracking-wider text-[#0c2340]/75 transition-colors hover:bg-slate-100/80 hover:text-[#0c2340]"
+                          >
+                            <span>Tất cả {root.name}</span>
+                            <svg
+                              className="h-3.5 w-3.5 text-[#0c2340]/50"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M9 5l7 7-7 7"
+                              />
+                            </svg>
+                          </Link>
+
+                          {/* Danh mục cấp con */}
+                          {children.map((child) => {
+                            const childHref = child.slug === "lien-he"
                               ? "/lien-he"
                               : `/category/${child.slug}`;
-                          const childActive = child.slug === "lien-he"
+                            const childActive = child.slug === "lien-he"
                               ? pathname === "/lien-he"
                               : pathname === `/category/${child.slug}`;
-                          
-                          const hasGrandChildren = child.children && child.children.length > 0;
 
-                          if (hasGrandChildren) {
-                            return (
-                              <details key={child.id} className="border-t border-white/5 first:border-t-0">
-                                <summary className="flex cursor-pointer list-none items-center justify-between gap-2 py-3 pl-12 pr-3 text-sm font-medium text-white/90 active:bg-white/10 [&::-webkit-details-marker]:hidden">
-                                  <span>{child.name}</span>
-                                  <svg
-                                    className="chevron-icon h-4 w-4 shrink-0 transition-transform duration-200"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                  >
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                  </svg>
-                                </summary>
-                                <div className="bg-black/20 py-1">
-                                  {child.children.map((grandChild) => (
-                                    <Link
-                                      key={grandChild.id}
-                                      href={`/category/${grandChild.slug}`}
-                                      onClick={() => setMobileNavOpen(false)}
-                                      className="block py-2.5 pl-16 pr-3 text-xs font-medium text-white/80 hover:bg-white/5"
+                            const hasGrandChildren = child.children && child.children.length > 0;
+
+                            if (hasGrandChildren) {
+                              return (
+                                <details
+                                  key={child.id}
+                                  className="mobile-nav-child-details group/child border-b border-[#0c2340]/10 last:border-b-0"
+                                >
+                                  <summary className="flex cursor-pointer list-none items-center justify-between py-3 pl-8 pr-5 text-xs font-semibold uppercase tracking-wider text-[#0c2340] transition-colors hover:bg-slate-100/80 [&::-webkit-details-marker]:hidden">
+                                    <span>{child.name}</span>
+                                    <svg
+                                      className="chevron-icon-child h-3.5 w-3.5 shrink-0 text-[#0c2340]/70 transition-transform duration-200"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth={2}
+                                      viewBox="0 0 24 24"
                                     >
-                                      {grandChild.name}
-                                    </Link>
-                                  ))}
-                                </div>
-                              </details>
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M9 5l7 7-7 7"
+                                      />
+                                    </svg>
+                                  </summary>
+                                  <div className="bg-slate-100/70 border-t border-[#0c2340]/10 py-1">
+                                    {child.children?.map((grandChild) => (
+                                      <Link
+                                        key={grandChild.id}
+                                        href={`/category/${grandChild.slug}`}
+                                        onClick={() => setMobileNavOpen(false)}
+                                        className="flex items-center justify-between py-2.5 pl-12 pr-5 text-[11px] font-medium uppercase tracking-wider text-[#0c2340]/80 transition-colors hover:bg-slate-200/60 hover:text-[#0c2340]"
+                                      >
+                                        <span>{grandChild.name}</span>
+                                        <svg
+                                          className="h-3 w-3 text-[#0c2340]/40"
+                                          fill="none"
+                                          stroke="currentColor"
+                                          strokeWidth={2}
+                                          viewBox="0 0 24 24"
+                                        >
+                                          <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M9 5l7 7-7 7"
+                                          />
+                                        </svg>
+                                      </Link>
+                                    ))}
+                                  </div>
+                                </details>
+                              );
+                            }
+
+                            return (
+                              <Link
+                                key={child.id}
+                                href={childHref}
+                                onClick={() => setMobileNavOpen(false)}
+                                className={`flex items-center justify-between border-b border-[#0c2340]/10 py-3 pl-8 pr-5 text-xs font-semibold uppercase tracking-wider transition-colors last:border-b-0 hover:bg-slate-100/80 ${
+                                  childActive
+                                    ? "bg-slate-100/90 text-teal-700 font-bold"
+                                    : "text-[#0c2340]"
+                                }`}
+                              >
+                                <span>{child.name}</span>
+                                <svg
+                                  className="h-3.5 w-3.5 text-[#0c2340]/50"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  strokeWidth={2}
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M9 5l7 7-7 7"
+                                  />
+                                </svg>
+                              </Link>
                             );
-                          }
+                          })}
+                        </div>
+                      </details>
+                    );
+                  })}
+                </div>
 
-                          return (
-                            <Link
-                              key={child.id}
-                              href={href}
-                              onClick={() => setMobileNavOpen(false)}
-                              className={`block min-h-[44px] border-t border-white/5 py-3 pl-12 pr-3 text-sm font-medium transition first:border-t-0 active:bg-white/10 ${
-                                childActive
-                                  ? "bg-white/15 text-cyan-100"
-                                  : "text-white/90 hover:bg-white/8"
-                              }`}
-                            >
-                              {child.name}
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </details>
-                  );
-                })}
-
-                {/* Nút tải ứng dụng trên mobile drawer */}
-                <div className="mt-4 px-1">
+                {/* Các tiện ích & nút hỗ trợ */}
+                <div className="mt-6 space-y-3 px-5">
                   <Link
                     href="/tai-app"
                     onClick={() => setMobileNavOpen(false)}
-                    className="flex items-center justify-center gap-2 rounded-xl bg-[#1cd0b4] px-4 py-3 text-sm font-bold text-[#0c2440] shadow-md transition active:scale-95"
+                    className="flex items-center justify-center gap-2 rounded-xl bg-[#1cd0b4] px-4 py-3 text-xs font-bold uppercase tracking-wider text-[#0c2440] shadow-md transition hover:bg-[#18bda4] active:scale-[0.98]"
                   >
-                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
+                    <svg
+                      className="h-4 w-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                    >
                       <rect x="5" y="2" width="14" height="20" rx="3" />
                       <path d="M12 18h.01" />
                     </svg>
                     <span>Tải App Cấp Nước Tóc Tiên</span>
                   </Link>
+
+                  <a
+                    href="tel:02543894894"
+                    className="flex items-center justify-center gap-2 py-2 text-xs font-semibold text-slate-500 transition-colors hover:text-[#0c2340]"
+                  >
+                    <IconPhone className="h-3.5 w-3.5 text-teal-600" />
+                    <span>Hotline CSKH: 0254 3 894 894</span>
+                  </a>
                 </div>
               </nav>
             </div>
@@ -1175,10 +1295,27 @@ export default function Header({ categoryTree }: HeaderProps) {
         :global(.nav-bounce-logo:hover) {
           animation: navBounceLogo 2s cubic-bezier(0.22, 0.75, 0.32, 1);
         }
-        :global(details.mobile-nav-details[open] summary .chevron-icon) {
-          transform: rotate(180deg);
+        :global(details.mobile-nav-details[open] > summary .chevron-icon) {
+          transform: rotate(90deg);
+        }
+        :global(details.mobile-nav-child-details[open] > summary .chevron-icon-child) {
+          transform: rotate(90deg);
+        }
+        @keyframes mobileDrawerSlideIn {
+          from {
+            transform: translateX(100%);
+          }
+          to {
+            transform: translateX(0);
+          }
+        }
+        :global(.mobile-drawer-enter) {
+          animation: mobileDrawerSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         @media (prefers-reduced-motion: reduce) {
+          :global(.mobile-drawer-enter) {
+            animation: none;
+          }
           :global(.animate-headerFloat),
           :global(.animate-headerFloat2),
           :global(.animate-logoRingSpin),

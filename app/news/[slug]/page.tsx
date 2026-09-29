@@ -136,7 +136,7 @@ export default async function ArticleDetailPage({ params }: Props) {
         <article className="mx-auto max-w-6xl px-6">
           <div className="mb-12">
             <div className="mb-6">
-              <span className="inline-block rounded-full bg-amber-100 px-4 py-1.5 text-xs font-semibold tracking-wider text-amber-900 uppercase">
+              <span className="inline-block rounded-full bg-[#1cd0b4] px-4 py-1.5 text-xs font-bold tracking-wider text-[#0c2340] uppercase shadow-sm">
                 {article.category?.name ?? "Bài viết"}
               </span>
             </div>
@@ -145,9 +145,9 @@ export default async function ArticleDetailPage({ params }: Props) {
               {article.title}
             </h1>
 
-            <div className="flex items-center gap-4 border-b border-amber-900/10 pb-6 text-sm text-amber-900/70">
+            <div className="flex items-center gap-4 border-b border-slate-200 pb-6 text-sm text-slate-500">
               <span className="flex items-center gap-1.5 font-medium">
-                <IconCalendar className="h-4 w-4" />
+                <IconCalendar className="h-4 w-4 text-[#1cd0b4]" />
                 {published}
               </span>
             </div>
@@ -158,14 +158,14 @@ export default async function ArticleDetailPage({ params }: Props) {
           </div>
 
           {article.tags && article.tags.length > 0 ? (
-            <div className="mx-auto mb-12 max-w-4xl border-b border-amber-900/10 pb-12">
+            <div className="mx-auto mb-12 max-w-4xl border-b border-slate-200 pb-12">
               <div className="flex flex-wrap gap-2">
                 {article.tags.map((tag) =>
                   tag ? (
                     <Link
                       key={tag.id}
                       href={`/tag/${tag.id}`}
-                      className="cursor-pointer rounded-full bg-amber-50 px-3 py-1 text-xs text-amber-800 transition-colors hover:bg-amber-100"
+                      className="cursor-pointer rounded-full bg-[#ebf4f6] px-3.5 py-1 text-xs font-medium text-[#0c2340] border border-slate-200/80 transition-all hover:border-[#1cd0b4] hover:bg-[#1cd0b4]/20 hover:text-[#0c2340]"
                     >
                       #{tag.name}
                     </Link>
@@ -176,25 +176,25 @@ export default async function ArticleDetailPage({ params }: Props) {
           ) : null}
 
           <div className="mb-20">
-            <h2 className="mb-8 text-3xl font-semibold text-amber-950">
+            <h2 className="mb-8 text-2xl sm:text-3xl font-bold tracking-tight text-[#0c2340]">
               Bài viết liên quan
             </h2>
             <div className="grid gap-6 md:grid-cols-3">
               {related.slice(0, 3).map((a) => (
                 <Link key={a.id} href={`/news/${a.slug}`} className="group">
-                  <div className="mb-3 aspect-[4/3] overflow-hidden rounded-xl bg-white shadow-sm">
+                  <div className="mb-3 aspect-[4/3] overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-slate-200/60">
                     <Image
                       src={resolveThumb(a.thumbnail)}
                       alt={a.title}
                       width={640}
                       height={480}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <h3 className="mb-2 line-clamp-2 text-lg font-semibold text-amber-950 transition-colors group-hover:text-amber-700">
+                  <h3 className="mb-2 line-clamp-2 text-base sm:text-lg font-bold text-[#0c2340] transition-colors group-hover:text-teal-700">
                     {a.title}
                   </h3>
-                  <p className="text-xs text-amber-800/80">
+                  <p className="text-xs font-medium text-slate-500">
                     {new Date(a.createdAt).toLocaleDateString("vi-VN", {
                       year: "numeric",
                       month: "long",

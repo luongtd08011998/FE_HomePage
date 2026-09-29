@@ -134,9 +134,11 @@ export default function SearchContent() {
         )}
 
         {error && (
-          <p className="py-16 text-center text-red-500">
-            Có lỗi khi tìm kiếm. Vui lòng thử lại.
-          </p>
+          <div className="my-10 rounded-2xl bg-[#ebf4f6] border border-[#1cd0b4]/30 p-8 text-center">
+            <p className="text-base font-semibold text-[#0c2340]">
+              Có lỗi khi tìm kiếm. Vui lòng thử lại.
+            </p>
+          </div>
         )}
 
         {!isLoading && !error && debouncedQ.trim() && articles.length === 0 && (
