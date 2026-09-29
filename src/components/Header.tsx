@@ -834,45 +834,45 @@ export default function Header({ categoryTree }: HeaderProps) {
               role="dialog"
               aria-modal="true"
               aria-labelledby="mobile-nav-title"
-              className="mobile-drawer-enter fixed inset-y-0 right-0 z-[210] flex w-full max-w-[min(100%,23rem)] sm:max-w-sm flex-col bg-white shadow-2xl lg:hidden"
+              className="mobile-drawer-enter fixed inset-y-0 right-0 z-[210] flex w-full flex-col bg-white shadow-2xl lg:hidden"
               style={{
                 paddingBottom: "max(1.25rem, env(safe-area-inset-bottom, 0px))",
               }}
             >
-              {/* Header drawer: Logo + Tiêu đề + Nút Đóng */}
+              {/* Header drawer: Logo + Tiêu đề công ty chuẩn thương hiệu + Nút Đóng */}
               <div
-                className="flex shrink-0 items-center justify-between border-b border-slate-200/90 bg-white px-5 py-3.5"
+                className="flex shrink-0 items-center justify-between border-b border-slate-200/90 bg-white px-4 py-3 sm:px-5 sm:py-3.5"
                 style={{
                   paddingTop: "max(0.85rem, env(safe-area-inset-top, 0px))",
                 }}
               >
-                <div className="flex items-center gap-2.5">
-                  <span className="relative inline-flex h-8 w-8 shrink-0 overflow-hidden rounded-full shadow-xs">
-                    <Image
-                      src="/logocty1.jpg"
-                      alt="Cấp nước Tóc Tiên"
-                      width={32}
-                      height={32}
-                      className="h-full w-full object-cover"
-                    />
+                <Link
+                  href="/"
+                  onClick={() => setMobileNavOpen(false)}
+                  className="flex min-w-0 flex-1 items-center gap-2.5 pr-2 outline-none"
+                >
+                  <span className="relative inline-flex h-9 w-9 shrink-0 sm:h-10 sm:w-10">
+                    <span className="logo-mark-wiggle relative z-[1] inline-flex h-full w-full shrink-0 rounded-full shadow-md">
+                      <AnimatedLogoMark />
+                    </span>
                   </span>
-                  <div className="flex flex-col">
+                  <div className="flex min-w-0 flex-col justify-center">
+                    <span className="block text-[9px] font-semibold uppercase leading-tight tracking-[0.12em] text-slate-500">
+                      Tập đoàn Hải Châu
+                    </span>
                     <span
                       id="mobile-nav-title"
-                      className="text-[13px] font-extrabold uppercase tracking-tight text-[#0c2340]"
+                      className="line-clamp-1 text-[12px] font-extrabold uppercase leading-snug tracking-tight text-[#0c2340] sm:text-[13px]"
                     >
-                      Cấp Nước Tóc Tiên
-                    </span>
-                    <span className="text-[10px] font-semibold tracking-wider text-slate-500 uppercase">
-                      Menu Điều Hướng
+                      CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN
                     </span>
                   </div>
-                </div>
+                </Link>
                 <button
                   type="button"
                   aria-label="Đóng menu"
                   onClick={() => setMobileNavOpen(false)}
-                  className="inline-flex h-9 w-9 min-h-[36px] min-w-[36px] items-center justify-center rounded-full text-slate-600 transition hover:bg-slate-100 hover:text-[#0c2340] active:scale-95 focus-visible:outline-none"
+                  className="inline-flex h-9 w-9 min-h-[36px] min-w-[36px] shrink-0 items-center justify-center rounded-full text-slate-600 transition hover:bg-slate-100 hover:text-[#0c2340] active:scale-95 focus-visible:outline-none"
                 >
                   <IconClose className="h-5 w-5" />
                 </button>
