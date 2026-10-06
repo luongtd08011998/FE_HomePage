@@ -36,12 +36,7 @@ export default function NewsCard({ article }: NewsCardProps) {
           </h3>
         </div>
 
-        {/* Huy hiệu teal pill chuẩn Lacroix */}
         <div className="mt-6 flex flex-wrap items-center gap-2 pt-2">
-          <span className="inline-flex items-center rounded-full bg-[#1cd0b4] px-3.5 py-1.5 text-[0.7rem] font-bold uppercase tracking-wider text-[#0c2340] transition-transform duration-200 group-hover:scale-105">
-            {article.category?.name ?? "Tin tức"}
-          </span>
-
           {article.tags && article.tags.length > 0
             ? article.tags.slice(0, 2).map((tag) =>
                 tag ? (
@@ -49,7 +44,7 @@ export default function NewsCard({ article }: NewsCardProps) {
                     key={tag.id}
                     className="inline-flex items-center rounded-full bg-[#1cd0b4] px-3.5 py-1.5 text-[0.7rem] font-bold uppercase tracking-wider text-[#0c2340]"
                   >
-                    #{tag.name}
+                    {tag.name}
                   </span>
                 ) : null,
               )

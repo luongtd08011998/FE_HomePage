@@ -69,14 +69,6 @@ function IconEye({ className }: { className?: string }) {
   );
 }
 
-function IconTag({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden>
-      <path strokeLinecap="round" strokeLinejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-    </svg>
-  );
-}
-
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -157,23 +149,6 @@ export default async function ArticleDetailPage({ params }: Props) {
             <ArticleContent content={article.content} />
           </div>
 
-          {article.tags && article.tags.length > 0 ? (
-            <div className="mx-auto mb-12 max-w-4xl border-b border-slate-200 pb-12">
-              <div className="flex flex-wrap gap-2">
-                {article.tags.map((tag) =>
-                  tag ? (
-                    <Link
-                      key={tag.id}
-                      href={`/tag/${tag.id}`}
-                      className="cursor-pointer rounded-full bg-[#ebf4f6] px-3.5 py-1 text-xs font-medium text-[#0c2340] border border-slate-200/80 transition-all hover:border-[#1cd0b4] hover:bg-[#1cd0b4]/20 hover:text-[#0c2340]"
-                    >
-                      #{tag.name}
-                    </Link>
-                  ) : null,
-                )}
-              </div>
-            </div>
-          ) : null}
 
           <div className="mb-20">
             <h2 className="mb-8 text-2xl sm:text-3xl font-bold tracking-tight text-[#0c2340]">

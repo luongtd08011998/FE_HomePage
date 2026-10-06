@@ -99,10 +99,6 @@ function ArticleGridCard({ article }: { article: Article }) {
 
       {/* Huy hiệu phân loại màu xanh ngọc (Teal / Turquoise pill) chuẩn Lacroix */}
       <div className="mt-6 flex flex-wrap items-center gap-2 pt-2">
-        <span className="inline-flex items-center rounded-full bg-[#1cd0b4] px-3.5 py-1.5 text-[0.7rem] sm:text-xs font-bold uppercase tracking-wider text-[#0c2340] transition-transform duration-200 group-hover:scale-105">
-          {article.category?.name ?? "Tin tức"}
-        </span>
-
         {article.tags && article.tags.length > 0
           ? article.tags.slice(0, 2).map((t) => (
               <span
@@ -157,9 +153,16 @@ function ArticleListRow({ article }: { article: Article }) {
             ) : null}
           </div>
           <div className="mt-4 flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center rounded-full bg-[#1cd0b4] px-3.5 py-1 text-[0.7rem] sm:text-xs font-bold uppercase tracking-wider text-[#0c2340]">
-              {article.category?.name ?? "Tin tức"}
-            </span>
+            {article.tags && article.tags.length > 0
+              ? article.tags.slice(0, 2).map((t) => (
+                  <span
+                    key={t.id}
+                    className="inline-flex items-center rounded-full bg-[#1cd0b4] px-3.5 py-1 text-[0.7rem] sm:text-xs font-bold uppercase tracking-wider text-[#0c2340]"
+                  >
+                    {t.name}
+                  </span>
+                ))
+              : null}
             <span className="flex items-center gap-1 text-xs text-slate-500">
               <IconCalendar className="h-3.5 w-3.5" />
               {formatArticleDate(article.createdAt)}
