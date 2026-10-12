@@ -153,15 +153,20 @@ export default function Footer() {
                   className="mt-0.5 h-4 w-4 shrink-0 text-[#1cd0b4] sm:h-5 sm:w-5"
                   aria-hidden
                 />
-                <div className="min-w-0 flex-1">
+                <div className="min-w-0 flex-1 leading-relaxed">
+                  <span className="text-white/70">Điện thoại:</span>{" "}
                   <a
                     href="tel:02543894894"
-                    className="group inline-flex items-center gap-1 font-medium text-white/90 transition-all duration-300 ease-out hover:text-[#1cd0b4]"
+                    className="tabular-nums font-semibold text-white/90 transition-all duration-300 ease-out hover:text-[#1cd0b4]"
                   >
-                    <span className="text-white/70">Điện thoại:</span>{" "}
-                    <span className="tabular-nums font-semibold">
-                      0254 3 894 894 - 0865 3 379 119
-                    </span>
+                    0254 3 894 894
+                  </a>
+                  <span className="text-white/70"> - </span>
+                  <a
+                    href="tel:0865379119"
+                    className="tabular-nums font-semibold text-white/90 transition-all duration-300 ease-out hover:text-[#1cd0b4]"
+                  >
+                    0865 379 119
                   </a>
                 </div>
               </div>
