@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 import https from "https";
 
-const EXTERNAL_API_URL = "https://toctienltd.vn/cm-portlet/api";
+// Server CRM/Liferay cũ chạy cm-portlet tại IP 103.110.128.176.
+// Sau khi tên miền toctienltd.vn trỏ về server mới (125.253.121.171), cần gọi trực tiếp IP 103.110.128.176
+// để tránh gọi vòng lại chính Next.js server mới.
+const EXTERNAL_API_URL =
+  process.env.CM_PORTLET_API_URL || "https://103.110.128.176/cm-portlet/api";
 const AUTH_HEADER = "Basic cGh1b25nbnZAdG9jdGllbmx0ZC52bjoxMTExMTEx";
 
 // Agent dùng chung để bỏ qua lỗi SSL (nếu có)
