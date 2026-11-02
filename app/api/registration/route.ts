@@ -7,7 +7,8 @@ import https from "https";
 // để tránh gọi vòng lại chính Next.js server mới.
 const EXTERNAL_API_URL =
   process.env.CM_PORTLET_API_URL || "https://103.110.128.176/cm-portlet/api";
-const AUTH_HEADER = "Basic cGh1b25nbnZAdG9jdGllbmx0ZC52bjoxMTExMTEx";
+// Base64 của "luongtd@toctienltd.vn:123123"
+const AUTH_HEADER = "Basic bHVvbmd0ZEB0b2N0aWVubHRkLnZuOjEyMzEyMw==";
 
 // Agent dùng chung để bỏ qua lỗi SSL (nếu có)
 const httpsAgent = new https.Agent({
