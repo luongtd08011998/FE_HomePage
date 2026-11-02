@@ -8,13 +8,8 @@ import ArticleViewTracker from "@/components/article/ArticleViewTracker";
 import ReadingProgressBar from "@/components/article/ReadingProgressBar";
 import { articleService } from "@/services/article";
 import { categoryService } from "@/services/category";
-import { publicMediaUrl } from "@/lib/publicMediaUrl";
+import { resolveThumb } from "@/lib/publicMediaUrl";
 import type { CategoryNode } from "@/types";
-
-function resolveThumb(thumbnail: string): string {
-  if (!thumbnail) return "/placeholder.svg";
-  return publicMediaUrl(thumbnail);
-}
 
 async function buildShareUrl(slug: string): Promise<string> {
   const envBase = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");

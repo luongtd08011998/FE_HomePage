@@ -6,12 +6,7 @@ import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { Article, Category } from "@/types";
 import { articleExcerpt, estimateReadMinutes } from "@/lib/articleText";
-
-function resolveThumb(thumbnail: string): string {
-  if (!thumbnail) return "/placeholder.svg";
-  if (thumbnail.startsWith("http")) return thumbnail;
-  return `${process.env.NEXT_PUBLIC_MEDIA_URL || "http://localhost:8080"}${thumbnail}`;
-}
+import { resolveThumb } from "@/lib/publicMediaUrl";
 
 function IconGrid({ className }: { className?: string }) {
   return (

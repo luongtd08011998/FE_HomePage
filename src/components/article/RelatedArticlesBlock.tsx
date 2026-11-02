@@ -1,12 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
+import { resolveThumb } from "@/lib/publicMediaUrl";
 import type { Article } from "@/types";
-
-function resolveThumb(thumbnail: string): string {
-  if (!thumbnail) return "/placeholder.svg";
-  if (thumbnail.startsWith("http")) return thumbnail;
-  return `${process.env.NEXT_PUBLIC_MEDIA_URL || "http://localhost:8080"}${thumbnail}`;
-}
 
 export default function RelatedArticlesBlock({ articles }: { articles: Article[] }) {
   if (articles.length === 0) return null;

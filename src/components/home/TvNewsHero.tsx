@@ -4,16 +4,11 @@ import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, ChevronRight, Tag } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { resolveThumb } from "@/lib/publicMediaUrl";
 import type { Article } from "@/types";
 
 interface TvNewsHeroProps {
   articles: Article[];
-}
-
-function resolveThumb(thumbnail: string): string {
-  if (!thumbnail) return "/placeholder.svg";
-  if (thumbnail.startsWith("http")) return thumbnail;
-  return `${process.env.NEXT_PUBLIC_MEDIA_URL || "http://localhost:8080"}${thumbnail}`;
 }
 
 function stripHtml(html: string): string {

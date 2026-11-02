@@ -22,10 +22,12 @@ export const APP_LINKS = {
   smartDownloadPath: "/tai-app",
 
   // Link mã QR thông minh tự động nhận diện thiết bị
-  smartQrUrl:
-    process.env.NEXT_PUBLIC_APP_QR_URL || "https://beta.toctienltd.vn/tai-app",
+  smartQrUrl: (
+    process.env.NEXT_PUBLIC_APP_QR_URL || "https://toctienltd.vn/tai-app"
+  ).replace(/^https?:\/\/beta\.toctienltd\.vn/i, "https://toctienltd.vn"),
 
   // Giữ lại qrTargetUrl để tương thích ngược
-  qrTargetUrl:
-    process.env.NEXT_PUBLIC_APP_QR_URL || "https://beta.toctienltd.vn/tai-app",
+  qrTargetUrl: (
+    process.env.NEXT_PUBLIC_APP_QR_URL || "https://toctienltd.vn/tai-app"
+  ).replace(/^https?:\/\/beta\.toctienltd\.vn/i, "https://toctienltd.vn"),
 } as const;

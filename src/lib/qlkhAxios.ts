@@ -2,8 +2,9 @@ import axios, { type InternalAxiosRequestConfig } from "axios";
 import { useQlkhAuthStore } from "@/stores/qlkhAuthStore";
 
 /** Base URL API (trùng env NEXT_PUBLIC_API_URL). Dùng cho login không qua interceptor. */
-export const QLKH_API_BASE =
-  process.env.NEXT_PUBLIC_API_URL || "/api/v1";
+export const QLKH_API_BASE = (
+  process.env.NEXT_PUBLIC_API_URL || "/api/v1"
+).replace(/^https?:\/\/beta\.toctienltd\.vn/i, "https://toctienltd.vn");
 
 const qlkhApi = axios.create({
   baseURL: QLKH_API_BASE,

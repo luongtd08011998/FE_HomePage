@@ -3,9 +3,13 @@ import axios from "axios";
 // SSR (Node.js): gọi thẳng Spring Boot nội bộ, tránh self-signed cert qua Nginx.
 // Client (browser): gọi qua Nginx HTTPS.
 const isServer = typeof window === "undefined";
+const rawClientApiUrl = (process.env.NEXT_PUBLIC_API_URL || "/api/v1").replace(
+  /^https?:\/\/beta\.toctienltd\.vn/i,
+  "https://toctienltd.vn",
+);
 const baseURL = isServer
   ? (process.env.API_INTERNAL_URL || "http://127.0.0.1:8080/api/v1")
-  : (process.env.NEXT_PUBLIC_API_URL || "/api/v1");
+  : rawClientApiUrl;
 
 const api = axios.create({
   baseURL,

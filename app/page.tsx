@@ -7,13 +7,8 @@ import Image from "next/image";
 import { CARD_HOVER_CLASS } from "@/lib/cardHover";
 import { articleService } from "@/services/article";
 import { categoryService } from "@/services/category";
+import { resolveThumb } from "@/lib/publicMediaUrl";
 import type { Article } from "@/types";
-
-function resolveThumb(thumbnail: string): string {
-  if (!thumbnail) return "/placeholder.svg";
-  if (thumbnail.startsWith("http")) return thumbnail;
-  return `${process.env.NEXT_PUBLIC_MEDIA_URL || "http://localhost:8080"}${thumbnail}`;
-}
 
 export default async function HomePage() {
   let featuredArticles: Article[] = [];
