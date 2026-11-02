@@ -41,10 +41,6 @@ const nextConfig: NextConfig = {
     const origin = backendOriginFromEnv();
     return [
       {
-        source: "/api/v1/:path*",
-        destination: `${origin}/api/v1/:path*`,
-      },
-      {
         source: "/uploads/:path*",
         destination: `${origin}/uploads/:path*`,
       },

@@ -1,15 +1,12 @@
 import axios from "axios";
 
-// SSR (Node.js): gọi thẳng Spring Boot nội bộ, tránh self-signed cert qua Nginx.
-// Client (browser): gọi qua Nginx HTTPS.
+// SSR (Node.js): gọi thẳng Spring Boot nội bộ.
+// Client (browser): gọi qua Next.js Route Handler (/api/proxy) để tự động loại bỏ Origin header,
+// tránh lỗi 403 Invalid CORS Request từ Spring Boot khi đổi tên miền.
 const isServer = typeof window === "undefined";
-const rawClientApiUrl = (process.env.NEXT_PUBLIC_API_URL || "/api/v1").replace(
-  /^https?:\/\/beta\.toctienltd\.vn/i,
-  "https://toctienltd.vn",
-);
 const baseURL = isServer
   ? (process.env.API_INTERNAL_URL || "http://127.0.0.1:8080/api/v1")
-  : rawClientApiUrl;
+  : "/api/proxy";
 
 const api = axios.create({
   baseURL,
