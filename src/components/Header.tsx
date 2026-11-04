@@ -554,7 +554,7 @@ export default function Header({ categoryTree }: HeaderProps) {
                     </span>
                     <span className="flex min-w-0 flex-1 flex-col justify-center gap-0.5">
                       <span className="block text-[10px] font-semibold uppercase leading-tight tracking-[0.14em] text-slate-500 sm:text-[0.65rem] sm:tracking-[0.22em]">
-                        Tập đoàn Hải Châu
+                        Tập đoàn Hải Châu Việt Nam
                       </span>
                       <span className="line-clamp-1 text-[13px] font-extrabold leading-snug tracking-tight text-[#0c2340] sm:line-clamp-none sm:text-lg md:text-xl">
                         CÔNG TY TNHH CẤP NƯỚC TÓC TIÊN
@@ -858,7 +858,7 @@ export default function Header({ categoryTree }: HeaderProps) {
                   </span>
                   <div className="flex min-w-0 flex-col justify-center">
                     <span className="block text-[9px] font-semibold uppercase leading-tight tracking-[0.12em] text-slate-500">
-                      Tập đoàn Hải Châu
+                      Tập đoàn Hải Châu Việt Nam
                     </span>
                     <span
                       id="mobile-nav-title"
