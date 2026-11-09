@@ -9,6 +9,8 @@ export interface CategoryNode {
   name: string;
   slug: string;
   active?: number;
+  /** Link tuỳ chỉnh (mục menu tĩnh phía FE). Nếu có sẽ dùng thay cho `/category/{slug}`. */
+  href?: string;
   parent: CategoryNode | null;
   children: CategoryNode[];
   createdAt: string;

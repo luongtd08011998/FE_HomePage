@@ -51,6 +51,15 @@ const FALLBACK_CATEGORY_TREE = [
   },
 ];
 
+const STATIC_HOP_QUY_ITEM = {
+  id: -1001,
+  name: "Thông báo hợp quy",
+  slug: "thong-bao-hop-quy",
+  href: "/van-ban/thong-bao-hop-quy",
+  active: 1,
+  children: [],
+};
+
 export default async function HeaderWrapper() {
   let categoryTree: Awaited<ReturnType<typeof categoryService.getTree>> = [];
   try {
@@ -59,10 +68,21 @@ export default async function HeaderWrapper() {
     // silently fail — header still renders with fallback tree
   }
 
-  const finalTree =
+  const baseTree =
     categoryTree && categoryTree.length > 0
       ? categoryTree
       : (FALLBACK_CATEGORY_TREE as unknown as CategoryNode[]);
+
+  // Thêm mục tĩnh "Thông báo hợp quy" vào đầu menu "Văn bản" (không cần sửa DB trên server)
+  const finalTree = baseTree.map((root) => {
+    if (root.slug !== "van-ban") return root;
+    const existing = root.children ?? [];
+    if (existing.some((c) => c.slug === STATIC_HOP_QUY_ITEM.slug)) return root;
+    return {
+      ...root,
+      children: [STATIC_HOP_QUY_ITEM as unknown as CategoryNode, ...existing],
+    };
+  });
 
   return <Header categoryTree={finalTree} />;
 }
