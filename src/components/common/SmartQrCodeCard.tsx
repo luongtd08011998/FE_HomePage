@@ -42,11 +42,127 @@ export default function SmartQrCodeCard({
     }
   }, []);
 
+  /**
+   * Xuất ảnh PNG đầy đủ để in: tiêu đề, mô tả, mã QR và hướng dẫn quét
+   * (thay vì chỉ có mỗi mã QR).
+   */
+  const composePrintableImage = (qrCanvas: HTMLCanvasElement): string => {
+    const W = 900;
+    const PAD = 60;
+    const qrSize = 560;
+    const FONT = '"Be Vietnam Pro", "Segoe UI", Arial, sans-serif';
+
+    const wrapLines = (
+      ctx: CanvasRenderingContext2D,
+      text: string,
+      maxWidth: number,
+    ): string[] => {
+      const words = text.split(" ");
+      const lines: string[] = [];
+      let line = "";
+      for (const word of words) {
+        const test = line ? `${line} ${word}` : word;
+        if (ctx.measureText(test).width > maxWidth && line) {
+          lines.push(line);
+          line = word;
+        } else {
+          line = test;
+        }
+      }
+      if (line) lines.push(line);
+      return lines;
+    };
+
+    const out = document.createElement("canvas");
+    out.width = W;
+    out.height = 1400; // tạm; cắt lại theo nội dung thực tế ở cuối
+    const ctx = out.getContext("2d");
+    if (!ctx) return qrCanvas.toDataURL("image/png");
+
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, out.width, out.height);
+    ctx.textAlign = "center";
+    ctx.textBaseline = "alphabetic";
+
+    let y = PAD + 50;
+
+    // Tiêu đề
+    ctx.fillStyle = "#0c2340";
+    ctx.font = `bold 52px ${FONT}`;
+    ctx.fillText("Mã QR Tải Ứng Dụng", W / 2, y);
+    y += 50;
+
+    // Mô tả dưới tiêu đề
+    ctx.fillStyle = "#64748b";
+    ctx.font = `28px ${FONT}`;
+    ctx.fillText("1 mã dùng chung cho cả iPhone và máy Android", W / 2, y);
+    y += 50;
+
+    // Huy hiệu
+    const badge = "1 Mã duy nhất (iOS & Android)";
+    ctx.font = `bold 26px ${FONT}`;
+    const badgeW = ctx.measureText(badge).width + 60;
+    const badgeH = 52;
+    ctx.fillStyle = "#e6faf6";
+    ctx.strokeStyle = "#99e6d8";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect((W - badgeW) / 2, y, badgeW, badgeH, badgeH / 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = "#0f766e";
+    ctx.fillText(badge, W / 2, y + 36);
+    y += badgeH + 40;
+
+    // Khung chứa QR
+    const framePad = 30;
+    const frameSize = qrSize + framePad * 2;
+    const frameX = (W - frameSize) / 2;
+    ctx.fillStyle = "#ffffff";
+    ctx.strokeStyle = "#cbd5e1";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.roundRect(frameX, y, frameSize, frameSize, 28);
+    ctx.fill();
+    ctx.stroke();
+    ctx.imageSmoothingEnabled = false; // giữ nét vuông sắc của mã QR
+    ctx.drawImage(qrCanvas, frameX + framePad, y + framePad, qrSize, qrSize);
+    y += frameSize + 60;
+
+    // Hướng dẫn quét
+    ctx.fillStyle = "#0c2340";
+    ctx.font = `bold 34px ${FONT}`;
+    ctx.fillText("Quét bằng Camera hoặc Zalo", W / 2, y);
+    y += 20;
+
+    ctx.fillStyle = "#64748b";
+    ctx.font = `28px ${FONT}`;
+    const lines = wrapLines(
+      ctx,
+      "Tự động nhận diện iPhone hoặc máy Android để mở đúng kho ứng dụng",
+      W - PAD * 2 - 80,
+    );
+    for (const l of lines) {
+      y += 42;
+      ctx.fillText(l, W / 2, y);
+    }
+    y += PAD;
+
+    // Cắt đúng chiều cao nội dung
+    const final = document.createElement("canvas");
+    final.width = W;
+    final.height = Math.ceil(y);
+    const fctx = final.getContext("2d");
+    if (!fctx) return out.toDataURL("image/png");
+    fctx.drawImage(out, 0, 0);
+    return final.toDataURL("image/png");
+  };
+
   const handleDownloadQR = () => {
     if (!qrRef.current) return;
     const canvas = qrRef.current.querySelector("canvas");
     if (canvas) {
-      const url = canvas.toDataURL("image/png");
+      const url = composePrintableImage(canvas);
       const a = document.createElement("a");
       a.download = "QR_Tai_App_Cap_Nuoc_Toc_Tien.png";
       a.href = url;
