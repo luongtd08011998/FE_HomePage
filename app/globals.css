@@ -60,3 +60,63 @@ body {
   > td.ant-table-cell-fix-right-last::before {
   box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.08);
 }
+
+/* Dải thông báo chạy chữ từ phải sang trái */
+@keyframes announcementMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* padding-left: 100% (theo bề ngang khung) để chữ bắt đầu từ mép phải khung;
+   dịch -100% bề ngang của chính nó để chữ ra hết khỏi mép trái rồi mới lặp lại */
+.announcement-ticker__track {
+  display: inline-block;
+  padding-left: 100%;
+  white-space: nowrap;
+  animation: announcementMarquee 35s linear infinite;
+}
+
+.announcement-ticker:hover .announcement-ticker__track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .announcement-ticker__track {
+    animation: none;
+    padding-left: 0;
+    white-space: normal;
+  }
+}
+
+@keyframes announcementBell {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  10%,
+  30% {
+    transform: rotate(14deg);
+  }
+  20%,
+  40% {
+    transform: rotate(-14deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+}
+
+.announcement-ticker__bell {
+  transform-origin: 50% 10%;
+  animation: announcementBell 2.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .announcement-ticker__bell {
+    animation: none;
+  }
+}

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import HeaderWrapper from "@/components/HeaderWrapper";
+import AnnouncementTicker from "@/components/AnnouncementTicker";
 import Footer from "@/components/Footer";
 import "./globals.css";
 
@@ -36,6 +37,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-white text-[#0c2340]">
         <AntdRegistry>
           <HeaderWrapper />
+          <AnnouncementTicker />
           <main className="flex min-h-0 flex-1 flex-col">{children}</main>
           <Footer />
         </AntdRegistry>

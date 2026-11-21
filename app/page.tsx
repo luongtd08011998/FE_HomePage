@@ -49,7 +49,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 opacity-[0.03] [background-image:linear-gradient(to_right,#0284c7_1px,transparent_1px),linear-gradient(to_bottom,#0284c7_1px,transparent_1px)] [background-size:32px_32px]" />
       </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-4 sm:px-6 sm:py-6">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pb-4 pt-2 sm:px-6 sm:pb-6 sm:pt-3">
         <section className="w-full" aria-label="Khu vực nổi bật">
           <div className="grid grid-cols-12 items-start gap-4 lg:items-stretch">
             {/* LEFT */}
