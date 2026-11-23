@@ -49,7 +49,7 @@ const GUIDE_SECTIONS: GuideSection[] = [
     subtitle: "Truy cập hệ thống chăm sóc khách hàng bằng Mã khách hàng và Số điện thoại",
     icon: LogIn,
     highlights: [
-      "Nhập Mã khách hàng (8 chữ số in trên hóa đơn hoặc tin nhắn thông báo tiền nước, ví dụ: 00900041).",
+      "Nhập Mã khách hàng (8 chữ số in trên hóa đơn hoặc tin nhắn thông báo tiền nước).",
       "Nhập Số điện thoại đã đăng ký với Công ty TNHH Cấp nước Tóc Tiên.",
       "Tích chọn 'Ghi nhớ đăng nhập' để tự động vào ứng dụng trong các lần mở tiếp theo.",
       "Nếu chưa có đồng hồ nước, quý khách có thể bấm 'Đăng ký lắp đặt trực tuyến' ngay trên màn hình đăng nhập.",
