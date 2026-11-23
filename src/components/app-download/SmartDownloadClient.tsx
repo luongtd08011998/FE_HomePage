@@ -77,9 +77,19 @@ export default function SmartDownloadClient({
             <span>Về trang chủ Cấp Nước Tóc Tiên</span>
           </Link>
 
-          <div className="flex items-center gap-2 text-xs font-medium text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Kênh CSKH Chính thức</span>
+          <div className="flex items-center gap-2.5">
+            <Link
+              href="/quan-he-khach-hang/huong-dan-su-dung-app"
+              className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-[#0c2340] shadow-2xs transition hover:border-[#1cd0b4] hover:text-teal-700"
+            >
+              <FileText className="h-3.5 w-3.5 text-teal-600" />
+              <span>Hướng dẫn sử dụng</span>
+            </Link>
+
+            <div className="hidden sm:flex items-center gap-2 text-xs font-medium text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Kênh CSKH Chính thức</span>
+            </div>
           </div>
         </div>
       </header>

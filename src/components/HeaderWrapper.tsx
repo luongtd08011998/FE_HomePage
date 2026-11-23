@@ -60,6 +60,15 @@ const STATIC_HOP_QUY_ITEM = {
   children: [],
 };
 
+const STATIC_HUONG_DAN_APP_ITEM = {
+  id: -1002,
+  name: "Hướng dẫn sử dụng App CSKH",
+  slug: "huong-dan-su-dung-app",
+  href: "/quan-he-khach-hang/huong-dan-su-dung-app",
+  active: 1,
+  children: [],
+};
+
 export default async function HeaderWrapper() {
   let categoryTree: Awaited<ReturnType<typeof categoryService.getTree>> = [];
   try {
@@ -73,15 +82,27 @@ export default async function HeaderWrapper() {
       ? categoryTree
       : (FALLBACK_CATEGORY_TREE as unknown as CategoryNode[]);
 
-  // Thêm mục tĩnh "Thông báo hợp quy" vào đầu menu "Văn bản" (không cần sửa DB trên server)
+  // Thêm mục tĩnh "Thông báo hợp quy" vào menu "Văn bản" và "Hướng dẫn sử dụng App CSKH" vào menu "Quan hệ khách hàng"
   const finalTree = baseTree.map((root) => {
-    if (root.slug !== "van-ban") return root;
-    const existing = root.children ?? [];
-    if (existing.some((c) => c.slug === STATIC_HOP_QUY_ITEM.slug)) return root;
-    return {
-      ...root,
-      children: [STATIC_HOP_QUY_ITEM as unknown as CategoryNode, ...existing],
-    };
+    if (root.slug === "van-ban") {
+      const existing = root.children ?? [];
+      if (existing.some((c) => c.slug === STATIC_HOP_QUY_ITEM.slug)) return root;
+      return {
+        ...root,
+        children: [STATIC_HOP_QUY_ITEM as unknown as CategoryNode, ...existing],
+      };
+    }
+
+    if (root.slug === "quan-he-khach-hang") {
+      const existing = root.children ?? [];
+      if (existing.some((c) => c.slug === STATIC_HUONG_DAN_APP_ITEM.slug)) return root;
+      return {
+        ...root,
+        children: [...existing, STATIC_HUONG_DAN_APP_ITEM as unknown as CategoryNode],
+      };
+    }
+
+    return root;
   });
 
   return <Header categoryTree={finalTree} />;
